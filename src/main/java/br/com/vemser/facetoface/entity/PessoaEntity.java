@@ -10,14 +10,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "PESSOA")
+@MappedSuperclass
 public abstract class PessoaEntity {
 
-    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CARTAO_CREDITO")
-//    @SequenceGenerator(name = "SEQ_CARTAO_CREDITO", sequenceName = "seq_cartao_credito", allocationSize = 1)
-    @Column(name = "id_pessoa")
-    private Integer idPessoa;
+//    @Id
+////    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CARTAO_CREDITO")
+////    @SequenceGenerator(name = "SEQ_CARTAO_CREDITO", sequenceName = "seq_cartao_credito", allocationSize = 1)
+//    @Column(name = "id_pessoa")
+//    private Integer idPessoa;
 
     @Column(name = "nome_completo")
     private String nomeCompleto;
@@ -35,6 +35,7 @@ public abstract class PessoaEntity {
     @Enumerated(EnumType.ORDINAL)
     private Genero genero;
 
+    @Lob
     @Column(name = "foto")
     private byte[] foto;
 
