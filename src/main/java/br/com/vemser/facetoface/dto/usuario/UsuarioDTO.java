@@ -1,16 +1,12 @@
 package br.com.vemser.facetoface.dto.usuario;
 
-import br.com.vemser.facetoface.entity.enums.Genero;
-import br.com.vemser.facetoface.entity.enums.Trilha;
+import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
+@Data
 public class UsuarioDTO {
-    private String nomeCompleto;
-    private String cidade;
-    private String estado;
-    private String email;
-    private Genero genero;
-    private byte[] foto;
-    private Trilha trilha;
-//    private Perfil perfil;
-    private String senha;
+
+    @NotNull
+    private Integer idUsuario;
 }

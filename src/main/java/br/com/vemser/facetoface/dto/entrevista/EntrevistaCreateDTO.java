@@ -1,15 +1,43 @@
-//package br.com.vemser.facetoface.dto.entrevista;
-//
-//import br.com.vemser.facetoface.entity.CandidatoEntity;
-//import br.com.vemser.facetoface.entity.UsuarioEntity;
-//import br.com.vemser.facetoface.entity.enums.Legenda;
-//
-//import java.time.LocalDateTime;
-//
-//public class EntrevistaCreateDTO {
-//    private CandidatoEntity candidatoEntity;
-//    private UsuarioEntity usuarioEntity;
-//    private LocalDateTime dataEntrevista;
-//    private String observacoes;
-//    private Legenda legenda;
-//}
+package br.com.vemser.facetoface.dto.entrevista;
+
+import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
+import br.com.vemser.facetoface.dto.candidato.LegendaDTO;
+import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
+import br.com.vemser.facetoface.entity.CandidatoEntity;
+import br.com.vemser.facetoface.entity.UsuarioEntity;
+import br.com.vemser.facetoface.entity.enums.Legenda;
+import com.sun.istack.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Data
+public class EntrevistaCreateDTO {
+
+    @NotNull
+    @Schema(description = "Candidato que irá participar da entrevista.")
+    private CandidatoDTO candidatoDTO;
+
+    @NotNull
+    @Schema(description = "Usuário que irá realizar a entrevista.")
+    private UsuarioDTO usuarioDTO;
+
+    @NotNull
+    @Schema(description = "Dia/Mês/Ano que irá ocorrer a entrevista.")
+    private LocalDate diaMesAno;
+
+    @NotNull
+    @Schema(description = "Hora/Min/Seg que irá ocorrer a entrevista.")
+    private Time horasMin;
+
+    @NotNull
+    @Schema(description = "Observações referentes a entrevista.")
+    private String observacoes;
+
+    @NotNull
+    @Schema(description = "Legenda referente a entrevista.")
+    private LegendaDTO legenda;
+}
