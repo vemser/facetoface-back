@@ -2,6 +2,8 @@
 //
 //import br.com.dbc.vemser.sistemaaluguelveiculos.entity.FuncionarioEntity;
 //import br.com.dbc.vemser.sistemaaluguelveiculos.exceptions.InvalidTokenException;
+//import br.com.vemser.facetoface.entity.UsuarioEntity;
+//import br.com.vemser.facetoface.exceptions.InvalidTokenException;
 //import io.jsonwebtoken.Claims;
 //import io.jsonwebtoken.ExpiredJwtException;
 //import io.jsonwebtoken.Jwts;
@@ -52,7 +54,7 @@
 //                .compact();
 //    }
 //
-//    public String getTokenSenha(FuncionarioEntity funcionarioEntity) {
+//    public String getTokenSenha(UsuarioEntity usuarioEntity) {
 //
 //        LocalDateTime localDateTimeAtual = LocalDateTime.now();
 //        Date dataAtual = Date.from(localDateTimeAtual.atZone(ZoneId.systemDefault()).toInstant());
@@ -61,7 +63,7 @@
 //
 //        return Jwts.builder().
 //                setIssuer("vemser-api")
-//                .claim(Claims.ID, funcionarioEntity.getCpf())
+//                .claim(Claims.ID, usuarioEntity.getEmail())
 //                .setIssuedAt(dataAtual)
 //                .setExpiration(expiracao)
 //                .signWith(SignatureAlgorithm.HS256, secret)

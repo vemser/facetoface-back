@@ -9,6 +9,7 @@
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+//import org.springframework.security.core.token.TokenService;
 //import org.springframework.security.crypto.password.Md4PasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.web.SecurityFilterChain;
@@ -28,15 +29,11 @@
 //
 //        http.headers().frameOptions().disable().and()
 //                .cors().and()
-//                .csrf().disable()
-//                .authorizeHttpRequests((authz) ->
-//                        authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
-//                                .antMatchers(HttpMethod.GET, "/auth").hasAnyRole("ADMIN", "AUXILIAR")
-//                                .antMatchers(HttpMethod.POST, "/veiculo/**").hasRole("ADMIN")
-//                                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-//                                .antMatchers("/funcionario/**").hasAnyRole("ADMIN")
-//                                .anyRequest().authenticated());
-//        http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+//                .csrf().disable();
+////                .authorizeHttpRequests((authz) ->
+////                        authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+////                .anyRequest().authenticated());
+////        http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
 //        return http.build();
 //    }
 //
