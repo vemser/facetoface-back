@@ -1,19 +1,50 @@
 package br.com.vemser.facetoface.entity;
 
 import br.com.vemser.facetoface.entity.enums.Legenda;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.util.Date;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "ENTREVISTA")
 public class EntrevistaEntity {
+    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CARTAO_CREDITO")
+//    @SequenceGenerator(name = "SEQ_CARTAO_CREDITO", sequenceName = "seq_cartao_credito", allocationSize = 1)
+    @Column(name = "id_entrevista")
+    private Integer idEntrevista;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_candidato", referencedColumnName = "id_candidato")
     private CandidatoEntity candidatoEntity;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @ToString.Exclude
     private UsuarioEntity usuarioEntity;
-    private LocalDateTime dataEntrevista;
+
+    @Column(name = "data_hora_entrevista")
+    private Date dataEntrevista;
+
+    @Column(name = "observacoes")
     private String observacoes;
+
+    //verificar com os instrutores
+    @Column(name = "cidade")
+    private String cidade;
+
+    //verificar com os instrutores
+    @Column(name = "estado")
+    private String estado;
+
+    @Column(name = "id_legenda")
+    @Enumerated(EnumType.ORDINAL)
     private Legenda legenda;
 }
