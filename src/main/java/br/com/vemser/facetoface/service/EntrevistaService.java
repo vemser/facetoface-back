@@ -46,10 +46,11 @@ public class EntrevistaService {
     }
 
     public List<EntrevistaDTO> listarEntrevistasPorMes(){
-        List<EntrevistaEntity> entrevistaEntities = entrevistaRepository.findAllByDataEntrevista_Month();
-        return entrevistaEntities.stream()
-                .map(this::converterParaEntrevistaDTO)
-                .collect(Collectors.toList());
+//        List<EntrevistaEntity> entrevistaEntities = entrevistaRepository.findAllByDataEntrevista_Month();
+//        return entrevistaEntities.stream()
+//                .map(this::converterParaEntrevistaDTO)
+//                .collect(Collectors.toList());
+        return null;
     }
 
     public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {

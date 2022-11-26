@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface EntrevistaRepository extends JpaRepository<EntrevistaEntity,Integer> {
 
-    List<EntrevistaEntity> findAllByDataEntrevista_Month();
+//    List<EntrevistaEntity> findAllByDataEntrevista_Month();
 }

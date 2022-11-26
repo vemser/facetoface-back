@@ -5,6 +5,7 @@ import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.EntrevistaService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 @RestController
@@ -41,17 +43,17 @@ public class EntrevistaController {
         return new ResponseEntity<>(entrevistaService.createEntrevista(entrevistaCreateDTO), HttpStatus.OK);
     }
 
-    @PostMapping("/agendar-entrevista")
-    public ResponseEntity<EntrevistaDTO> marcarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException{
-        return new ResponseEntity<>(entrevistaService.createEntrevista(entrevistaCreateDTO), HttpStatus.OK);
-    }
-    @GetMapping("/listar-entrevistas-por-mes")
-    public void listarEntrevistasPorMes(){
-
-    }
-
-    @GetMapping("/{nomeUsuario}")
-    public void listarEntrevistaPorUsuario(){
-
-    }
+//    @PostMapping("/agendar-entrevista")
+//    public ResponseEntity<EntrevistaDTO> marcarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException{
+//        return new ResponseEntity<>(entrevistaService.createEntrevista(entrevistaCreateDTO), HttpStatus.OK);
+//    }
+//    @GetMapping("/listar-entrevistas-por-mes")
+//    public void listarEntrevistasPorMes(){
+//
+//    }
+//
+//    @GetMapping("/{nomeUsuario}")
+//    public void listarEntrevistaPorUsuario(){
+//
+//    }
 }
