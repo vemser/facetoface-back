@@ -2,6 +2,7 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
+import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,9 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final ObjectMapper objectMapper;
 
-    public UsuarioEntity listarUsuarioEntityPeloId(Integer idUsuario) throws Exception {
+    public UsuarioEntity listarUsuarioEntityPeloId(Integer idUsuario) throws RegraDeNegocioException {
         return usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new Exception("Usuário com id " + idUsuario + " não foi encontrado."));
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário com id " + idUsuario + " não foi encontrado."));
     }
 
     public Optional<UsuarioEntity> listarOptionalUsuarioPorEmail(String email) {

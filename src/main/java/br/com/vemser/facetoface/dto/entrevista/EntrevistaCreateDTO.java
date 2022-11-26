@@ -13,6 +13,7 @@ import lombok.Data;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 public class EntrevistaCreateDTO {
@@ -30,8 +31,16 @@ public class EntrevistaCreateDTO {
     private LocalDate diaMesAno;
 
     @NotNull
+    @Schema(description = "Cidade em que o usuário irá realizar a entrevista")
+    private String cidade;
+
+    @NotNull
+    @Schema(description = "Estado em que o usuário irá realizar a entrevista")
+    private String estado;
+
+    @NotNull
     @Schema(description = "Hora/Min/Seg que irá ocorrer a entrevista.")
-    private Time horasMin;
+    private LocalTime horasMin;
 
     @NotNull
     @Schema(description = "Observações referentes a entrevista.")

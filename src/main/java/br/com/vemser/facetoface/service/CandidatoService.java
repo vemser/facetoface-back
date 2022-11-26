@@ -64,7 +64,7 @@ public class CandidatoService {
         return converterEmDTO(candidatoRepository.save(candidatoEntity));
     }
 
-    private CandidatoEntity findById(Integer id) throws RegraDeNegocioException {
+    public CandidatoEntity findById(Integer id) throws RegraDeNegocioException {
         return candidatoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado."));
     }

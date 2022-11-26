@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -31,7 +33,7 @@ public class EntrevistaEntity {
     private UsuarioEntity usuarioEntity;
 
     @Column(name = "data_hora_entrevista")
-    private Date dataEntrevista;
+    private LocalDateTime dataEntrevista;
 
     @Column(name = "observacoes")
     private String observacoes;
