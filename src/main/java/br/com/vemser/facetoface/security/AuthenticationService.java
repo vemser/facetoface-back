@@ -2,6 +2,8 @@
 //
 //import br.com.dbc.vemser.sistemaaluguelveiculos.entity.FuncionarioEntity;
 //import br.com.dbc.vemser.sistemaaluguelveiculos.service.FuncionarioService;
+//import br.com.vemser.facetoface.entity.UsuarioEntity;
+//import br.com.vemser.facetoface.service.UsuarioService;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,12 +16,12 @@
 //@RequiredArgsConstructor
 //public class AuthenticationService implements UserDetailsService {
 //
-//    private final FuncionarioService funcionarioService;
+//    private final UsuarioService usuarioService;
 //
 //    @Override
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        Optional<FuncionarioEntity> funcionarioEntityOptional = funcionarioService.findByLogin(username);
-//        return funcionarioEntityOptional
+//        Optional<UsuarioEntity> usuarioEntityOptional = usuarioService.findByLogin(username);
+//        return usuarioEntityOptional
 //                .orElseThrow(() -> new UsernameNotFoundException("Usuário inválido"));
 //    }
 //}

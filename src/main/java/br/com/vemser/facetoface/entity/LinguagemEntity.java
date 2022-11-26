@@ -1,7 +1,5 @@
 package br.com.vemser.facetoface.entity;
 
-import br.com.vemser.facetoface.entity.CandidatoEntity;
-import br.com.vemser.facetoface.entity.UsuarioEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "LINGUAGEM")
-public class Linguagem {
+public class LinguagemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LINGUAGEM_SEQUENCIA")
     @SequenceGenerator(name = "LINGUAGEM_SEQUENCIA", sequenceName = "SEQ_ID_LINGUAGEM", allocationSize = 1)

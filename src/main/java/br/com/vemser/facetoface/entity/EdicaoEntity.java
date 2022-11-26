@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "EDICAO")
-public class Edicao {
+public class EdicaoEntity {
     @Id
     @Column(name = "ID_EDICAO")
     private Integer idEdicao;

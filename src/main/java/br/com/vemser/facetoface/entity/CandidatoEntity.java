@@ -22,7 +22,7 @@ public class CandidatoEntity extends PessoaEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_EDICAO", referencedColumnName = "ID_EDICAO")
     @ToString.Exclude
-    private Edicao edicao;
+    private EdicaoEntity edicao;
 
     @Column(name = "nota_prova")
     private Double notaProva;
@@ -32,7 +32,7 @@ public class CandidatoEntity extends PessoaEntity{
     @JoinTable(name = "CANDIDATO_LINGUAGEM",
             joinColumns = @JoinColumn(name = "ID_CANDIDATO"),
             inverseJoinColumns = @JoinColumn(name = "ID_LINGUAGEM"))
-    private List<Linguagem> linguagens;
+    private List<LinguagemEntity> linguagens;
 
     @Column(name = "observacoes")
     private String observacoes;

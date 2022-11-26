@@ -1,14 +1,22 @@
 package br.com.vemser.facetoface.dto.candidato;
 
-import br.com.vemser.facetoface.entity.Edicao;
+import br.com.vemser.facetoface.dto.EdicaoDTO;
+import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.entity.enums.Genero;
-import br.com.vemser.facetoface.entity.Linguagem;
 import br.com.vemser.facetoface.entity.enums.Trilha;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CandidatoCreateDTO {
 
     @NotNull
@@ -38,8 +46,8 @@ public class CandidatoCreateDTO {
     private Trilha trilha;
 
     @NotNull
-    @Schema(description = "Edição que o candidato participa.")
-    private Edicao edicao;
+    @Schema(description = "Número da edição que o candidato participa.")
+    private EdicaoDTO edicao;
 
     @NotNull
     @Schema(description = "Nota da prova do candidato.")
@@ -47,11 +55,15 @@ public class CandidatoCreateDTO {
 
     @NotNull
     @Schema(description = "Lista de linguagens que o candidato conhece.")
-    private List<Linguagem> linguagens;
+    private List<LinguagemDTO> linguagens;
 
     @NotNull
     @Schema(description = "Observações referentes ao candidato.")
     private String observacoes;
+
+    @NotNull
+    @Schema(description = "Usuário ativo ou não. 'T' para ativo e 'F' para inativo.", example = "T")
+    private char ativo;
 
     private byte[] curriculo;
 }

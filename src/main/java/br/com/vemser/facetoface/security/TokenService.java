@@ -34,7 +34,7 @@
 //    @Value("${jwt.expirationSenha}")
 //    private String expirationSenha;
 //
-//    public String getToken(FuncionarioEntity funcionarioEntity, String expiration) {
+//    public String getToken(UsuarioEntity usuarioEntity, String expiration) {
 //        if (expiration != null) {
 //            this.expiration = expiration;
 //        }
@@ -46,8 +46,8 @@
 //
 //        return Jwts.builder().
 //                setIssuer("vemser-api")
-//                .claim(Claims.ID, funcionarioEntity.getCpf())
-//                .claim(KEY_CARGOS, funcionarioEntity.getCargoEntity().getAuthority())
+//                .claim(Claims.ID, usuarioEntity.getEmail())
+//                .claim(KEY_CARGOS, usuarioEntity.getPerfis().getAuthority())
 //                .setIssuedAt(dataAtual)
 //                .setExpiration(expiracao)
 //                .signWith(SignatureAlgorithm.HS256, secret)
@@ -89,7 +89,7 @@
 //        return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(cargoSimple));
 //    }
 //
-//    public String getCpfByToken(String token) throws InvalidTokenException {
+//    public String getEmailsByToken(String token) throws InvalidTokenException {
 //        token = token.replace("Bearer ", "");
 //        try {
 //            Claims claims = Jwts.parser()

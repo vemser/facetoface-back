@@ -1,4 +1,4 @@
-package br.com.vemser.facetoface.dto.candidato;
+package br.com.vemser.facetoface.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CandidatoDTO extends CandidatoCreateDTO{
-    private Integer idCandidato;
+public class LinguagemDTO {
+    private String nome;
 }
