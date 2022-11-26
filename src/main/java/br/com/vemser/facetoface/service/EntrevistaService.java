@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +45,14 @@ public class EntrevistaService {
                 .toList();
     }
 
-    public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws Exception {
+    public List<EntrevistaDTO> listarEntrevistasPorMes(){
+        List<EntrevistaEntity> entrevistaEntities = entrevistaRepository.findAllByDataEntrevista_Month();
+        return entrevistaEntities.stream()
+                .map(this::converterParaEntrevistaDTO)
+                .collect(Collectors.toList());
+    }
+
+    public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
         UsuarioEntity usuario = usuarioService.listarUsuarioEntityPeloId(entrevistaCreateDTO.getUsuarioDTO().getIdUsuario());
         CandidatoEntity candidato = candidatoService.findById(entrevistaCreateDTO.getCandidatoDTO().getIdCandidato());
         String cidade = entrevistaCreateDTO.getCidade();

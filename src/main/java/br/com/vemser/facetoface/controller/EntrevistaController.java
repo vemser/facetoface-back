@@ -26,10 +26,32 @@ public class EntrevistaController {
         return entrevistaService.listarEntrevistas();
     }
 
+    @GetMapping("/listar-entrevistas-por-mes")
+    public List<EntrevistaDTO> listPorMes() throws RegraDeNegocioException {
+        return entrevistaService.listarEntrevistas();
+    }
+
     @PutMapping("/{idEntrevista}")
     public ResponseEntity<EntrevistaDTO> updateEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO, @PathVariable("idEntrevista") Integer id) throws RegraDeNegocioException{
         return new ResponseEntity<>(entrevistaService.atualizarEntrevista(id, entrevistaCreateDTO), HttpStatus.OK);
     }
 
+    @PostMapping("/marcar-entrevista")
+    public ResponseEntity<EntrevistaDTO> cadastrarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException{
+        return new ResponseEntity<>(entrevistaService.createEntrevista(entrevistaCreateDTO), HttpStatus.OK);
+    }
 
+    @PostMapping("/agendar-entrevista")
+    public ResponseEntity<EntrevistaDTO> marcarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException{
+        return new ResponseEntity<>(entrevistaService.createEntrevista(entrevistaCreateDTO), HttpStatus.OK);
+    }
+    @GetMapping("/listar-entrevistas-por-mes")
+    public void listarEntrevistasPorMes(){
+
+    }
+
+    @GetMapping("/{nomeUsuario}")
+    public void listarEntrevistaPorUsuario(){
+
+    }
 }
