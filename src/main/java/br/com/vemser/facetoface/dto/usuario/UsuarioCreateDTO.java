@@ -5,9 +5,12 @@ import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.entity.enums.Trilha;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioCreateDTO {
 
     @NotNull
