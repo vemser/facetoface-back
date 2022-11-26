@@ -87,7 +87,7 @@ public class TokenService {
         return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(cargoSimple));
     }
 
-    public String getCpfByToken(String token) throws InvalidTokenException {
+    public String getEmailByToken(String token) throws InvalidTokenException {
         token = token.replace("Bearer ", "");
         try {
             Claims claims = Jwts.parser()

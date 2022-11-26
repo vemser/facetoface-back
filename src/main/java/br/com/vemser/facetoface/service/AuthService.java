@@ -2,6 +2,8 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.login.LoginDTO;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
+import br.com.vemser.facetoface.exceptions.InvalidTokenException;
+import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,10 +17,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthService {
 
-//    private final UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 //    private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
-//    private final TokenService tokenService;
+    private final TokenService tokenService;
 
 
     public UsuarioEntity auth(LoginDTO loginDTO) {
@@ -40,9 +42,9 @@ public class AuthService {
 //        emailService.sendEmail(base, funcionarioEntity.get().getEmail());
 //    }
 //
-//    public String procurarUsuario(String token) throws RegraDeNegocioException {
-//        String cpfByToken = tokenService.getCpfByToken(token);
-//        return funcionarioService.findByLogin(cpfByToken).get().getCpf();
-//    }
+    public String procurarUsuario(String token) throws RegraDeNegocioException {
+        String cpfByToken = tokenService.getEmailByToken(token);
+        return usuarioService.listarOptionalUsuarioPorEmail(cpfByToken).get().getEmail();
+    }
 
 }
