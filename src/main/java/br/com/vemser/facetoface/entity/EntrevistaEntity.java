@@ -14,8 +14,8 @@ import java.util.Date;
 @Entity(name = "ENTREVISTA")
 public class EntrevistaEntity {
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CARTAO_CREDITO")
-//    @SequenceGenerator(name = "SEQ_CARTAO_CREDITO", sequenceName = "seq_cartao_credito", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ENTREVISTA")
+    @SequenceGenerator(name = "SEQ_ENTREVISTA", sequenceName = "SEQ_ID_ENTREVISTAS", allocationSize = 1)
     @Column(name = "id_entrevista")
     private Integer idEntrevista;
 

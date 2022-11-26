@@ -13,12 +13,11 @@ import java.util.Set;
 @Entity(name = "USUARIO")
 public class UsuarioEntity extends PessoaEntity{
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CARTAO_CREDITO")
-//    @SequenceGenerator(name = "SEQ_CARTAO_CREDITO", sequenceName = "seq_cartao_credito", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
+    @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_ID_USUARIO", allocationSize = 1)
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
-//    @Column(name = )
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USUARIO_PERFIL",

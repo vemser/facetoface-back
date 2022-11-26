@@ -42,4 +42,7 @@ public abstract class PessoaEntity {
     @Column(name = "id_trilha")
     @Enumerated(EnumType.ORDINAL)
     private Trilha trilha;
+
+    @Column(name = "ativo")
+    private char ativo;
 }

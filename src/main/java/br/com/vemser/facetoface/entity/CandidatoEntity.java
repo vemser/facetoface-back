@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.entity;
 
 import br.com.vemser.facetoface.entity.enums.Edicao;
-import br.com.vemser.facetoface.entity.enums.Linguagem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,8 +14,8 @@ import java.util.List;
 @Entity(name = "CANDIDATO")
 public class CandidatoEntity extends PessoaEntity{
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CARTAO_CREDITO")
-//    @SequenceGenerator(name = "SEQ_CARTAO_CREDITO", sequenceName = "seq_cartao_credito", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CANDIDATO")
+    @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "SEQ_ID_CANDIDATO", allocationSize = 1)
     @Column(name = "id_candidato")
     private Integer idCandidato;
 
@@ -26,6 +26,11 @@ public class CandidatoEntity extends PessoaEntity{
     @Column(name = "nota_prova")
     private Double notaProva;
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "CANDIDATO_LINGUAGEM",
+            joinColumns = @JoinColumn(name = "ID_CANDIDATO"),
+            inverseJoinColumns = @JoinColumn(name = "ID_LINGUAGEM"))
     private List<Linguagem> linguagens;
 
     @Column(name = "observacoes")
@@ -33,4 +38,8 @@ public class CandidatoEntity extends PessoaEntity{
 
     @OneToOne(mappedBy = "candidatoEntity")
     private EntrevistaEntity entrevistaEntity;
+
+    @Lob
+    @Column(name = "curriculo")
+    private byte[] curriculo;
 }

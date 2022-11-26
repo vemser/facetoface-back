@@ -1,4 +1,4 @@
-package br.com.vemser.facetoface.dto.entrevista;
-
-public class EntrevistaDTO {
-}
+//package br.com.vemser.facetoface.dto.entrevista;
+//
+//public class EntrevistaDTO {
+//}

@@ -19,8 +19,8 @@ import java.util.Set;
 public class PerfilEntity implements GrantedAuthority {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARGO_SEQUENCIA")
-//    @SequenceGenerator(name = "CARGO_SEQUENCIA", sequenceName = "SEQ_CARGO", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PERFIL")
+    @SequenceGenerator(name = "SEQ_PERFIL", sequenceName = "SEQ_PERFIL", allocationSize = 1)
     @Column(name = "ID_PERFIL")
     private Integer idPerfil;
 

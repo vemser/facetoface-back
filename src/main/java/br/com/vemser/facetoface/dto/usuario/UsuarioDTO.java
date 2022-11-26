@@ -1,4 +1,4 @@
-package br.com.vemser.facetoface.dto.usuario;
-
-public class UsuarioDTO {
-}
+//package br.com.vemser.facetoface.dto.usuario;
+//
+//public class UsuarioDTO {
+//}
