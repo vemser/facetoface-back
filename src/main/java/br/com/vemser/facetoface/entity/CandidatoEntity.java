@@ -1,6 +1,5 @@
 package br.com.vemser.facetoface.entity;
 
-import br.com.vemser.facetoface.entity.enums.Edicao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -19,8 +18,10 @@ public class CandidatoEntity extends PessoaEntity{
     @Column(name = "id_candidato")
     private Integer idCandidato;
 
-    @Column(name = "id_edicao")
-    @Enumerated(EnumType.ORDINAL)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_EDICAO", referencedColumnName = "ID_EDICAO")
+    @ToString.Exclude
     private Edicao edicao;
 
     @Column(name = "nota_prova")

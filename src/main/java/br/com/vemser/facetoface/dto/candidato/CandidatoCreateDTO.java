@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.dto.candidato;
 
-import br.com.vemser.facetoface.entity.enums.Edicao;
+import br.com.vemser.facetoface.entity.Edicao;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.entity.Linguagem;
 import br.com.vemser.facetoface.entity.enums.Trilha;
