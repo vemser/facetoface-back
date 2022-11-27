@@ -4,7 +4,8 @@ import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.CurriculoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CurriculoRepository extends JpaRepository<CurriculoEntity, Integer> {
+import java.util.Optional;
 
-    CurriculoEntity findByCandidato(CandidatoEntity candidatoEntity);
+public interface CurriculoRepository extends JpaRepository<CurriculoEntity, Integer> {
+    Optional<CurriculoEntity> findByCandidato(CandidatoEntity candidatoEntity);
 }

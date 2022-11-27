@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,18 +39,33 @@ public class ImageService {
 
     public ImageEntity arquivarCandidato(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
+        Optional<ImageEntity> imagemBD = findByCandidato(candidatoEntity);
         String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
-        ImageEntity imagemBD = new ImageEntity();
-        imagemBD.setNome(nomeArquivo);
-        imagemBD.setTipo(file.getContentType());
-        imagemBD.setData(file.getBytes());
-        imagemBD.setCandidato(candidatoEntity);
-        return imageRepository.save(imagemBD);
+        if(imagemBD.isPresent()){
+            imagemBD.get().setNome(nomeArquivo);
+            imagemBD.get().setTipo(file.getContentType());
+            imagemBD.get().setData(file.getBytes());
+            imagemBD.get().setCandidato(candidatoEntity);
+            return imageRepository.save(imagemBD.get());
+        }
+        ImageEntity novaImagemBD = new ImageEntity();
+        novaImagemBD.setNome(nomeArquivo);
+        novaImagemBD.setTipo(file.getContentType());
+        novaImagemBD.setData(file.getBytes());
+        novaImagemBD.setCandidato(candidatoEntity);
+        return imageRepository.save(novaImagemBD);
     }
 
     public String pegarImagemUsuario(String email) throws RegraDeNegocioException{
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
-        ImageEntity imagemBD = imageRepository.findByCandidato(candidatoEntity);
-        return Base64Utils.encodeToString(imagemBD.getData());
+        Optional<ImageEntity> imagemBD = findByCandidato(candidatoEntity);
+        if (imagemBD.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não possui imagem cadastrada.");
+        }
+        return Base64Utils.encodeToString(imagemBD.get().getData());
+    }
+
+    private Optional<ImageEntity> findByCandidato(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
+        return imageRepository.findByCandidato(candidatoEntity);
     }
 }
