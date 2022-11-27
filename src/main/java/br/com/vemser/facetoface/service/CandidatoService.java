@@ -92,6 +92,14 @@ public class CandidatoService {
         return converterEmDTO(candidatoEntity.get());
     }
 
+    public CandidatoEntity findByEmailEntity(String email) throws RegraDeNegocioException {
+        Optional<CandidatoEntity> candidatoEntity = candidatoRepository.findByEmail(email);
+        if(candidatoEntity.isEmpty()){
+            throw new RegraDeNegocioException("Candidato com o e-mail especificado não existe");
+        }
+        return candidatoEntity.get();
+    }
+
     public PageDTO<CandidatoDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("nome_completo");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);

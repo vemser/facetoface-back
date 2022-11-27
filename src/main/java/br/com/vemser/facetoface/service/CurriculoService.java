@@ -29,9 +29,7 @@ public class CurriculoService {
     }
 
     public CurriculoEntity arquivarCurriculo(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
-        CandidatoDTO candidato = candidatoService.findByEmail(email);
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity = candidatoService.findById(candidato.getIdCandidato());
+        CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
         CurriculoEntity curriculo = new CurriculoEntity();
         curriculo.setNome(nomeArquivo);
@@ -42,9 +40,7 @@ public class CurriculoService {
     }
 
     public String pegarCurriculoCandidato(String email) throws RegraDeNegocioException{
-        CandidatoDTO candidato = candidatoService.findByEmail(email);
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity = candidatoService.findById(candidato.getIdCandidato());
+        CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         CurriculoEntity curriculo = curriculoRepository.findByCandidato(candidatoEntity);
         return Base64Utils.encodeToString(curriculo.getDado());
     }

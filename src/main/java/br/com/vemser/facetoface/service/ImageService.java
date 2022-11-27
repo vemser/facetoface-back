@@ -37,9 +37,7 @@ public class ImageService {
 //    }
 
     public ImageEntity arquivarCandidato(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
-        CandidatoDTO candidato = candidatoService.findByEmail(email);
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity = candidatoService.findById(candidato.getIdCandidato());
+        CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
         ImageEntity imagemBD = new ImageEntity();
         imagemBD.setNome(nomeArquivo);
@@ -50,9 +48,7 @@ public class ImageService {
     }
 
     public String pegarImagemUsuario(String email) throws RegraDeNegocioException{
-        CandidatoDTO candidato = candidatoService.findByEmail(email);
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity = candidatoService.findById(candidato.getIdCandidato());
+        CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         ImageEntity imagemBD = imageRepository.findByCandidato(candidatoEntity);
         return Base64Utils.encodeToString(imagemBD.getData());
     }
