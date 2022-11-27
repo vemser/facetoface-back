@@ -24,8 +24,8 @@ public class UsuarioService {
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário com id " + idUsuario + " não foi encontrado."));
     }
 
-    public List<UsuarioEntity> listarOptionalUsuarioPorEmail(String email) {
-        List<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
+    public Optional<UsuarioEntity> listarOptionalUsuarioPorEmail(String email) {
+        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
         return usuarioEntity;
     }
 

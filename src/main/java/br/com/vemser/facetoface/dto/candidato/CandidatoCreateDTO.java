@@ -2,8 +2,8 @@ package br.com.vemser.facetoface.dto.candidato;
 
 import br.com.vemser.facetoface.dto.EdicaoDTO;
 import br.com.vemser.facetoface.dto.LinguagemDTO;
+import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
-import br.com.vemser.facetoface.entity.Trilha;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -43,7 +43,7 @@ public class CandidatoCreateDTO {
 
     @NotNull
     @Schema(description = "Trilha que o candidato participa.")
-    private Trilha trilha;
+    private TrilhaEntity trilha;
 
     @NotNull
     @Schema(description = "Número da edição que o candidato participa.")

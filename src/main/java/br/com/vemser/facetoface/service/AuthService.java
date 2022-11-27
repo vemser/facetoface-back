@@ -44,7 +44,7 @@ public class AuthService {
 //
     public String procurarUsuario(String token) throws RegraDeNegocioException {
         String cpfByToken = tokenService.getEmailByToken(token);
-        return usuarioService.listarOptionalUsuarioPorEmail(cpfByToken).get(0).getEmail();
+        return usuarioService.listarOptionalUsuarioPorEmail(cpfByToken).get().getEmail();
     }
 
 }

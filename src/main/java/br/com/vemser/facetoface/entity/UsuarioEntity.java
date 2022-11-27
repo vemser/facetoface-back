@@ -35,13 +35,14 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "id_genero")
-    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "genero")
+    @Enumerated(EnumType.STRING)
     private Genero genero;
 
-    @Column(name = "id_trilha")
-    @Enumerated(EnumType.ORDINAL)
-    private Trilha trilha;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_trilha", referencedColumnName = "id_trilha")
+    private TrilhaEntity trilha;
 
     @Column(name = "ativo")
     private char ativo;

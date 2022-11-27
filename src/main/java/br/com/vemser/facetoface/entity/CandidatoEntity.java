@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.entity;
 
+import br.com.vemser.facetoface.entity.enums.Genero;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "CANDIDATO")
-public class CandidatoEntity extends PessoaEntity{
+public class CandidatoEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CANDIDATO")
     @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "SEQ_ID_CANDIDATO", allocationSize = 1)
@@ -26,6 +27,30 @@ public class CandidatoEntity extends PessoaEntity{
 
     @Column(name = "nota_prova")
     private Double notaProva;
+
+    @Column(name = "nome_completo")
+    private String nomeCompleto;
+
+    @Column(name = "cidade")
+    private String cidade;
+
+    @Column(name = "estado")
+    private String estado;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "genero")
+    @Enumerated(EnumType.STRING)
+    private Genero genero;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_trilha", referencedColumnName = "id_trilha")
+    private TrilhaEntity trilha;
+
+    @Column(name = "ativo")
+    private char ativo;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)

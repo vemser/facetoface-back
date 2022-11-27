@@ -1,11 +1,14 @@
 package br.com.vemser.facetoface.dto.usuario;
 
 import br.com.vemser.facetoface.dto.candidato.PerfilDTO;
+import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
-import br.com.vemser.facetoface.entity.Trilha;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -38,7 +41,7 @@ public class UsuarioCreateDTO {
 
     @NotNull
     @Schema(description = "Trilha em que o candidato faz parte.")
-    private Trilha trilha;
+    private TrilhaEntity trilha;
 
     @NotNull
     @Schema(description = "Tipo de perfil do candidato.")

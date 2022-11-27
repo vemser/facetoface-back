@@ -43,7 +43,7 @@ public class EntrevistaEntity {
     @Column(name = "estado")
     private String estado;
 
-    @Column(name = "id_legenda")
-    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "legenda")
+    @Enumerated(EnumType.STRING)
     private Legenda legenda;
 }
