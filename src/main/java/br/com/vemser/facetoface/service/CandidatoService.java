@@ -97,11 +97,11 @@ public class CandidatoService {
 
     private CandidatoDTO converterEmDTO(CandidatoEntity candidatoEntity) {
         CandidatoDTO candidatoDTO = objectMapper.convertValue(candidatoEntity, CandidatoDTO.class);
-        candidatoDTO.setEdicao(objectMapper.convertValue(candidatoDTO.getEdicao(), EdicaoDTO.class));
-        candidatoDTO.setTrilha(objectMapper.convertValue(candidatoDTO.getTrilha(), TrilhaDTO.class));
-        candidatoDTO.setLinguagens(candidatoDTO.getLinguagens()
+        candidatoDTO.setEdicao(objectMapper.convertValue(candidatoEntity.getEdicao(), EdicaoDTO.class));
+        candidatoDTO.setTrilha(objectMapper.convertValue(candidatoEntity.getTrilha(), TrilhaDTO.class));
+        candidatoDTO.setLinguagens(candidatoEntity.getLinguagens()
                 .stream()
-                .map(x -> objectMapper.convertValue(x, LinguagemDTO.class))
+                .map(linguagem -> objectMapper.convertValue(linguagem, LinguagemDTO.class))
                 .collect(Collectors.toList()));
         return candidatoDTO;
     }

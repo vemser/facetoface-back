@@ -1,11 +1,15 @@
 package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.EdicaoDTO;
+import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.entity.EdicaoEntity;
+import br.com.vemser.facetoface.entity.LinguagemEntity;
 import br.com.vemser.facetoface.repository.EdicaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +23,11 @@ public class EdicaoService {
     }
     public EdicaoEntity findByNome(String nome){
         nome = nome.trim().toUpperCase();
-        return edicaoRepository.findByNome(nome)
-                .orElse(create(new EdicaoDTO(nome)));
+        Optional<EdicaoEntity> edicaoEntity = edicaoRepository.findByNome(nome);
+        if(edicaoEntity.isEmpty()){
+            return create(new EdicaoDTO(nome));
+        }
+        return edicaoEntity.get();
     }
 
     private EdicaoEntity converterEntity(EdicaoDTO edicaoDTO) {

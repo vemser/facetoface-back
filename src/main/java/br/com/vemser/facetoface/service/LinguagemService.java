@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +21,12 @@ public class LinguagemService {
         return linguagemRepository.save(converterEntity(linguagemDTO));
     }
     public LinguagemEntity findByNome(String nome){
-        return linguagemRepository.findByNome(nome)
-                .orElse(create(new LinguagemDTO(nome)));
+        nome = nome.trim().toUpperCase();
+        Optional<LinguagemEntity> linguagemEntity = linguagemRepository.findByNome(nome);
+        if(linguagemEntity.isEmpty()){
+            return create(new LinguagemDTO(nome));
+        }
+        return linguagemEntity.get();
     }
 
     private LinguagemEntity converterEntity(LinguagemDTO linguagemDTO) {
