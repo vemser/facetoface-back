@@ -39,8 +39,6 @@ public class CandidatoCreateDTO {
     @Schema(description = "Gênero do candidato.")
     private Genero genero;
 
-    private byte[] foto;
-
     @NotNull
     @Schema(description = "Trilha que o candidato participa.")
     private TrilhaEntity trilha;
@@ -64,6 +62,4 @@ public class CandidatoCreateDTO {
     @NotNull
     @Schema(description = "Usuário ativo ou não. 'T' para ativo e 'F' para inativo.", example = "T")
     private char ativo;
-
-    private byte[] curriculo;
 }
