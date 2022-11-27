@@ -36,9 +36,6 @@ public class UsuarioCreateDTO {
     @Schema(description = "Genêro do candidato.")
     private Genero genero;
 
-    @Schema(description = "Foto do candidato (Opcional).")
-    private byte[] foto;
-
     @NotNull
     @Schema(description = "Trilha em que o candidato faz parte.")
     private TrilhaEntity trilha;
