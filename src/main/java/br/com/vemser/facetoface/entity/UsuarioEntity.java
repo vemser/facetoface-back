@@ -15,6 +15,7 @@ import java.util.Set;
 @Setter
 @Entity(name = "USUARIO")
 public class UsuarioEntity extends PessoaEntity implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_ID_USUARIO", allocationSize = 1)

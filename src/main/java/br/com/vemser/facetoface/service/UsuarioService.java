@@ -23,7 +23,8 @@ public class UsuarioService {
     }
 
     public Optional<UsuarioEntity> listarOptionalUsuarioPorEmail(String email) {
-        return usuarioRepository.findByEmail(email);
+        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
+        return usuarioEntity;
     }
 
     public Integer getIdUsuarioLogado() {
