@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class ImageService {
         CandidatoDTO candidato = candidatoService.findByEmail(email);
         CandidatoEntity candidatoEntity = new CandidatoEntity();
         candidatoEntity = candidatoService.findById(candidato.getIdCandidato());
-        String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
+        String nomeArquivo = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         ImageEntity imagemBD = new ImageEntity();
         imagemBD.setNome(nomeArquivo);
         imagemBD.setTipo(file.getContentType());
