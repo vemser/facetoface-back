@@ -8,6 +8,7 @@ import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.CandidatoRepository;
+import br.com.vemser.facetoface.repository.TrilhaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ public class CandidatoService {
     private final ObjectMapper objectMapper;
     private final LinguagemService linguagemService;
     private final EdicaoService edicaoService;
+    private final TrilhaService trilhaService;
 
     public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException{
         List<LinguagemEntity> linguagemList = new ArrayList<>();
@@ -33,6 +35,7 @@ public class CandidatoService {
             linguagemList.add(byNome);
         }
         CandidatoEntity candidatoEntity = converterEntity(candidatoCreateDTO);
+        candidatoEntity.setTrilha(trilhaService.findByNome(candidatoCreateDTO.getTrilha().getNome()));
         candidatoEntity.setEdicao(edicaoService.findByNome(candidatoCreateDTO.getEdicao().getNome()));
         candidatoEntity.setLinguagens(linguagemList);
         return converterEmDTO(candidatoRepository.save(candidatoEntity));

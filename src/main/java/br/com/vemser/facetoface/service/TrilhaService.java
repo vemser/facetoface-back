@@ -1,5 +1,7 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.dto.EdicaoDTO;
+import br.com.vemser.facetoface.entity.EdicaoEntity;
 import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.TrilhaRepository;
@@ -14,6 +16,11 @@ public class TrilhaService {
 
     public TrilhaEntity findById(Integer idPerfil) throws RegraDeNegocioException {
         return trilhaRepository.findById(idPerfil)
+                .orElseThrow(() -> new RegraDeNegocioException("Trilha não encontrada!"));
+    }
+
+    public TrilhaEntity findByNome(String nome) throws RegraDeNegocioException {
+        return trilhaRepository.findByNome(nome)
                 .orElseThrow(() -> new RegraDeNegocioException("Trilha não encontrada!"));
     }
 }
