@@ -73,7 +73,7 @@ public class CandidatoController implements OperationControllerCandidato {
     public ResponseEntity<Void> uploadFoto(@RequestPart("file")MultipartFile file,
                                               @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
             imageService.arquivarCandidato(file, email);
-            return ResponseEntity.status(HttpStatus.OK);
+            return ResponseEntity.ok().build();
     }
 
     @GetMapping("/recuperar-imagem")
@@ -83,9 +83,9 @@ public class CandidatoController implements OperationControllerCandidato {
 
     @PutMapping(value = "/upload-curriculo/{emailCandidato}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> uploadCurriculo(@RequestPart("file")MultipartFile file,
-                                                   @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
-            curriculoService.arquivarCurriculo(file, email);
-            return ResponseEntity.status(HttpStatus.OK);
+                                                @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
+        curriculoService.arquivarCurriculo(file, email);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/recuperar-curriculo")
