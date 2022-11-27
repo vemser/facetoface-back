@@ -41,15 +41,14 @@ public class UsuarioService {
     }
 
     public UsuarioDTO createUsuario (UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
-//        String email = usuarioCreateDTO.getEmail();
-//        if(usuarioRepository.findByEmail(email).isPresent()){
-//            throw new RegraDeNegocioException("E-mail já cadastrado! Realizar o cadastro novamente!");
-//        }
-//        UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
-//        usuarioEntity.setAtivo('T');
-//        usuarioEntity.setSenha("123");
-//        UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
-//        return objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
-        return null;
+        String email = usuarioCreateDTO.getEmail();
+        if(usuarioRepository.findByEmail(email).isPresent()){
+            throw new RegraDeNegocioException("E-mail já cadastrado! Realizar o cadastro novamente!");
+        }
+        UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
+        usuarioEntity.setAtivo('T');
+        usuarioEntity.setSenha("123");
+        UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
+        return objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
     }
 }
