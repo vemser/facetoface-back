@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -60,13 +61,21 @@ public class CandidatoService {
     public void delete(Integer id) throws RegraDeNegocioException {
         CandidatoEntity candidatoEntity = findById(id);
         candidatoEntity.setAtivo('F');
+        candidatoRepository.save(candidatoEntity);
     }
 
     public CandidatoDTO update(Integer id, CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
+        List<LinguagemEntity> linguagemList = new ArrayList<>();
         findById(id);
         CandidatoEntity candidatoEntity = converterEntity(candidatoCreateDTO);
+        for (LinguagemDTO linguagem : candidatoCreateDTO.getLinguagens()) {
+            LinguagemEntity byNome = linguagemService.findByNome(linguagem.getNome());
+            linguagemList.add(byNome);
+        }
         candidatoEntity.setIdCandidato(id);
-
+        candidatoEntity.setTrilha(trilhaService.findByNome(candidatoCreateDTO.getTrilha().getNome()));
+        candidatoEntity.setEdicao(edicaoService.findByNome(candidatoCreateDTO.getEdicao().getNome()));
+        candidatoEntity.setLinguagens(linguagemList);
         return converterEmDTO(candidatoRepository.save(candidatoEntity));
     }
 
@@ -83,12 +92,22 @@ public class CandidatoService {
         return converterEmDTO(candidatoEntity.get());
     }
 
-    public CandidatoDTO findByNomeCompleto(String nomeCompleto) throws RegraDeNegocioException {
-        Optional<CandidatoEntity> candidatoEntity = candidatoRepository.findByNomeCompleto(nomeCompleto);
-        if(candidatoEntity.isEmpty()){
+    public PageDTO<CandidatoDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
+        Sort ordenacao = Sort.by("nome_completo");
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
+        Page<CandidatoEntity> candidatoEntityPage = candidatoRepository.findByNomeCompleto(nomeCompleto, pageRequest);
+        if(candidatoEntityPage.isEmpty()){
             throw new RegraDeNegocioException("Candidato com o nome especificado não existe");
         }
-        return converterEmDTO(candidatoEntity.get());
+        List<CandidatoDTO> candidatoDTOList = candidatoRepository.findAll()
+                .stream()
+                .map(this::converterEmDTO)
+                .toList();
+        return new PageDTO<>(candidatoEntityPage.getTotalElements(),
+                candidatoEntityPage.getTotalPages(),
+                pagina,
+                tamanho,
+                candidatoDTOList);
     }
 
     private CandidatoEntity converterEntity(CandidatoCreateDTO candidatoCreateDTO) {
