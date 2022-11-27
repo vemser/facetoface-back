@@ -23,10 +23,10 @@ public class AuthController {
     private final AuthService authService;
 
 
-    @PostMapping
-    public String auth(@RequestBody @Valid LoginDTO loginDTO) {
+    @PostMapping("/fazer-login")
+    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) {
         UsuarioEntity usuarioEntity = authService.auth(loginDTO);
-        return tokenService.getToken(usuarioEntity, null);
+        return new ResponseEntity<>(tokenService.getToken(usuarioEntity, null), HttpStatus.OK);
     }
 
 //    @GetMapping
