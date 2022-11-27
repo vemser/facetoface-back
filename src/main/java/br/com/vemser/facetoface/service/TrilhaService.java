@@ -20,6 +20,7 @@ public class TrilhaService {
     }
 
     public TrilhaEntity findByNome(String nome) throws RegraDeNegocioException {
+        nome = nome.trim().toUpperCase();
         return trilhaRepository.findByNome(nome)
                 .orElseThrow(() -> new RegraDeNegocioException("Trilha não encontrada!"));
     }

@@ -80,10 +80,10 @@ public class TokenService {
 
         String user = claims.get(Claims.ID, String.class);
 
-        String cargo = claims.get(KEY_CARGOS, String.class);
+//        String cargo = claims.get(KEY_CARGOS, String.class);
 
 
-        SimpleGrantedAuthority cargoSimple = new SimpleGrantedAuthority(cargo);
+        SimpleGrantedAuthority cargoSimple = new SimpleGrantedAuthority(KEY_CARGOS);
         return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(cargoSimple));
     }
 

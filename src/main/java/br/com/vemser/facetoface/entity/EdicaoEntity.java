@@ -16,6 +16,8 @@ import java.util.Set;
 @Entity(name = "EDICAO")
 public class EdicaoEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ID_EDICAO")
+    @SequenceGenerator(name = "SEQ_ID_EDICAO", sequenceName = "SEQ_ID_EDICAO", allocationSize = 1)
     @Column(name = "ID_EDICAO")
     private Integer idEdicao;
 
