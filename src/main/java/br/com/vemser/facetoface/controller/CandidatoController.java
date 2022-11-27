@@ -70,18 +70,10 @@ public class CandidatoController implements OperationControllerCandidato {
     }
 
     @PutMapping(value = "/upload-foto/{emailCandidato}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<FotoDTO> uploadFoto(@RequestPart("file")MultipartFile file,
-                                              @RequestParam("email") String email) {
-        String message = "";
-        try {
+    public ResponseEntity<Void> uploadFoto(@RequestPart("file")MultipartFile file,
+                                              @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
             imageService.arquivarCandidato(file, email);
-            message = "Upload da foto feito com sucesso! " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(new FotoDTO());
-        } catch (RegraDeNegocioException | IOException e) {
-            e.printStackTrace();
-            message = "Upload da foto não foi feito com sucesso!" + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new FotoDTO());
-        }
+            return ResponseEntity.status(HttpStatus.OK);
     }
 
     @GetMapping("/recuperar-imagem")
@@ -90,18 +82,10 @@ public class CandidatoController implements OperationControllerCandidato {
     }
 
     @PutMapping(value = "/upload-curriculo/{emailCandidato}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<CurriculoDTO> uploadCurriculo(@RequestPart("file")MultipartFile file,
-                                                   @RequestParam("email") String email) {
-        String message = "";
-        try {
+    public ResponseEntity<Void> uploadCurriculo(@RequestPart("file")MultipartFile file,
+                                                   @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
             curriculoService.arquivarCurriculo(file, email);
-            message = "Upload do currículo feito com sucesso! " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(new CurriculoDTO());
-        } catch (RegraDeNegocioException | IOException e) {
-            e.printStackTrace();
-            message = "Upload do currículo não foi concluído!" + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new CurriculoDTO());
-        }
+            return ResponseEntity.status(HttpStatus.OK);
     }
 
     @GetMapping("/recuperar-curriculo")

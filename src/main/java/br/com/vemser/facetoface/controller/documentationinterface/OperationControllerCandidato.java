@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 public interface OperationControllerCandidato {
 
@@ -78,8 +79,8 @@ public interface OperationControllerCandidato {
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
-    ResponseEntity<FotoDTO> uploadFoto(@RequestPart("file") MultipartFile file,
-                                              @RequestParam("email") String email);
+    ResponseEntity<Void> uploadFoto(@RequestPart("file") MultipartFile file,
+                                              @RequestParam("email") String email) throws RegraDeNegocioException, IOException;
 
     @Operation(summary = "Recuperar imagem cadastrada no sistema", description = "Recupera a imagem de um usuário especifico do sistema pelo e-mail")
     @ApiResponses(value = {
@@ -95,8 +96,8 @@ public interface OperationControllerCandidato {
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
-    public ResponseEntity<CurriculoDTO> uploadCurriculo(@RequestPart("file")MultipartFile file,
-                                                        @RequestParam("email") String email);
+    public ResponseEntity<Void> uploadCurriculo(@RequestPart("file")MultipartFile file,
+                                                        @RequestParam("email") String email) throws RegraDeNegocioException, IOException;
 
     @Operation(summary = "Recuperar curriculo cadastrado no sistema", description = "Recupera o curriculo de um candidato especifico do sistema pelo e-mail")
     @ApiResponses(value = {

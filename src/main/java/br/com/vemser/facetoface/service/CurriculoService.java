@@ -29,7 +29,7 @@ public class CurriculoService {
                 .orElseThrow(() -> new RegraDeNegocioException("Imagem não encontrada!"));
     }
 
-    public CurriculoEntity arquivarCurriculo(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
+    public void arquivarCurriculo(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         Optional<CurriculoEntity> curriculoEntityOptional = findByCandidato(candidatoEntity);
         String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
@@ -38,14 +38,14 @@ public class CurriculoService {
             curriculoEntityOptional.get().setTipo(file.getContentType());
             curriculoEntityOptional.get().setDado(file.getBytes());
             curriculoEntityOptional.get().setCandidato(candidatoEntity);
-            return curriculoRepository.save(curriculoEntityOptional.get());
+            curriculoRepository.save(curriculoEntityOptional.get());
         }
         CurriculoEntity curriculo = new CurriculoEntity();
         curriculo.setNome(nomeArquivo);
         curriculo.setTipo(file.getContentType());
         curriculo.setDado(file.getBytes());
         curriculo.setCandidato(candidatoEntity);
-        return curriculoRepository.save(curriculo);
+        curriculoRepository.save(curriculo);
     }
 
     public String pegarCurriculoCandidato(String email) throws RegraDeNegocioException{
