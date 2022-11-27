@@ -1,18 +1,22 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.dto.FotoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.CandidatoService;
+import br.com.vemser.facetoface.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -21,6 +25,8 @@ import javax.validation.Valid;
 @RequestMapping("/candidato")
 public class CandidatoController {
     private final CandidatoService candidatoService;
+
+    private final ImageService imageService;
 
     @GetMapping
     public PageDTO<CandidatoDTO> list(@RequestParam(defaultValue = "0") Integer pagina,
@@ -57,6 +63,21 @@ public class CandidatoController {
     public ResponseEntity<CandidatoDTO> delete(@PathVariable("idCandidato") Integer id) throws RegraDeNegocioException {
         candidatoService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/uploadFoto")
+    public ResponseEntity<FotoDTO> uploadFoto(@RequestParam("file")MultipartFile file,
+                                              @RequestParam("email") String email) {
+        String message = "";
+        try {
+            imageService.arquivarCandidato(file, email);
+            message = "Upload da foto feito com sucesso! " + file.getOriginalFilename();
+            return ResponseEntity.status(HttpStatus.OK).body(new FotoDTO());
+        } catch (RegraDeNegocioException | IOException e) {
+            e.printStackTrace();
+            message = "Upload da foto não foi feito com sucesso!" + file.getOriginalFilename();
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new FotoDTO());
+        }
     }
 
 
