@@ -28,10 +28,10 @@ public class SecurityConfiguration {
 
         http.headers().frameOptions().disable().and()
                 .cors().and()
-                .csrf().disable()
-                .authorizeHttpRequests((authz) ->
-                        authz.antMatchers(HttpMethod.POST, "/auth/**","/usuario/**").permitAll()
-                                .anyRequest().authenticated());
+                .csrf().disable();
+//                .authorizeHttpRequests((authz) ->
+//                        authz.antMatchers(HttpMethod.POST, "/auth/**","/usuario/**").permitAll()
+//                                .anyRequest().authenticated());
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

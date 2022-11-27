@@ -54,7 +54,7 @@ public class EntrevistaService {
     }
 
     public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
-        UsuarioEntity usuario = usuarioService.listarUsuarioEntityPeloId(entrevistaCreateDTO.getUsuarioDTO().getIdUsuario());
+        UsuarioEntity usuario = usuarioService.findById(entrevistaCreateDTO.getUsuarioDTO().getIdUsuario());
         CandidatoEntity candidato = candidatoService.findById(entrevistaCreateDTO.getCandidatoDTO().getIdCandidato());
         String cidade = entrevistaCreateDTO.getCidade();
         String estado = entrevistaCreateDTO.getEstado();
@@ -89,7 +89,7 @@ public class EntrevistaService {
         entrevista.setCidade(entrevistaCreateDTO.getCidade());
         entrevista.setEstado(entrevistaCreateDTO.getEstado());
         entrevista.setObservacoes(entrevistaCreateDTO.getObservacoes());
-        entrevista.setUsuarioEntity(usuarioService.listarUsuarioEntityPeloId(entrevistaCreateDTO.getUsuarioDTO().getIdUsuario()));
+        entrevista.setUsuarioEntity(usuarioService.findById(entrevistaCreateDTO.getUsuarioDTO().getIdUsuario()));
         entrevista.setCandidatoEntity(candidatoService.findById(entrevistaCreateDTO.getCandidatoDTO().getIdCandidato()));
         EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevista);
 

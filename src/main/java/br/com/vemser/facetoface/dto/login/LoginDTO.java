@@ -10,6 +10,7 @@ public class LoginDTO {
     @NotNull
     @Schema(example = "julio.gabriel@dbccompany.com")
     private String email;
+
     @NotNull
     @Schema(example = "123")
     private String senha;

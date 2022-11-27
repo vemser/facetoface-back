@@ -1,14 +1,24 @@
 package br.com.vemser.facetoface.dto.usuario;
 
-import lombok.*;
+import br.com.vemser.facetoface.entity.PerfilEntity;
+import br.com.vemser.facetoface.entity.TrilhaEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioDTO extends UsuarioCreateDTO {
-    @NotNull
+    @Schema(example = "1")
     private Integer idUsuario;
+
+    private Set<PerfilEntity> perfilEntities;
+
+    private TrilhaEntity trilhaEntity;
 }
