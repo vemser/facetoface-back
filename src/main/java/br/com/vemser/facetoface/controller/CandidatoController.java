@@ -1,15 +1,18 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.dto.CurriculoDTO;
 import br.com.vemser.facetoface.dto.FotoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.CandidatoService;
+import br.com.vemser.facetoface.service.CurriculoService;
 import br.com.vemser.facetoface.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +28,7 @@ import java.io.IOException;
 @RequestMapping("/candidato")
 public class CandidatoController {
     private final CandidatoService candidatoService;
-
+    private final CurriculoService curriculoService;
     private final ImageService imageService;
 
     @GetMapping
@@ -65,8 +68,8 @@ public class CandidatoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/uploadFoto")
-    public ResponseEntity<FotoDTO> uploadFoto(@RequestParam("file")MultipartFile file,
+    @PutMapping(value = "/upload-foto/{emailCandidato}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<FotoDTO> uploadFoto(@RequestPart("file")MultipartFile file,
                                               @RequestParam("email") String email) {
         String message = "";
         try {
@@ -80,5 +83,28 @@ public class CandidatoController {
         }
     }
 
+    @GetMapping("/recuperar-imagem")
+    public ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException{
+        return new ResponseEntity<>(imageService.pegarImagemUsuario(email), HttpStatus.OK);
+    }
 
+    @PutMapping(value = "/upload-curriculo/{emailCandidato}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CurriculoDTO> uploadCurriculo(@RequestPart("file")MultipartFile file,
+                                                   @RequestParam("email") String email) {
+        String message = "";
+        try {
+            curriculoService.arquivarCurriculo(file, email);
+            message = "Upload do currículo feito com sucesso! " + file.getOriginalFilename();
+            return ResponseEntity.status(HttpStatus.OK).body(new CurriculoDTO());
+        } catch (RegraDeNegocioException | IOException e) {
+            e.printStackTrace();
+            message = "Upload do currículo não foi concluído!" + file.getOriginalFilename();
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new CurriculoDTO());
+        }
+    }
+
+    @GetMapping("/recuperar-curriculo")
+    public ResponseEntity<String> recuperarCurriculo(@RequestParam("email") String email) throws RegraDeNegocioException{
+        return new ResponseEntity<>(curriculoService.pegarCurriculoCandidato(email), HttpStatus.OK);
+    }
 }

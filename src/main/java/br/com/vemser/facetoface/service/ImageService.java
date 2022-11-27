@@ -40,7 +40,7 @@ public class ImageService {
         CandidatoDTO candidato = candidatoService.findByEmail(email);
         CandidatoEntity candidatoEntity = new CandidatoEntity();
         candidatoEntity = candidatoService.findById(candidato.getIdCandidato());
-        String nomeArquivo = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
         ImageEntity imagemBD = new ImageEntity();
         imagemBD.setNome(nomeArquivo);
         imagemBD.setTipo(file.getContentType());
@@ -52,6 +52,7 @@ public class ImageService {
     public String pegarImagemUsuario(String email) throws RegraDeNegocioException{
         CandidatoDTO candidato = candidatoService.findByEmail(email);
         CandidatoEntity candidatoEntity = new CandidatoEntity();
+        candidatoEntity = candidatoService.findById(candidato.getIdCandidato());
         ImageEntity imagemBD = imageRepository.findByCandidato(candidatoEntity);
         return Base64Utils.encodeToString(imagemBD.getData());
     }
