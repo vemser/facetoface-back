@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.entity;
 
+import br.com.vemser.facetoface.entity.enums.Genero;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,13 +15,36 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "USUARIO")
-public class UsuarioEntity extends PessoaEntity implements UserDetails {
+public class UsuarioEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_ID_USUARIO", allocationSize = 1)
     @Column(name = "id_usuario")
     private Integer idUsuario;
+
+    @Column(name = "nome_completo")
+    private String nomeCompleto;
+
+    @Column(name = "cidade")
+    private String cidade;
+
+    @Column(name = "estado")
+    private String estado;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "id_genero")
+    @Enumerated(EnumType.ORDINAL)
+    private Genero genero;
+
+    @Column(name = "id_trilha")
+    @Enumerated(EnumType.ORDINAL)
+    private Trilha trilha;
+
+    @Column(name = "ativo")
+    private char ativo;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
@@ -36,7 +60,8 @@ public class UsuarioEntity extends PessoaEntity implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
     private ImageEntity imageEntity;
 
     @Override

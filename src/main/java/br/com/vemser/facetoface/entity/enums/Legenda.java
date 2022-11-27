@@ -1,10 +1,10 @@
 package br.com.vemser.facetoface.entity.enums;
 
 public enum Legenda {
-    CONFIRMADA(1),
-    PENDENTE(2),
-    CANCELADA(3),
-    OUTROS(4);
+    CONFIRMADA(0),
+    PENDENTE(1),
+    CANCELADA(2),
+    OUTROS(3);
 
     private Integer legenda;
 

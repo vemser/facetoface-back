@@ -30,8 +30,7 @@ public class ImageEntity{
     private byte[] data;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "imageEntity")
     private UsuarioEntity usuario;
 
     @JsonIgnore

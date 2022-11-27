@@ -1,9 +1,9 @@
 package br.com.vemser.facetoface.entity.enums;
 
 public enum Genero {
-    MASCULINO(1),
-    FEMININO(2),
-    OUTRO(3);
+    MASCULINO(0),
+    FEMININO(1),
+    OUTRO(2);
 
     private Integer genero;
 

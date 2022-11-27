@@ -29,7 +29,6 @@ public class EntrevistaEntity {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-    @ToString.Exclude
     private UsuarioEntity usuarioEntity;
 
     @Column(name = "data_hora_entrevista")
@@ -38,11 +37,9 @@ public class EntrevistaEntity {
     @Column(name = "observacoes")
     private String observacoes;
 
-    //verificar com os instrutores
     @Column(name = "cidade")
     private String cidade;
 
-    //verificar com os instrutores
     @Column(name = "estado")
     private String estado;
 

@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,8 +24,8 @@ public class UsuarioService {
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário com id " + idUsuario + " não foi encontrado."));
     }
 
-    public Optional<UsuarioEntity> listarOptionalUsuarioPorEmail(String email) {
-        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
+    public List<UsuarioEntity> listarOptionalUsuarioPorEmail(String email) {
+        List<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
         return usuarioEntity;
     }
 
@@ -37,5 +39,17 @@ public class UsuarioService {
 
         return objectMapper.convertValue(usuario, UsuarioDTO.class);
     }
-    
+
+    public UsuarioDTO createUsuario (UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
+//        String email = usuarioCreateDTO.getEmail();
+//        if(usuarioRepository.findByEmail(email).isPresent()){
+//            throw new RegraDeNegocioException("E-mail já cadastrado! Realizar o cadastro novamente!");
+//        }
+//        UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
+//        usuarioEntity.setAtivo('T');
+//        usuarioEntity.setSenha("123");
+//        UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
+//        return objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
+        return null;
+    }
 }
