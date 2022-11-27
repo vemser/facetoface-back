@@ -40,7 +40,9 @@ public class CandidatoEntity extends PessoaEntity{
     @OneToOne(mappedBy = "candidatoEntity")
     private EntrevistaEntity entrevistaEntity;
 
-    @Lob
-    @Column(name = "curriculo")
-    private byte[] curriculo;
+    @OneToOne(mappedBy = "candidato")
+    private ImageEntity imageEntity;
+
+    @OneToOne(mappedBy = "candidato")
+    private CurriculoEntity curriculoEntity;
 }

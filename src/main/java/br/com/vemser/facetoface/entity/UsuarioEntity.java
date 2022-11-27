@@ -35,6 +35,9 @@ public class UsuarioEntity extends PessoaEntity implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
+    @OneToOne(mappedBy = "usuario")
+    private ImageEntity imageEntity;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return perfis;

@@ -35,10 +35,6 @@ public abstract class PessoaEntity {
     @Enumerated(EnumType.ORDINAL)
     private Genero genero;
 
-    @Lob
-    @Column(name = "foto")
-    private byte[] foto;
-
     @Column(name = "id_trilha")
     @Enumerated(EnumType.ORDINAL)
     private Trilha trilha;
