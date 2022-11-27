@@ -32,7 +32,7 @@ public class UsuarioService {
     private final TrilhaService trilhaService;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+//    private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
     public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
@@ -55,18 +55,18 @@ public class UsuarioService {
         return objectMapper.convertValue(usuario, UsuarioDTO.class);
     }
 
-    public String auth(LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        loginDTO.getEmail(),
-                        loginDTO.getSenha()
-                );
-        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        Object principal = authenticate.getPrincipal();
-        UsuarioEntity usuarioEntity = (UsuarioEntity) principal;
-
-        return tokenService.getToken(usuarioEntity, null);
-    }
+//    public String auth(LoginDTO loginDTO) {
+//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+//                new UsernamePasswordAuthenticationToken(
+//                        loginDTO.getEmail(),
+//                        loginDTO.getSenha()
+//                );
+//        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+//        Object principal = authenticate.getPrincipal();
+//        UsuarioEntity usuarioEntity = (UsuarioEntity) principal;
+//
+//        return tokenService.getToken(usuarioEntity, null);
+//    }
 
 //    public UsuarioDTO createAdmin(UsuarioCreateDTO usuarioCreateDTO, Integer idPerfil) throws RegraDeNegocioException {
 //        List<PerfilEntity> perfilEntityList = perfilService.listarPerfis();

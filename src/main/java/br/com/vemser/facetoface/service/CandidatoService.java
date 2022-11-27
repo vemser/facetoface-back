@@ -34,6 +34,10 @@ public class CandidatoService {
 
     public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException{
         List<LinguagemEntity> linguagemList = new ArrayList<>();
+        Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByEmail(candidatoCreateDTO.getEmail());
+        if(candidatoEntityOptional.isPresent()){
+            throw new RegraDeNegocioException("Candidato com este e-mail já existe no sistema.");
+        }
         for (LinguagemDTO linguagem : candidatoCreateDTO.getLinguagens()) {
             LinguagemEntity byNome = linguagemService.findByNome(linguagem.getNome());
             linguagemList.add(byNome);

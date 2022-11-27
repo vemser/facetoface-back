@@ -51,11 +51,6 @@ public class UsuarioController {
         return usuarioService.findById(id);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) {
-        return new ResponseEntity<>(usuarioService.auth(loginDTO), HttpStatus.OK);
-    }
-
     @GetMapping("/logado")
     public UsuarioDTO getLoggedUser() throws RegraDeNegocioException {
         return usuarioService.listarUsuarioLogado();
