@@ -18,6 +18,7 @@ public class EdicaoService {
         return edicaoRepository.save(converterEntity(edicaoDTO));
     }
     public EdicaoEntity findByNome(String nome){
+        nome = nome.trim().toUpperCase();
         return edicaoRepository.findByNome(nome)
                 .orElse(create(new EdicaoDTO(nome)));
     }

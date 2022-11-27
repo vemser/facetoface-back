@@ -1,6 +1,8 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.dto.EdicaoDTO;
 import br.com.vemser.facetoface.dto.LinguagemDTO;
+import br.com.vemser.facetoface.dto.TrilhaDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -93,6 +96,13 @@ public class CandidatoService {
     }
 
     private CandidatoDTO converterEmDTO(CandidatoEntity candidatoEntity) {
-        return objectMapper.convertValue(candidatoEntity, CandidatoDTO.class);
+        CandidatoDTO candidatoDTO = objectMapper.convertValue(candidatoEntity, CandidatoDTO.class);
+        candidatoDTO.setEdicao(objectMapper.convertValue(candidatoDTO.getEdicao(), EdicaoDTO.class));
+        candidatoDTO.setTrilha(objectMapper.convertValue(candidatoDTO.getTrilha(), TrilhaDTO.class));
+        candidatoDTO.setLinguagens(candidatoDTO.getLinguagens()
+                .stream()
+                .map(x -> objectMapper.convertValue(x, LinguagemDTO.class))
+                .collect(Collectors.toList()));
+        return candidatoDTO;
     }
 }
