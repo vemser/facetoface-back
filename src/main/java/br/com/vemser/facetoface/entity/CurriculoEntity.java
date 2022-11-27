@@ -20,10 +20,10 @@ public class CurriculoEntity {
     @SequenceGenerator(name = "SEQ_CURRICULO", sequenceName = "seq_curriculo", allocationSize = 1)
     private Integer id;
 
-    @Column(name = "Nome")
+    @Column(name = "nome")
     private String nome;
 
-    @Column(name = "Tipo de imagem")
+    @Column(name = "tipo")
     private String tipo;
 
     @Column(name = "dado")
