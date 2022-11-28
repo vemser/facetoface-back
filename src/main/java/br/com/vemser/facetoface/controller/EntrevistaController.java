@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/entrevista")
-public class EntrevistaController implements OperationControllerEntrevista {
+public class EntrevistaController {
 
     private final EntrevistaService entrevistaService;
 
@@ -33,12 +33,12 @@ public class EntrevistaController implements OperationControllerEntrevista {
         return new ResponseEntity<>(entrevistaService.list(pagina, tamanho), HttpStatus.OK);
     }
 
-    @GetMapping("/listar-por-mes/{mes}")
-    public ResponseEntity<PageDTO<EntrevistaDTO>> listarMes(@RequestParam(defaultValue = "0") Integer pagina,
-                                                       @RequestParam(defaultValue = "20") Integer tamanho,
-                                                       @PathVariable("mes") Month mes) throws RegraDeNegocioException {
-        return new ResponseEntity<>(entrevistaService.listarPorMes(pagina, tamanho, mes), HttpStatus.OK);
-    }
+//    @GetMapping("/listar-por-mes/{mes}")
+//    public ResponseEntity<PageDTO<EntrevistaDTO>> listarMes(@RequestParam(defaultValue = "0") Integer pagina,
+//                                                       @RequestParam(defaultValue = "20") Integer tamanho,
+//                                                       @PathVariable("mes") Month mes) throws RegraDeNegocioException {
+//        return new ResponseEntity<>(entrevistaService.listarPorMes(pagina, tamanho, mes), HttpStatus.OK);
+//    }
 
     @PutMapping("/atualizar-entrevista/{idEntrevista}")
     public ResponseEntity<EntrevistaDTO> updateEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO, @PathVariable("idEntrevista") Integer id) throws RegraDeNegocioException{

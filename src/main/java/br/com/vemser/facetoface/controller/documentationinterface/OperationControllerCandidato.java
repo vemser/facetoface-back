@@ -64,7 +64,8 @@ public interface OperationControllerCandidato {
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
     ResponseEntity<CandidatoDTO> update(@PathVariable("idCandidato") Integer id,
-                                               @Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException;
+                                               @Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
+                                        Genero genero) throws RegraDeNegocioException;
 
     @Operation(summary = "Deletar cadastro de Usuario", description = "Deletar Usuario no Sistema")
     @ApiResponses(value = {

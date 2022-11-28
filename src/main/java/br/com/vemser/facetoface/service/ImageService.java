@@ -53,6 +53,25 @@ public class ImageService {
         imageRepository.save(novaImagemBD);
     }
 
+    public void arquivarUsuario(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
+        Optional<UsuarioEntity> usuarioEntity = usuarioService.findByEmail(email);
+        Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
+        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
+        if(imagemBD.isPresent()){
+            imagemBD.get().setNome(nomeArquivo);
+            imagemBD.get().setTipo(file.getContentType());
+            imagemBD.get().setData(file.getBytes());
+            imagemBD.get().setUsuario(usuarioEntity.get());
+            imageRepository.save(imagemBD.get());
+        }
+        ImageEntity novaImagemBD = new ImageEntity();
+        novaImagemBD.setNome(nomeArquivo);
+        novaImagemBD.setTipo(file.getContentType());
+        novaImagemBD.setData(file.getBytes());
+        novaImagemBD.setUsuario(usuarioEntity.get());
+        imageRepository.save(novaImagemBD);
+    }
+
     public String pegarImagemCandidato(String email) throws RegraDeNegocioException{
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         Optional<ImageEntity> imagemBD = findByCandidato(candidatoEntity);

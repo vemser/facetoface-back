@@ -35,10 +35,14 @@ public class UsuarioCreateDTO {
     @Schema(example = "priscila.matos@dbccompany.com.br", description = "E-mail do candidato.")
     private String email;
 
+    @NotNull
+    @Schema(description = "Trilha que o candidato participa.")
     private TrilhaDTO trilha;
 
     private List<PerfilDTO> perfis;
 
+    @NotNull
+    @Schema(description = "Usuário ativo ou não. 'T' para ativo e 'F' para inativo.", example = "T")
     private char ativo;
 
 }

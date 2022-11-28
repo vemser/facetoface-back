@@ -62,8 +62,7 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
+    @OneToOne(mappedBy = "usuario")
     private ImageEntity imageEntity;
 
     @Override

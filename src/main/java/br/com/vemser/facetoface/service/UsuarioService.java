@@ -38,7 +38,7 @@ public class UsuarioService {
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
 //    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
+//    private final TokenService tokenService;
 
     public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
         return usuarioRepository.findById(idUsuario)
@@ -137,7 +137,7 @@ public class UsuarioService {
         usuarioRepository.save(usuarioEntity);
     }
 
-    public UsuarioDTO update(Integer id, UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
+    public UsuarioDTO update(Integer id, UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
         List<PerfilEntity> perfilEntityList = new ArrayList<>();
         findById(id);
         UsuarioEntity usuarioEntity = converterEntity(usuarioCreateDTO);
@@ -145,9 +145,13 @@ public class UsuarioService {
             PerfilEntity byNome = perfilService.findByNome(perfilDTO.getNome());
             perfilEntityList.add(byNome);
         }
+        String senha = "123";
+        String senhaEncode = passwordEncoder.encode(senha);
+        usuarioEntity.setSenha(senhaEncode);
         usuarioEntity.setIdUsuario(id);
         usuarioEntity.setTrilha(trilhaService.findByNome(usuarioCreateDTO.getTrilha().getNome()));
         usuarioEntity.setPerfis(perfilEntityList);
+        usuarioEntity.setGenero(genero);
         return converterEmDTO(usuarioRepository.save(usuarioEntity));
     }
 

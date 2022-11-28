@@ -58,8 +58,9 @@ public class CandidatoController implements OperationControllerCandidato {
 
     @PutMapping("/{idCandidato}")
     public ResponseEntity<CandidatoDTO> update(@PathVariable("idCandidato") Integer id,
-                                                 @Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
-        CandidatoDTO candidatoDTO = candidatoService.update(id, candidatoCreateDTO);
+                                                 @Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
+                                               Genero genero) throws RegraDeNegocioException {
+        CandidatoDTO candidatoDTO = candidatoService.update(id, candidatoCreateDTO, genero);
         return new ResponseEntity<>(candidatoDTO, HttpStatus.OK);
     }
 

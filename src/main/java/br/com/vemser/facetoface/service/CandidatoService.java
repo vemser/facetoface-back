@@ -70,7 +70,7 @@ public class CandidatoService {
         candidatoRepository.save(candidatoEntity);
     }
 
-    public CandidatoDTO update(Integer id, CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
+    public CandidatoDTO update(Integer id, CandidatoCreateDTO candidatoCreateDTO, Genero genero) throws RegraDeNegocioException {
         List<LinguagemEntity> linguagemList = new ArrayList<>();
         findById(id);
         CandidatoEntity candidatoEntity = converterEntity(candidatoCreateDTO);
@@ -82,6 +82,7 @@ public class CandidatoService {
         candidatoEntity.setTrilha(trilhaService.findByNome(candidatoCreateDTO.getTrilha().getNome()));
         candidatoEntity.setEdicao(edicaoService.findByNome(candidatoCreateDTO.getEdicao().getNome()));
         candidatoEntity.setLinguagens(linguagemList);
+        candidatoEntity.setGenero(genero);
         return converterEmDTO(candidatoRepository.save(candidatoEntity));
     }
 
