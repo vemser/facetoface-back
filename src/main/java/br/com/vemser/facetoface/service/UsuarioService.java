@@ -174,8 +174,10 @@ public class UsuarioService {
 
     public UsuarioEntity findByNome(String nome) throws RegraDeNegocioException{
         Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByNomeCompleto(nome);
-        UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioEntityOptional.get(), UsuarioEntity.class);
-        return usuarioEntity;
+        if(usuarioEntityOptional.isEmpty()){
+            throw new RegraDeNegocioException("Candidato não encontrado!");
+        }
+        return usuarioEntityOptional.get();
     }
 
     private UsuarioEntity converterEntity(UsuarioCreateDTO usuarioCreateDTO) {

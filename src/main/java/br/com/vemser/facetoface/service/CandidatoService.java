@@ -149,8 +149,11 @@ public class CandidatoService {
         return candidatoDTO;
     }
 
-    private CandidatoEntity findByNome(String nome) throws RegraDeNegocioException{
+    public CandidatoEntity findByNome(String nome) throws RegraDeNegocioException{
         Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByNomeCompleto(nome);
-        return objectMapper.convertValue(candidatoEntityOptional, CandidatoEntity.class);
+        if(candidatoEntityOptional.isEmpty()){
+            throw new RegraDeNegocioException("Candidato não encontrado!");
+        }
+        return candidatoEntityOptional.get();
     }
 }
