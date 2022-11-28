@@ -41,10 +41,8 @@ public class CandidatoService {
     private final LinguagemService linguagemService;
     private final EdicaoService edicaoService;
     private final TrilhaService trilhaService;
-    private final CurriculoRepository curriculoRepository;
-    private final ImageRepository imageRepository;
 
-    public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO, MultipartFile imagem,MultipartFile curriculo, Genero genero) throws RegraDeNegocioException, IOException {
+    public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO, Genero genero) throws RegraDeNegocioException, IOException {
         List<LinguagemEntity> linguagemList = new ArrayList<>();
         Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByEmail(candidatoCreateDTO.getEmail());
         if(candidatoEntityOptional.isPresent()){
@@ -59,14 +57,7 @@ public class CandidatoService {
         candidatoEntity.setEdicao(edicaoService.findByNome(candidatoCreateDTO.getEdicao().getNome()));
         candidatoEntity.setLinguagens(linguagemList);
         candidatoEntity.setGenero(genero);
-        CandidatoDTO candidatoDTO = converterEmDTO(candidatoRepository.save(candidatoEntity));
-        if(imagem != null){
-            arquivarCandidato(imagem,candidatoEntity);
-        }
-        if(curriculo != null){
-            salvarCurriculo(curriculo, candidatoEntity);
-        }
-        return candidatoDTO;
+        return converterEmDTO(candidatoRepository.save(candidatoEntity));
     }
 
     public PageDTO<CandidatoDTO> list(Integer pagina, Integer tamanho){
@@ -161,90 +152,5 @@ public class CandidatoService {
     private CandidatoEntity findByNome(String nome) throws RegraDeNegocioException{
         Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByNomeCompleto(nome);
         return objectMapper.convertValue(candidatoEntityOptional, CandidatoEntity.class);
-    }
-
-    public void arquivarCurriculo(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
-        CandidatoEntity candidatoEntity = findByEmailEntity(email);
-        Optional<CurriculoEntity> curriculoEntityOptional = findByCandidato(candidatoEntity);
-        String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
-        if(curriculoEntityOptional.isPresent()){
-            curriculoEntityOptional.get().setNome(nomeArquivo);
-            curriculoEntityOptional.get().setTipo(file.getContentType());
-            curriculoEntityOptional.get().setDado(file.getBytes());
-            curriculoEntityOptional.get().setCandidato(candidatoEntity);
-            curriculoRepository.save(curriculoEntityOptional.get());
-        }
-        CurriculoEntity curriculo = new CurriculoEntity();
-        curriculo.setNome(nomeArquivo);
-        curriculo.setTipo(file.getContentType());
-        curriculo.setDado(file.getBytes());
-        curriculo.setCandidato(candidatoEntity);
-        curriculoRepository.save(curriculo);
-    }
-
-    public void salvarCurriculo(MultipartFile file, CandidatoEntity candidatoEntity) throws IOException, RegraDeNegocioException {
-        String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
-        CurriculoEntity curriculo = new CurriculoEntity();
-        curriculo.setNome(nomeArquivo);
-        curriculo.setTipo(file.getContentType());
-        curriculo.setDado(file.getBytes());
-        curriculo.setCandidato(candidatoEntity);
-        curriculoRepository.save(curriculo);
-    }
-
-    public String pegarCurriculoCandidato(String email) throws RegraDeNegocioException{
-        CandidatoEntity candidatoEntity = findByEmailEntity(email);
-        Optional<CurriculoEntity> curriculo = curriculoRepository.findByCandidato(candidatoEntity);
-        if (curriculo.isEmpty()){
-            throw new RegraDeNegocioException("Usuário não possui currículo cadastrado.");
-        }
-        return Base64Utils.encodeToString(curriculo.get().getDado());
-    }
-
-    private Optional<CurriculoEntity> findByCandidato(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
-        return curriculoRepository.findByCandidato(candidatoEntity);
-    }
-
-    ////Imagem
-    public void arquivarCandidato(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
-        CandidatoEntity candidatoEntity = findByEmailEntity(email);
-        Optional<ImageEntity> imagemBD = findImageByCandidato(candidatoEntity);
-        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
-        if(imagemBD.isPresent()){
-            imagemBD.get().setNome(nomeArquivo);
-            imagemBD.get().setTipo(file.getContentType());
-            imagemBD.get().setData(file.getBytes());
-            imagemBD.get().setCandidato(candidatoEntity);
-            imageRepository.save(imagemBD.get());
-        }
-        ImageEntity novaImagemBD = new ImageEntity();
-        novaImagemBD.setNome(nomeArquivo);
-        novaImagemBD.setTipo(file.getContentType());
-        novaImagemBD.setData(file.getBytes());
-        novaImagemBD.setCandidato(candidatoEntity);
-        imageRepository.save(novaImagemBD);
-    }
-
-    public void arquivarCandidato(MultipartFile file, CandidatoEntity candidatoEntity) throws IOException, RegraDeNegocioException {
-        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
-        ImageEntity novaImagemBD = new ImageEntity();
-        novaImagemBD.setNome(nomeArquivo);
-        novaImagemBD.setTipo(file.getContentType());
-        novaImagemBD.setData(file.getBytes());
-        novaImagemBD.setCandidato(candidatoEntity);
-        imageRepository.save(novaImagemBD);
-    }
-
-    public String pegarImagemCandidato(String email) throws RegraDeNegocioException{
-        CandidatoEntity candidatoEntity = findByEmailEntity(email);
-        Optional<ImageEntity> imagemBD = findImageByCandidato(candidatoEntity);
-        if (imagemBD.isEmpty()){
-            throw new RegraDeNegocioException("Usuário não possui imagem cadastrada.");
-        }
-        return Base64Utils.encodeToString(imagemBD.get().getData());
-    }
-
-    private Optional<ImageEntity> findImageByCandidato(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
-        return imageRepository.findByCandidato(candidatoEntity);
     }
 }

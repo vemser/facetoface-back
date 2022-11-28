@@ -44,7 +44,6 @@ public class UsuarioService {
     private final TrilhaService trilhaService;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
-    private final ImageRepository imageRepository;
 //    private final AuthenticationManager authenticationManager;
 //    private final TokenService tokenService;
 
@@ -134,9 +133,6 @@ public class UsuarioService {
         usuarioEntity.setPerfis(perfilEntityList);
         usuarioEntity.setGenero(genero);
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
-//        if(imagem != null){
-//            arquivarUsuario(imagem, usuarioEntity.getEmail());
-//        }
         return converterEmDTO(usuarioSalvo);
     }
 
@@ -215,38 +211,4 @@ public class UsuarioService {
                 .collect(Collectors.toList()));
         return usuarioDTO;
     }
-
-    ////Imagem
-    private Optional<ImageEntity> findByUsuario(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
-        return imageRepository.findByUsuario(usuarioEntity);
-    }
-
-    public String pegarImagemUsuario(String email) throws RegraDeNegocioException{
-        Optional<UsuarioEntity> usuarioEntity = findByEmail(email);
-        Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
-        if (imagemBD.isEmpty()){
-            throw new RegraDeNegocioException("Usuário não possui imagem cadastrada.");
-        }
-        return Base64Utils.encodeToString(imagemBD.get().getData());
-    }
-
-    public void arquivarUsuario(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
-        Optional<UsuarioEntity> usuarioEntity = findByEmail(email);
-        Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
-        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
-        if(imagemBD.isPresent()){
-            imagemBD.get().setNome(nomeArquivo);
-            imagemBD.get().setTipo(file.getContentType());
-            imagemBD.get().setData(file.getBytes());
-            imagemBD.get().setUsuario(usuarioEntity.get());
-            imageRepository.save(imagemBD.get());
-        }
-        ImageEntity novaImagemBD = new ImageEntity();
-        novaImagemBD.setNome(nomeArquivo);
-        novaImagemBD.setTipo(file.getContentType());
-        novaImagemBD.setData(file.getBytes());
-        novaImagemBD.setUsuario(usuarioEntity.get());
-        imageRepository.save(novaImagemBD);
-    }
-
 }

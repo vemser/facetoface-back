@@ -10,6 +10,7 @@ import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
+import br.com.vemser.facetoface.service.ImageService;
 import br.com.vemser.facetoface.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +35,9 @@ public class UsuarioController {
     private static final int ROLE_GESTAO_ID = 2;
     private static final int ROLE_INSTRUTOR_ID = 3;
     private final UsuarioService usuarioService;
+    private final ImageService imageService;
 
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping
     public ResponseEntity<UsuarioDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
                                                        @PathVariable Genero genero) throws RegraDeNegocioException, IOException {
         return new ResponseEntity<>(usuarioService.createUsuario(usuarioCreateDTO, genero), HttpStatus.OK);
@@ -52,12 +54,12 @@ public class UsuarioController {
         return usuarioService.list(pagina, tamanho);
     }
 
-    @GetMapping("/email/{email}")
+    @GetMapping("/email")
     public UsuarioDTO findByEmail(@RequestParam String email) throws RegraDeNegocioException {
         return usuarioService.findByEmailDTO(email);
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/id")
     public UsuarioEntity findById(@RequestParam Integer id) throws RegraDeNegocioException {
         return usuarioService.findById(id);
     }
@@ -81,15 +83,15 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/upload-foto/{emailCandidato}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/upload-foto", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> uploadFoto(@RequestPart("file") MultipartFile file,
                                            @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
-        usuarioService.arquivarUsuario(file, email);
+        imageService.arquivarUsuario(file, email);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/recuperar-imagem")
     public ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException{
-        return new ResponseEntity<>(usuarioService.pegarImagemUsuario(email), HttpStatus.OK);
+        return new ResponseEntity<>(imageService.pegarImagemUsuario(email), HttpStatus.OK);
     }
 }
