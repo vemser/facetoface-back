@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public interface OperationControllerCandidato {
 
-    @Operation(summary = "Listagem de usuarios no sistema", description = "Listagem dos usuários presentes no sistema")
+    @Operation(summary = "Listagem de candidatos no sistema", description = "Listagem dos candidatos presentes no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listagem de usuários realizada com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
@@ -30,7 +30,7 @@ public interface OperationControllerCandidato {
     PageDTO<CandidatoDTO> list(@RequestParam(defaultValue = "0") Integer pagina,
                                       @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
 
-    @Operation(summary = "Procurar usuario no sistema por email", description = "Procura o usuário pelo e-mail se estiver cadastrado no sistema")
+    @Operation(summary = "Procurar candidato no sistema por email", description = "Procura o candidato pelo e-mail se estiver cadastrado no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pesquisa pelo email realizada com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
@@ -38,7 +38,7 @@ public interface OperationControllerCandidato {
     })
     CandidatoDTO findByEmail(@PathVariable("email") String email) throws RegraDeNegocioException;
 
-    @Operation(summary = "Procurar usuario no sistema por nome completo", description = "Procura o usuário pelo nome completo se estiver cadastrado no sistema")
+    @Operation(summary = "Procurar candidato no sistema por nome completo", description = "Procura o candidato pelo nome completo se estiver cadastrado no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pesquisa pelo nome completo realizada com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
@@ -48,17 +48,17 @@ public interface OperationControllerCandidato {
                                                     @RequestParam(defaultValue = "0") Integer pagina,
                                                     @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
 
-    @Operation(summary = "Criar cadastro de Usuario", description = "Criar Usuario no Sistema")
+    @Operation(summary = "Criar cadastro de Candidato", description = "Criar candidato no Sistema")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cadastro de Usuario realizado com sucesso!"),
+            @ApiResponse(responseCode = "200", description = "Cadastro de candidato realizado com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
     ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException;
 
-    @Operation(summary = "Atualizar cadastro de Usuario", description = "Atualizar Usuario no Sistema")
+    @Operation(summary = "Atualizar cadastro de candidato", description = "Atualizar candidato no Sistema")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Atualização de cadastro de Usuario realizado com sucesso!"),
+            @ApiResponse(responseCode = "200", description = "Atualização de cadastro de candidato realizado com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })

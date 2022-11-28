@@ -1,7 +1,9 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaCreateDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
+import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
@@ -9,12 +11,15 @@ import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EntrevistaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,29 +34,47 @@ public class EntrevistaService {
 
     private final ObjectMapper objectMapper;
 
-    public EntrevistaEntity findById(Integer id) throws RegraDeNegocioException{
+    public EntrevistaEntity findById(Integer id) throws RegraDeNegocioException {
         return entrevistaRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Entrevista não encontrada!"));
     }
 
-    public EntrevistaDTO converterParaEntrevistaDTO (EntrevistaEntity entrevistaEntity){
+    public EntrevistaDTO converterParaEntrevistaDTO(EntrevistaEntity entrevistaEntity) {
         EntrevistaDTO entrevistaDTO = objectMapper.convertValue(entrevistaEntity, EntrevistaDTO.class);
         return entrevistaDTO;
     }
 
-    public List<EntrevistaDTO> listarEntrevistas() {
-        List<EntrevistaEntity> entrevistaEntities = entrevistaRepository.findAll();
-        return entrevistaEntities.stream()
+    public PageDTO<EntrevistaDTO> list(Integer pagina, Integer tamanho){
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+        Page<EntrevistaEntity> entrevistaEntityPage = entrevistaRepository.findAll(pageRequest);
+        List<EntrevistaDTO> entrevistaDTOList = entrevistaRepository.findAll().stream()
                 .map(this::converterParaEntrevistaDTO)
                 .toList();
+        return new PageDTO<>(entrevistaEntityPage.getTotalElements(),
+                entrevistaEntityPage.getTotalPages(),
+                pagina,
+                tamanho,
+                entrevistaDTOList);
     }
 
-    public List<EntrevistaDTO> listarEntrevistasPorMes(){
-//        List<EntrevistaEntity> entrevistaEntities = entrevistaRepository.findAllByDataEntrevista_Month();
-//        return entrevistaEntities.stream()
-//                .map(this::converterParaEntrevistaDTO)
-//                .collect(Collectors.toList());
-        return null;
+    public PageDTO<EntrevistaDTO> listarPorMes(Integer pagina, Integer tamanho, Month mes){
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+        Page<EntrevistaEntity> entrevistaEntitiePage = entrevistaRepository.findAll(pageRequest);
+        List<EntrevistaDTO> entrevistaDTOList = entrevistaRepository.findAllByDataEntrevista_Month(mes).stream()
+                .map(this::converterParaEntrevistaDTO)
+                .toList();
+        return new PageDTO<>(entrevistaEntitiePage.getTotalElements(),
+                entrevistaEntitiePage.getTotalPages(),
+                pagina,
+                tamanho,
+                entrevistaDTOList);
     }
+
+
+//    public PageDTO<EntrevistaDTO> listarPorUsuario(Integer pagina, Integer tamanho, String nome) {
+//        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+//        UsuarioEntity usuarioEntity = usuarioService.findByNome();
+//    }
+
 
     public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
         UsuarioEntity usuario = usuarioService.findById(entrevistaCreateDTO.getUsuarioDTO().getIdUsuario());
@@ -78,12 +101,12 @@ public class EntrevistaService {
         return entrevistaDTO;
     }
 
-    public void deletarEntrevista(Integer idEntrevista) throws RegraDeNegocioException{
+    public void deletarEntrevista(Integer idEntrevista) throws RegraDeNegocioException {
         EntrevistaEntity entrevistaRecuperada = findById(idEntrevista);
         entrevistaRepository.delete(entrevistaRecuperada);
     }
 
-    public EntrevistaDTO atualizarEntrevista(Integer idEntrevista, EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException{
+    public EntrevistaDTO atualizarEntrevista(Integer idEntrevista, EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
         EntrevistaEntity entrevista = findById(idEntrevista);
         entrevista.setDataEntrevista(LocalDateTime.of(entrevistaCreateDTO.getDiaMesAno(), entrevistaCreateDTO.getHorasMin()));
         entrevista.setCidade(entrevistaCreateDTO.getCidade());
@@ -96,5 +119,20 @@ public class EntrevistaService {
         EntrevistaDTO entrevistaDTO = objectMapper.convertValue(entrevistaSalva, EntrevistaDTO.class);
 
         return entrevistaDTO;
+   }
+
+//    public PageDTO<EntrevistaDTO> list(Integer pagina, Integer tamanho){
+//        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+//        Page<CandidatoEntity> candidatoEntityPage = candidatoRepository.findAll(pageRequest);
+//        List<CandidatoDTO> candidatoDTOList = candidatoRepository.findAll().stream()
+//                .map(this::converterEmDTO)
+//                .toList();
+//        return new PageDTO<>(candidatoEntityPage.getTotalElements(),
+//                candidatoEntityPage.getTotalPages(),
+//                pagina,
+//                tamanho,
+//                candidatoDTOList);
     }
-}
+
+
+

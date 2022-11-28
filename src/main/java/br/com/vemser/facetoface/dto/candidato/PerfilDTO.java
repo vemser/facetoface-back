@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class PerfilDTO {
+    
     @Schema(example = "1")
     private int id;
 

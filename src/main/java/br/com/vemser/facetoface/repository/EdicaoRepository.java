@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface EdicaoRepository extends JpaRepository<EdicaoEntity,Integer> {
     Optional<EdicaoEntity> findByNome(String nome);
+
+
 }
