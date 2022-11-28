@@ -36,9 +36,9 @@ public class CandidatoCreateDTO {
     @Schema(description = "E-mail do candidato.")
     private String email;
 
-    @NotNull
-    @Schema(description = "Gênero do candidato.")
-    private Genero genero;
+//    @NotNull
+//    @Schema(description = "Gênero do candidato.")
+//    private Genero genero;
 
     @NotNull
     @Schema(description = "Trilha que o candidato participa.")

@@ -1,11 +1,18 @@
 package br.com.vemser.facetoface.dto.usuario;
 
+import br.com.vemser.facetoface.dto.PerfilDTO;
+import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.entity.PerfilEntity;
+import br.com.vemser.facetoface.entity.TrilhaEntity;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,4 +34,11 @@ public class UsuarioCreateDTO {
     @NotNull
     @Schema(example = "priscila.matos@dbccompany.com.br", description = "E-mail do candidato.")
     private String email;
+
+    private TrilhaDTO trilha;
+
+    private List<PerfilDTO> perfis;
+
+    private char ativo;
+
 }
