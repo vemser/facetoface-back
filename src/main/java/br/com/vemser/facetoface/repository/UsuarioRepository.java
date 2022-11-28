@@ -17,4 +17,6 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity,Integer> 
 
     Page<UsuarioEntity> findByNomeCompleto(String nomeCompleto, Pageable pageable);
 
+    @Query("SELECT u FROM USUARIO u WHERE u.nomeCompleto  = :nome")
+    Optional<UsuarioEntity> findByNome(String nome);
 }

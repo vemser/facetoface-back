@@ -4,6 +4,7 @@ import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaCreateDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
+import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
@@ -70,9 +71,19 @@ public class EntrevistaService {
     }
 
 
-    public PageDTO<EntrevistaDTO> listarPorUsuario(Integer pagina, Integer tamanho, String nome) {
+    public PageDTO<EntrevistaDTO> listarPorUsuario(Integer pagina, Integer tamanho, String nome) throws RegraDeNegocioException {
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
-        UsuarioEntity usuarioEntity = usuarioService
+        UsuarioDTO usuarioDTO = usuarioService.findByNome(nome);
+        UsuarioEntity usuario = objectMapper.convertValue(usuarioDTO, UsuarioEntity.class);
+        Page<EntrevistaEntity> entrevistaEntityPage = entrevistaRepository.findAll(pageRequest);
+        List<EntrevistaDTO> entrevistaDTOList = entrevistaRepository.findAllByUsuarioEntity(usuario).stream()
+                .map(this::converterParaEntrevistaDTO)
+                .toList();
+        return new PageDTO<>(entrevistaEntityPage.getTotalElements(),
+                entrevistaEntityPage.getTotalPages(),
+                pagina,
+                tamanho,
+                entrevistaDTOList);
     }
 
 
