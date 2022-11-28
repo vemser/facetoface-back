@@ -28,12 +28,6 @@ public class ImageService {
                 .orElseThrow(() -> new RegraDeNegocioException("Imagem não encontrada!"));
     }
 
-//    public ImageEntity arquivarUsuario(MultipartFile file, String email) throws IOException, RegraDeNegocioException{
-//        UsuarioEntity usuario = usuarioService.findByEmail(email);
-//
-//
-//    }
-
     public void arquivarCandidato(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         Optional<ImageEntity> imagemBD = findByCandidato(candidatoEntity);
@@ -52,16 +46,6 @@ public class ImageService {
         novaImagemBD.setCandidato(candidatoEntity);
         imageRepository.save(novaImagemBD);
     }
-//
-//    public void arquivarCandidato(MultipartFile file, CandidatoEntity candidatoEntity) throws IOException, RegraDeNegocioException {
-//        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
-//        ImageEntity novaImagemBD = new ImageEntity();
-//        novaImagemBD.setNome(nomeArquivo);
-//        novaImagemBD.setTipo(file.getContentType());
-//        novaImagemBD.setData(file.getBytes());
-//        novaImagemBD.setCandidato(candidatoEntity);
-//        imageRepository.save(novaImagemBD);
-//    }
 
     public void arquivarUsuario(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
         Optional<UsuarioEntity> usuarioEntity = usuarioService.findByEmail(email);
