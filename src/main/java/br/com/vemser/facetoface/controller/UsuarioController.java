@@ -1,6 +1,7 @@
 package br.com.vemser.facetoface.controller;
 
 import br.com.vemser.facetoface.dto.login.LoginDTO;
+import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
@@ -50,7 +51,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/logado")
-    public UsuarioDTO getLoggedUser() throws RegraDeNegocioException {
-        return usuarioService.listarUsuarioLogado();
+    public LoginRetornoDTO getLoggedUser() throws RegraDeNegocioException {
+        return usuarioService.getLoggedUser();
     }
 }
