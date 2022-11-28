@@ -3,6 +3,8 @@ package br.com.vemser.facetoface.service;
 import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.dto.PerfilDTO;
 import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.dto.login.LoginDTO;
+import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
@@ -45,16 +47,16 @@ public class UsuarioService {
         return usuarioRepository.findByEmail(email);
     }
 
-    public Integer getIdUsuarioLogado() {
-        return Integer.parseInt(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
-    }
+//    public Integer getIdUsuarioLogado() {
+//        return Integer.parseInt(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+//    }
 
-    public UsuarioDTO listarUsuarioLogado() throws RegraDeNegocioException {
-        Integer idUsuarioLogado = getIdUsuarioLogado();
-        UsuarioEntity usuario = findById(idUsuarioLogado);
-
-        return objectMapper.convertValue(usuario, UsuarioDTO.class);
-    }
+//    public UsuarioDTO listarUsuarioLogado() throws RegraDeNegocioException {
+//        Integer idUsuarioLogado = getIdUsuarioLogado();
+//        UsuarioEntity usuario = findById(idUsuarioLogado);
+//
+//        return objectMapper.convertValue(usuario, UsuarioDTO.class);
+//    }
 
 //    public String auth(LoginDTO loginDTO) {
 //        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -78,6 +80,22 @@ public class UsuarioService {
 //        UsuarioEntity usuarioSalvo = usuarioRepository.save(usuario);
 //        return objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
 //    }
+
+    public Optional<UsuarioEntity> findByLogin(String email) {
+        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
+        return usuarioEntity;
+    }
+
+    public String getIdLoggedUser() {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    }
+
+    public LoginRetornoDTO getLoggedUser() {
+        Optional<UsuarioEntity> usuarioEntity = findByLogin(getIdLoggedUser());
+        LoginRetornoDTO loginDTO = objectMapper.convertValue(usuarioEntity.get(), LoginRetornoDTO.class);
+        loginDTO.setPerfis(usuarioEntity.get().getPerfis().stream().map(perfilService::convertToDTO).toList());
+        return loginDTO;
+    }
     public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
         List<PerfilEntity> perfilEntityList = new ArrayList<>();
         Optional<UsuarioEntity> usuario = findByEmail(usuarioCreateDTO.getEmail());
@@ -135,4 +153,5 @@ public class UsuarioService {
                 .collect(Collectors.toList()));
         return usuarioDTO;
     }
+
 }
