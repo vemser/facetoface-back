@@ -16,6 +16,7 @@ import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.UsuarioRepository;
 import br.com.vemser.facetoface.security.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -109,12 +110,12 @@ public class UsuarioService {
     public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
         List<PerfilEntity> perfilEntityList = new ArrayList<>();
         Optional<UsuarioEntity> usuario = findByEmail(usuarioCreateDTO.getEmail());
-
+        Faker faker = new Faker();
         if (usuario.isPresent()) {
             throw new RegraDeNegocioException("Usuário já cadastrado com o mesmo email.");
         }
 
-        String senha = "123";
+        String senha = faker.internet().password(8, 12, true, true, true);
         String senhaEncode = passwordEncoder.encode(senha);
         for (PerfilDTO perfilDTO : usuarioCreateDTO.getPerfis()) {
             PerfilEntity byNome = perfilService.findByNome(perfilDTO.getNome());
