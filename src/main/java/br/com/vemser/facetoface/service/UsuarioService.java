@@ -105,8 +105,7 @@ public class UsuarioService {
 //        List<PerfilDTO> perfilDTOS = perfilEntities.stream()
 //                .map(perfilService::convertToDTO)
 //                .toList();
-        UsuarioDTO usuarioDTO = objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
-        return usuarioDTO;
+        return converterEmDTO(usuarioSalvo);
     }
 
     public PageDTO<UsuarioDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
