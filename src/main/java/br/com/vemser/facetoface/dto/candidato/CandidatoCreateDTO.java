@@ -3,8 +3,6 @@ package br.com.vemser.facetoface.dto.candidato;
 import br.com.vemser.facetoface.dto.EdicaoDTO;
 import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.dto.TrilhaDTO;
-import br.com.vemser.facetoface.entity.TrilhaEntity;
-import br.com.vemser.facetoface.entity.enums.Genero;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

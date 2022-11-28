@@ -2,12 +2,13 @@ package br.com.vemser.facetoface.entity;
 
 import br.com.vemser.facetoface.entity.enums.Legenda;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor

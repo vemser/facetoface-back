@@ -1,9 +1,7 @@
 package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.EdicaoDTO;
-import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.entity.EdicaoEntity;
-import br.com.vemser.facetoface.entity.LinguagemEntity;
 import br.com.vemser.facetoface.repository.EdicaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

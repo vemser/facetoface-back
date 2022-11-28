@@ -1,6 +1,5 @@
 package br.com.vemser.facetoface.entity;
 
-import br.com.vemser.facetoface.entity.UsuarioEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

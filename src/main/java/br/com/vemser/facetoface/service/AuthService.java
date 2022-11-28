@@ -2,7 +2,6 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.login.LoginDTO;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
-import br.com.vemser.facetoface.exceptions.InvalidTokenException;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.security.TokenService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

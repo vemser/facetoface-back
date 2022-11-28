@@ -1,13 +1,9 @@
 package br.com.vemser.facetoface.controller;
 
-import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
-import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
-import br.com.vemser.facetoface.dto.login.LoginDTO;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
-import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.ImageService;
@@ -23,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j
 @Validated

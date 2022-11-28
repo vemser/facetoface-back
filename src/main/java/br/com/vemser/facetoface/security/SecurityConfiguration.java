@@ -32,7 +32,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authz) ->
                         authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .antMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
-                                .antMatchers( "/candidato/**").hasRole("GESTAO")
+                                .antMatchers(HttpMethod.POST, "/candidato/**").hasRole("GESTAO")
+                                .antMatchers(HttpMethod.PUT, "/candidato/**").hasRole("GESTAO")
+                                .antMatchers(HttpMethod.POST, "/entrevista").hasAnyRole("GESTAO", "INSTRUTOR")
                                 .anyRequest().authenticated());
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return http.build();

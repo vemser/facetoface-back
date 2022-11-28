@@ -1,21 +1,16 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.dto.PerfilDTO;
 import br.com.vemser.facetoface.dto.TrilhaDTO;
-import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
-import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
-import br.com.vemser.facetoface.dto.login.LoginDTO;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
-import br.com.vemser.facetoface.entity.*;
+import br.com.vemser.facetoface.entity.PerfilEntity;
+import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
-import br.com.vemser.facetoface.repository.ImageRepository;
 import br.com.vemser.facetoface.repository.UsuarioRepository;
-import br.com.vemser.facetoface.security.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +20,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
