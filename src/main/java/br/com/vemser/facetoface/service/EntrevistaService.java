@@ -70,10 +70,10 @@ public class EntrevistaService {
     }
 
 
-//    public PageDTO<EntrevistaDTO> listarPorUsuario(Integer pagina, Integer tamanho, String nome) {
-//        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
-//        UsuarioEntity usuarioEntity = usuarioService.findByNome();
-//    }
+    public PageDTO<EntrevistaDTO> listarPorUsuario(Integer pagina, Integer tamanho, String nome) {
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+        UsuarioEntity usuarioEntity = usuarioService
+    }
 
 
     public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {

@@ -174,6 +174,7 @@ public class UsuarioService {
                 usuarioDTOList);
     }
 
+    public UsuarioDTO findByNome(String nome)
     private UsuarioEntity converterEntity(UsuarioCreateDTO usuarioCreateDTO) {
         return objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
     }
