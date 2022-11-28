@@ -39,7 +39,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
-                                                       @PathVariable Genero genero) throws RegraDeNegocioException, IOException {
+                                                       @RequestParam Genero genero) throws RegraDeNegocioException, IOException {
         return new ResponseEntity<>(usuarioService.createUsuario(usuarioCreateDTO, genero), HttpStatus.OK);
     }
 
