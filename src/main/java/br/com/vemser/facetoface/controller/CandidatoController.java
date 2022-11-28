@@ -41,8 +41,8 @@ public class CandidatoController {
         return candidatoService.findByEmail(email);
     }
 
-    @GetMapping("/findbynomecompleto/{nomeCompleto}")
-    public PageDTO<CandidatoDTO> findByNomeCompleto(@PathVariable("nomeCompleto") String nomeCompleto,
+    @GetMapping("/findbynomecompleto")
+    public PageDTO<CandidatoDTO> findByNomeCompleto(@RequestParam("nomeCompleto") String nomeCompleto,
                                            @RequestParam(defaultValue = "0") Integer pagina,
                                            @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
         return candidatoService.findByNomeCompleto(nomeCompleto, pagina, tamanho);

@@ -60,8 +60,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/id")
-    public UsuarioEntity findById(@RequestParam Integer id) throws RegraDeNegocioException {
-        return usuarioService.findById(id);
+    public UsuarioDTO findById(@RequestParam Integer id) throws RegraDeNegocioException {
+        return usuarioService.findByIdDTO(id);
     }
 
     @GetMapping("/logado")

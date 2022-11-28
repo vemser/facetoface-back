@@ -52,6 +52,10 @@ public class UsuarioService {
                 .orElseThrow(() -> new RegraDeNegocioException("Usuário com id " + idUsuario + " não foi encontrado."));
     }
 
+    public UsuarioDTO findByIdDTO(Integer idUsuario) throws RegraDeNegocioException {
+        return converterEmDTO(findById(idUsuario));
+    }
+
     public Optional<UsuarioEntity> findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
     }
@@ -98,12 +102,12 @@ public class UsuarioService {
 //        return objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
 //    }
 
-    public Optional<UsuarioEntity> findByLogin(String email) {
+    private Optional<UsuarioEntity> findByLogin(String email) {
         Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
         return usuarioEntity;
     }
 
-    public String getIdLoggedUser() {
+    private String getIdLoggedUser() {
         return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     }
 
