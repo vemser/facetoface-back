@@ -6,6 +6,7 @@ import br.com.vemser.facetoface.dto.FotoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
+import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.CandidatoService;
 import br.com.vemser.facetoface.service.CurriculoService;
@@ -51,8 +52,9 @@ public class CandidatoController implements OperationControllerCandidato {
     }
 
     @PostMapping
-    public ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
-        CandidatoDTO candidatoDTO = candidatoService.create(candidatoCreateDTO);
+    public ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
+                                               @PathVariable Genero genero) throws RegraDeNegocioException {
+        CandidatoDTO candidatoDTO = candidatoService.create(candidatoCreateDTO, genero);
         return new ResponseEntity<>(candidatoDTO, HttpStatus.OK);
     }
 

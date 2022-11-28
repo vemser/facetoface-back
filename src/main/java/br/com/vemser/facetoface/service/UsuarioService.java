@@ -1,28 +1,29 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.candidato.PerfilDTO;
-import br.com.vemser.facetoface.dto.login.LoginDTO;
+import br.com.vemser.facetoface.dto.LinguagemDTO;
+import br.com.vemser.facetoface.dto.PerfilDTO;
+import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
-import br.com.vemser.facetoface.entity.PerfilEntity;
-import br.com.vemser.facetoface.entity.TrilhaEntity;
-import br.com.vemser.facetoface.entity.UsuarioEntity;
+import br.com.vemser.facetoface.entity.*;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.UsuarioRepository;
 import br.com.vemser.facetoface.security.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -77,24 +78,25 @@ public class UsuarioService {
 //        UsuarioEntity usuarioSalvo = usuarioRepository.save(usuario);
 //        return objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
 //    }
-
-    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, int idPerfil, int idTrilha, Genero genero) throws RegraDeNegocioException {
+    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
+        List<PerfilEntity> perfilEntityList = new ArrayList<>();
         Optional<UsuarioEntity> usuario = findByEmail(usuarioCreateDTO.getEmail());
 
         if (usuario.isPresent()) {
             throw new RegraDeNegocioException("Usuário já cadastrado com o mesmo email.");
         }
 
-        PerfilEntity perfilEntity = perfilService.findById(idPerfil);
-        TrilhaEntity trilhaEntity = trilhaService.findById(idTrilha);
-
         String senha = "123";
         String senhaEncode = passwordEncoder.encode(senha);
+        for (PerfilDTO perfilDTO : usuarioCreateDTO.getPerfis()) {
+            PerfilEntity byNome = perfilService.findByNome(perfilDTO.getNome());
+            perfilEntityList.add(byNome);
+        }
 
         UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
-        usuarioEntity.setPerfis(Set.of(perfilEntity));
         usuarioEntity.setSenha(senhaEncode);
-        usuarioEntity.setTrilha(trilhaEntity);
+        usuarioEntity.setTrilha(trilhaService.findByNome(usuarioCreateDTO.getTrilha().getNome()));
+        usuarioEntity.setPerfis(perfilEntityList);
         usuarioEntity.setGenero(genero);
 
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
@@ -103,11 +105,35 @@ public class UsuarioService {
 //        List<PerfilDTO> perfilDTOS = perfilEntities.stream()
 //                .map(perfilService::convertToDTO)
 //                .toList();
-
         UsuarioDTO usuarioDTO = objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
-        usuarioDTO.setPerfilEntities(usuarioSalvo.getPerfis());
-        usuarioDTO.setTrilhaEntity(usuarioSalvo.getTrilha());
+        return usuarioDTO;
+    }
 
+    public PageDTO<UsuarioDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
+        Sort ordenacao = Sort.by("nome_completo");
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
+        Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findByNomeCompleto(nomeCompleto, pageRequest);
+        if(usuarioEntityPage.isEmpty()){
+            throw new RegraDeNegocioException("Usuário com o nome especificado não existe");
+        }
+        List<UsuarioDTO> usuarioDTOList = usuarioRepository.findAll()
+                .stream()
+                .map(this::converterEmDTO)
+                .toList();
+        return new PageDTO<>(usuarioEntityPage.getTotalElements(),
+                usuarioEntityPage.getTotalPages(),
+                pagina,
+                tamanho,
+                usuarioDTOList);
+    }
+
+    private UsuarioDTO converterEmDTO(UsuarioEntity usuarioEntity) {
+        UsuarioDTO usuarioDTO = objectMapper.convertValue(usuarioEntity, UsuarioDTO.class);
+        usuarioDTO.setTrilha(objectMapper.convertValue(usuarioEntity.getTrilha(), TrilhaDTO.class));
+        usuarioDTO.setPerfis(usuarioEntity.getPerfis()
+                .stream()
+                .map(perfil -> objectMapper.convertValue(perfil, PerfilDTO.class))
+                .collect(Collectors.toList()));
         return usuarioDTO;
     }
 }

@@ -8,6 +8,7 @@ import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
+import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.CandidatoRepository;
 import br.com.vemser.facetoface.repository.TrilhaRepository;
@@ -32,7 +33,7 @@ public class CandidatoService {
     private final EdicaoService edicaoService;
     private final TrilhaService trilhaService;
 
-    public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException{
+    public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO, Genero genero) throws RegraDeNegocioException{
         List<LinguagemEntity> linguagemList = new ArrayList<>();
         Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByEmail(candidatoCreateDTO.getEmail());
         if(candidatoEntityOptional.isPresent()){
@@ -46,6 +47,7 @@ public class CandidatoService {
         candidatoEntity.setTrilha(trilhaService.findByNome(candidatoCreateDTO.getTrilha().getNome()));
         candidatoEntity.setEdicao(edicaoService.findByNome(candidatoCreateDTO.getEdicao().getNome()));
         candidatoEntity.setLinguagens(linguagemList);
+        candidatoEntity.setGenero(genero);
         return converterEmDTO(candidatoRepository.save(candidatoEntity));
     }
 

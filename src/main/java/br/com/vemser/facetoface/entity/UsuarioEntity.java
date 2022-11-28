@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -52,7 +53,7 @@ public class UsuarioEntity implements UserDetails {
     @JoinTable(name = "USUARIO_PERFIL",
         joinColumns = @JoinColumn(name = "ID_USUARIO"),
         inverseJoinColumns = @JoinColumn(name = "ID_PERFIL"))
-    private Set<PerfilEntity> perfis;
+    private List<PerfilEntity> perfis;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuarioEntity")

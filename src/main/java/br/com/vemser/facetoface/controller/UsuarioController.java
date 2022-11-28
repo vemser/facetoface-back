@@ -30,10 +30,8 @@ public class UsuarioController {
 
     @PostMapping("/perfil/{idPerfil}/trilha/{idTrilha}/genero/{genero}")
     public ResponseEntity<UsuarioDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
-                                                       @PathVariable int idPerfil,
-                                                       @PathVariable int idTrilha,
                                                        @PathVariable Genero genero) throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.createUsuario(usuarioCreateDTO, idPerfil, idTrilha, genero), HttpStatus.OK);
+        return new ResponseEntity<>(usuarioService.createUsuario(usuarioCreateDTO, genero), HttpStatus.OK);
     }
 
 //    @PostMapping("/admin")

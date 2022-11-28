@@ -17,8 +17,4 @@ import java.util.Set;
 public class UsuarioDTO extends UsuarioCreateDTO {
     @Schema(example = "1")
     private Integer idUsuario;
-
-    private Set<PerfilEntity> perfilEntities;
-
-    private TrilhaEntity trilhaEntity;
 }
