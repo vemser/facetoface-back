@@ -187,6 +187,6 @@ VALUES (SEQ_ID_USUARIO.nextval,'$2a$10$6OwPdlN0MI9xK7gvqX.Y1OJSKhC8pE6vnWEOcuXgL
 -- tabela n - n ----
 
 INSERT INTO USUARIO_PERFIL(ID_USUARIO, ID_PERFIL)
-VALUES(1,3);
+VALUES(1,1);
 
 SELECT * FROM USUARIO u WHERE u.EMAIL = 'julio.gabriel@dbccompany.com';

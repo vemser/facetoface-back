@@ -13,6 +13,7 @@ import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.*;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
+import br.com.vemser.facetoface.repository.ImageRepository;
 import br.com.vemser.facetoface.repository.UsuarioRepository;
 import br.com.vemser.facetoface.security.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +25,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,6 +44,7 @@ public class UsuarioService {
     private final TrilhaService trilhaService;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ImageRepository imageRepository;
 //    private final AuthenticationManager authenticationManager;
 //    private final TokenService tokenService;
 
@@ -107,7 +114,7 @@ public class UsuarioService {
         loginDTO.setPerfis(usuarioEntity.get().getPerfis().stream().map(perfilService::convertToDTO).toList());
         return loginDTO;
     }
-    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
+    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException, IOException {
         List<PerfilEntity> perfilEntityList = new ArrayList<>();
         Optional<UsuarioEntity> usuario = findByEmail(usuarioCreateDTO.getEmail());
         Faker faker = new Faker();
@@ -121,14 +128,15 @@ public class UsuarioService {
             PerfilEntity byNome = perfilService.findByNome(perfilDTO.getNome());
             perfilEntityList.add(byNome);
         }
-
         UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
         usuarioEntity.setSenha(senhaEncode);
         usuarioEntity.setTrilha(trilhaService.findByNome(usuarioCreateDTO.getTrilha().getNome()));
         usuarioEntity.setPerfis(perfilEntityList);
         usuarioEntity.setGenero(genero);
-
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
+//        if(imagem != null){
+//            arquivarUsuario(imagem, usuarioEntity.getEmail());
+//        }
         return converterEmDTO(usuarioSalvo);
     }
 
@@ -142,11 +150,12 @@ public class UsuarioService {
         List<PerfilEntity> perfilEntityList = new ArrayList<>();
         findById(id);
         UsuarioEntity usuarioEntity = converterEntity(usuarioCreateDTO);
+        Faker faker = new Faker();
         for (PerfilDTO perfilDTO : usuarioCreateDTO.getPerfis()) {
             PerfilEntity byNome = perfilService.findByNome(perfilDTO.getNome());
             perfilEntityList.add(byNome);
         }
-        String senha = "123";
+        String senha = faker.internet().password(8, 12, true, true, true);
         String senhaEncode = passwordEncoder.encode(senha);
         usuarioEntity.setSenha(senhaEncode);
         usuarioEntity.setIdUsuario(id);
@@ -205,6 +214,39 @@ public class UsuarioService {
                 .map(perfil -> objectMapper.convertValue(perfil, PerfilDTO.class))
                 .collect(Collectors.toList()));
         return usuarioDTO;
+    }
+
+    ////Imagem
+    private Optional<ImageEntity> findByUsuario(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
+        return imageRepository.findByUsuario(usuarioEntity);
+    }
+
+    public String pegarImagemUsuario(String email) throws RegraDeNegocioException{
+        Optional<UsuarioEntity> usuarioEntity = findByEmail(email);
+        Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
+        if (imagemBD.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não possui imagem cadastrada.");
+        }
+        return Base64Utils.encodeToString(imagemBD.get().getData());
+    }
+
+    public void arquivarUsuario(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
+        Optional<UsuarioEntity> usuarioEntity = findByEmail(email);
+        Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
+        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
+        if(imagemBD.isPresent()){
+            imagemBD.get().setNome(nomeArquivo);
+            imagemBD.get().setTipo(file.getContentType());
+            imagemBD.get().setData(file.getBytes());
+            imagemBD.get().setUsuario(usuarioEntity.get());
+            imageRepository.save(imagemBD.get());
+        }
+        ImageEntity novaImagemBD = new ImageEntity();
+        novaImagemBD.setNome(nomeArquivo);
+        novaImagemBD.setTipo(file.getContentType());
+        novaImagemBD.setData(file.getBytes());
+        novaImagemBD.setUsuario(usuarioEntity.get());
+        imageRepository.save(novaImagemBD);
     }
 
 }
