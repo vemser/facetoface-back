@@ -44,8 +44,7 @@ public class UsuarioService {
     private final TrilhaService trilhaService;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
-//    private final AuthenticationManager authenticationManager;
-//    private final TokenService tokenService;
+
 
     public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
         return usuarioRepository.findById(idUsuario)
@@ -68,30 +67,6 @@ public class UsuarioService {
         return converterEmDTO(usuarioEntity.get());
     }
 
-//    public Integer getIdUsuarioLogado() {
-//        return Integer.parseInt(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
-//    }
-
-//    public UsuarioDTO listarUsuarioLogado() throws RegraDeNegocioException {
-//        Integer idUsuarioLogado = getIdUsuarioLogado();
-//        UsuarioEntity usuario = findById(idUsuarioLogado);
-//
-//        return objectMapper.convertValue(usuario, UsuarioDTO.class);
-//    }
-
-//    public String auth(LoginDTO loginDTO) {
-//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-//                new UsernamePasswordAuthenticationToken(
-//                        loginDTO.getEmail(),
-//                        loginDTO.getSenha()
-//                );
-//        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-//        Object principal = authenticate.getPrincipal();
-//        UsuarioEntity usuarioEntity = (UsuarioEntity) principal;
-//
-//        return tokenService.getToken(usuarioEntity, null);
-//    }
-
 //    public UsuarioDTO createAdmin(UsuarioCreateDTO usuarioCreateDTO, Integer idPerfil) throws RegraDeNegocioException {
 //        List<PerfilEntity> perfilEntityList = perfilService.listarPerfis();
 //
@@ -108,7 +83,8 @@ public class UsuarioService {
     }
 
     private String getIdLoggedUser() {
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        String s = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return s;
     }
 
     public LoginRetornoDTO getLoggedUser() {

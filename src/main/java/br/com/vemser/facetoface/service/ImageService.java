@@ -49,6 +49,9 @@ public class ImageService {
 
     public void arquivarUsuario(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
         Optional<UsuarioEntity> usuarioEntity = usuarioService.findByEmail(email);
+        if(usuarioEntity.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não está cadastrado no sistema.");
+        }
         Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
         String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
         if(imagemBD.isPresent()){
@@ -70,13 +73,16 @@ public class ImageService {
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         Optional<ImageEntity> imagemBD = findByCandidato(candidatoEntity);
         if (imagemBD.isEmpty()){
-            throw new RegraDeNegocioException("Usuário não possui imagem cadastrada.");
+            throw new RegraDeNegocioException("Candidato não possui imagem cadastrada.");
         }
         return Base64Utils.encodeToString(imagemBD.get().getData());
     }
 
     public String pegarImagemUsuario(String email) throws RegraDeNegocioException{
         Optional<UsuarioEntity> usuarioEntity = usuarioService.findByEmail(email);
+        if(usuarioEntity.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não possui imagem cadastrada.");
+        }
         Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
         if (imagemBD.isEmpty()){
             throw new RegraDeNegocioException("Usuário não possui imagem cadastrada.");
