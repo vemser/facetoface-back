@@ -3,6 +3,8 @@ package br.com.vemser.facetoface.service;
 import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.dto.PerfilDTO;
 import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
+import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.login.LoginDTO;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
@@ -118,12 +120,40 @@ public class UsuarioService {
         usuarioEntity.setGenero(genero);
 
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
-//        Set<PerfilEntity> perfilEntities = usuarioSalvo.getPerfis();
-
-//        List<PerfilDTO> perfilDTOS = perfilEntities.stream()
-//                .map(perfilService::convertToDTO)
-//                .toList();
         return converterEmDTO(usuarioSalvo);
+    }
+
+    public void delete(Integer id) throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = findById(id);
+        usuarioEntity.setAtivo('F');
+        usuarioRepository.save(usuarioEntity);
+    }
+
+    public UsuarioDTO update(Integer id, UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
+        List<PerfilEntity> perfilEntityList = new ArrayList<>();
+        findById(id);
+        UsuarioEntity usuarioEntity = converterEntity(usuarioCreateDTO);
+        for (PerfilDTO perfilDTO : usuarioCreateDTO.getPerfis()) {
+            PerfilEntity byNome = perfilService.findByNome(perfilDTO.getNome());
+            perfilEntityList.add(byNome);
+        }
+        usuarioEntity.setIdUsuario(id);
+        usuarioEntity.setTrilha(trilhaService.findByNome(usuarioCreateDTO.getTrilha().getNome()));
+        usuarioEntity.setPerfis(perfilEntityList);
+        return converterEmDTO(usuarioRepository.save(usuarioEntity));
+    }
+
+    public PageDTO<UsuarioDTO> list(Integer pagina, Integer tamanho){
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+        Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findAll(pageRequest);
+        List<UsuarioDTO> usuarioDTOList = usuarioRepository.findAll().stream()
+                .map(this::converterEmDTO)
+                .toList();
+        return new PageDTO<>(usuarioEntityPage.getTotalElements(),
+                usuarioEntityPage.getTotalPages(),
+                pagina,
+                tamanho,
+                usuarioDTOList);
     }
 
     public PageDTO<UsuarioDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
@@ -142,6 +172,10 @@ public class UsuarioService {
                 pagina,
                 tamanho,
                 usuarioDTOList);
+    }
+
+    private UsuarioEntity converterEntity(UsuarioCreateDTO usuarioCreateDTO) {
+        return objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
     }
 
     private UsuarioDTO converterEmDTO(UsuarioEntity usuarioEntity) {
