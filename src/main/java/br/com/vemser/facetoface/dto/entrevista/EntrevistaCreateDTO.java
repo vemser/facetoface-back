@@ -28,7 +28,7 @@ public class EntrevistaCreateDTO {
 
     @NotNull
     @Schema(description = "Dia/Mês/Ano que irá ocorrer a entrevista.")
-    private LocalDate diaMesAno;
+    private LocalDateTime dataEntrevista;
 
     @NotNull
     @Schema(description = "Cidade em que o usuário irá realizar a entrevista")
@@ -38,15 +38,11 @@ public class EntrevistaCreateDTO {
     @Schema(description = "Estado em que o usuário irá realizar a entrevista")
     private String estado;
 
-    @NotNull
-    @Schema(description = "Hora/Min/Seg que irá ocorrer a entrevista.")
-    private LocalTime horasMin;
+//    @NotNull
+//    @Schema(description = "Hora/Min/Seg que irá ocorrer a entrevista.")
+//    private LocalTime horasMin;
 
     @NotNull
     @Schema(description = "Observações referentes a entrevista.")
     private String observacoes;
-
-    @NotNull
-    @Schema(description = "Legenda referente a entrevista.")
-    private LegendaDTO legenda;
 }

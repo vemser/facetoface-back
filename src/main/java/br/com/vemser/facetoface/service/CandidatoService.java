@@ -129,7 +129,7 @@ public class CandidatoService {
         return objectMapper.convertValue(candidatoCreateDTO, CandidatoEntity.class);
     }
 
-    private CandidatoDTO converterEmDTO(CandidatoEntity candidatoEntity) {
+    public CandidatoDTO converterEmDTO(CandidatoEntity candidatoEntity) {
         CandidatoDTO candidatoDTO = objectMapper.convertValue(candidatoEntity, CandidatoDTO.class);
         candidatoDTO.setEdicao(objectMapper.convertValue(candidatoEntity.getEdicao(), EdicaoDTO.class));
         candidatoDTO.setTrilha(objectMapper.convertValue(candidatoEntity.getTrilha(), TrilhaDTO.class));
@@ -141,7 +141,7 @@ public class CandidatoService {
     }
 
     public CandidatoEntity findByNome(String nome) throws RegraDeNegocioException{
-        Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByNome(nome);
+        Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByNomeCompleto(nome);
         return objectMapper.convertValue(candidatoEntityOptional, CandidatoEntity.class);
     }
 }

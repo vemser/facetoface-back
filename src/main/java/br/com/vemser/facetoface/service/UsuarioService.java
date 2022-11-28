@@ -186,18 +186,17 @@ public class UsuarioService {
                 usuarioDTOList);
     }
 
-    public UsuarioDTO findByNome(String nome) throws RegraDeNegocioException{
-        Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByNome(nome);
-        UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioEntityOptional, UsuarioEntity.class);
-        UsuarioDTO usuarioDTO = objectMapper.convertValue(usuarioEntity, UsuarioDTO.class);
-        return usuarioDTO;
+    public UsuarioEntity findByNome(String nome) throws RegraDeNegocioException{
+        Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByNomeCompleto(nome);
+        UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioEntityOptional.get(), UsuarioEntity.class);
+        return usuarioEntity;
     }
 
     private UsuarioEntity converterEntity(UsuarioCreateDTO usuarioCreateDTO) {
         return objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
     }
 
-    private UsuarioDTO converterEmDTO(UsuarioEntity usuarioEntity) {
+    public UsuarioDTO converterEmDTO(UsuarioEntity usuarioEntity) {
         UsuarioDTO usuarioDTO = objectMapper.convertValue(usuarioEntity, UsuarioDTO.class);
         usuarioDTO.setTrilha(objectMapper.convertValue(usuarioEntity.getTrilha(), TrilhaDTO.class));
         usuarioDTO.setPerfis(usuarioEntity.getPerfis()

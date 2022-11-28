@@ -1,6 +1,7 @@
 package br.com.vemser.facetoface.repository;
 
 import br.com.vemser.facetoface.entity.CandidatoEntity;
+import br.com.vemser.facetoface.entity.UsuarioEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,6 @@ public interface CandidatoRepository extends JpaRepository<CandidatoEntity,Integ
     Optional<CandidatoEntity> findByEmail(String email);
     Page<CandidatoEntity> findByNomeCompleto(String nomeCompleto, Pageable pageable);
 
-    @Query("select c from CANDIDATO c where c.nomeCompleto = :nome")
-    Optional<CandidatoEntity> findByNome(String nome);
+    Optional<CandidatoEntity> findByNomeCompleto(String nomeCompleto);
 
 }
