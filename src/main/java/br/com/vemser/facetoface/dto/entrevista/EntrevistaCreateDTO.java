@@ -20,11 +20,11 @@ public class EntrevistaCreateDTO {
 
     @NotNull
     @Schema(description = "Candidato que irá participar da entrevista.")
-    private CandidatoDTO candidatoDTO;
+    private String candidatoNome;
 
     @NotNull
     @Schema(description = "Usuário que irá realizar a entrevista.")
-    private UsuarioDTO usuarioDTO;
+    private String usuarioNome;
 
     @NotNull
     @Schema(description = "Dia/Mês/Ano que irá ocorrer a entrevista.")

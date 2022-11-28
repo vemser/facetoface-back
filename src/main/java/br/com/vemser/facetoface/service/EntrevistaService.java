@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,8 +89,9 @@ public class EntrevistaService {
 
 
     public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
-        UsuarioEntity usuario = usuarioService.findById(entrevistaCreateDTO.getUsuarioDTO().getIdUsuario());
-        CandidatoEntity candidato = candidatoService.findById(entrevistaCreateDTO.getCandidatoDTO().getIdCandidato());
+        Optional<UsuarioDTO> usuario = Optional.ofNullable(usuarioService.findByNome(entrevistaCreateDTO.getUsuarioNome()));
+        UsuarioEntity usuarioEntity = objectMapper.convertValue(usuario, UsuarioEntity.class);
+        CandidatoEntity candidato = candidatoService.findByNome(entrevistaCreateDTO.getCandidatoNome());
         String cidade = entrevistaCreateDTO.getCidade();
         String estado = entrevistaCreateDTO.getEstado();
         String observacoes = entrevistaCreateDTO.getObservacoes();
@@ -99,7 +101,7 @@ public class EntrevistaService {
         EntrevistaEntity entrevistaEntity = new EntrevistaEntity();
         entrevistaEntity.setDataEntrevista(dataReal);
         entrevistaEntity.setCandidatoEntity(candidato);
-        entrevistaEntity.setUsuarioEntity(usuario);
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
         entrevistaEntity.setCidade(cidade);
         entrevistaEntity.setEstado(estado);
         entrevistaEntity.setObservacoes(observacoes);
@@ -119,12 +121,15 @@ public class EntrevistaService {
 
     public EntrevistaDTO atualizarEntrevista(Integer idEntrevista, EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
         EntrevistaEntity entrevista = findById(idEntrevista);
+        CandidatoEntity candidato = candidatoService.findByNome(entrevistaCreateDTO.getCandidatoNome());
+        Optional<UsuarioDTO> usuario = Optional.ofNullable(usuarioService.findByNome(entrevistaCreateDTO.getUsuarioNome()));
+        UsuarioEntity usuarioEntity = objectMapper.convertValue(usuario, UsuarioEntity.class);
         entrevista.setDataEntrevista(LocalDateTime.of(entrevistaCreateDTO.getDiaMesAno(), entrevistaCreateDTO.getHorasMin()));
         entrevista.setCidade(entrevistaCreateDTO.getCidade());
         entrevista.setEstado(entrevistaCreateDTO.getEstado());
         entrevista.setObservacoes(entrevistaCreateDTO.getObservacoes());
-        entrevista.setUsuarioEntity(usuarioService.findById(entrevistaCreateDTO.getUsuarioDTO().getIdUsuario()));
-        entrevista.setCandidatoEntity(candidatoService.findById(entrevistaCreateDTO.getCandidatoDTO().getIdCandidato()));
+        entrevista.setUsuarioEntity(usuarioEntity);
+        entrevista.setCandidatoEntity(candidato);
         EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevista);
 
         EntrevistaDTO entrevistaDTO = objectMapper.convertValue(entrevistaSalva, EntrevistaDTO.class);

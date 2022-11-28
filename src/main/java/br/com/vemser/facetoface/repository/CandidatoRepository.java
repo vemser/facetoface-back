@@ -15,4 +15,7 @@ public interface CandidatoRepository extends JpaRepository<CandidatoEntity,Integ
     Optional<CandidatoEntity> findByEmail(String email);
     Page<CandidatoEntity> findByNomeCompleto(String nomeCompleto, Pageable pageable);
 
+    @Query("select c from CANDIDATO c where c.nomeCompleto = :nome")
+    Optional<CandidatoEntity> findByNome(String nome);
+
 }

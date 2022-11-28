@@ -139,4 +139,9 @@ public class CandidatoService {
                 .collect(Collectors.toList()));
         return candidatoDTO;
     }
+
+    public CandidatoEntity findByNome(String nome) throws RegraDeNegocioException{
+        Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByNome(nome);
+        return objectMapper.convertValue(candidatoEntityOptional, CandidatoEntity.class);
+    }
 }

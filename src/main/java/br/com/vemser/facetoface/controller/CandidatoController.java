@@ -51,7 +51,7 @@ public class CandidatoController implements OperationControllerCandidato {
 
     @PostMapping
     public ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
-                                               @PathVariable Genero genero) throws RegraDeNegocioException {
+                                               Genero genero) throws RegraDeNegocioException {
         CandidatoDTO candidatoDTO = candidatoService.create(candidatoCreateDTO, genero);
         return new ResponseEntity<>(candidatoDTO, HttpStatus.OK);
     }
