@@ -49,6 +49,14 @@ public class UsuarioService {
         return usuarioRepository.findByEmail(email);
     }
 
+    public UsuarioDTO findByEmailDTO(String email) throws RegraDeNegocioException {
+        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
+        if(usuarioEntity.isEmpty()){
+            throw new RegraDeNegocioException("Usuário com o e-mail especificado não existe");
+        }
+        return converterEmDTO(usuarioEntity.get());
+    }
+
 //    public Integer getIdUsuarioLogado() {
 //        return Integer.parseInt(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
 //    }

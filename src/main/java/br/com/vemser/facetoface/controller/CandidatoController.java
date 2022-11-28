@@ -1,8 +1,6 @@
 package br.com.vemser.facetoface.controller;
 
 import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerCandidato;
-import br.com.vemser.facetoface.dto.CurriculoDTO;
-import br.com.vemser.facetoface.dto.FotoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
@@ -80,7 +78,7 @@ public class CandidatoController implements OperationControllerCandidato {
 
     @GetMapping("/recuperar-imagem")
     public ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException{
-        return new ResponseEntity<>(imageService.pegarImagemUsuario(email), HttpStatus.OK);
+        return new ResponseEntity<>(imageService.pegarImagemCandidato(email), HttpStatus.OK);
     }
 
     @PutMapping(value = "/upload-curriculo/{emailCandidato}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})

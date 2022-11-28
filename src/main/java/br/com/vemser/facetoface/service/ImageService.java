@@ -1,14 +1,10 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.ImageEntity;
-import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
-import br.com.vemser.facetoface.repository.CandidatoRepository;
 import br.com.vemser.facetoface.repository.ImageRepository;
-import br.com.vemser.facetoface.repository.TrilhaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
@@ -25,6 +21,7 @@ public class ImageService {
 
     private final CandidatoService candidatoService;
     private final ImageRepository imageRepository;
+    private final UsuarioService usuarioService;
 
     public ImageEntity findById(Integer idPerfil) throws RegraDeNegocioException {
         return imageRepository.findById(idPerfil)
@@ -56,7 +53,7 @@ public class ImageService {
         imageRepository.save(novaImagemBD);
     }
 
-    public String pegarImagemUsuario(String email) throws RegraDeNegocioException{
+    public String pegarImagemCandidato(String email) throws RegraDeNegocioException{
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         Optional<ImageEntity> imagemBD = findByCandidato(candidatoEntity);
         if (imagemBD.isEmpty()){
@@ -65,7 +62,20 @@ public class ImageService {
         return Base64Utils.encodeToString(imagemBD.get().getData());
     }
 
+    public String pegarImagemUsuario(String email) throws RegraDeNegocioException{
+        Optional<UsuarioEntity> usuarioEntity = usuarioService.findByEmail(email);
+        Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
+        if (imagemBD.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não possui imagem cadastrada.");
+        }
+        return Base64Utils.encodeToString(imagemBD.get().getData());
+    }
+
     private Optional<ImageEntity> findByCandidato(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
         return imageRepository.findByCandidato(candidatoEntity);
+    }
+
+    private Optional<ImageEntity> findByUsuario(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
+        return imageRepository.findByUsuario(usuarioEntity);
     }
 }

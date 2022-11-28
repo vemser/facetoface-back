@@ -1,7 +1,10 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
+import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.login.LoginDTO;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
+import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
@@ -40,9 +43,15 @@ public class UsuarioController {
 //        return new ResponseEntity<>(usuarioService.createAdmin(usuarioCreateDTO, 1), HttpStatus.OK);
 //    }
 
+    @GetMapping
+    public PageDTO<UsuarioDTO> list(@RequestParam(defaultValue = "0") Integer pagina,
+                                      @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
+        return usuarioService.list(pagina, tamanho);
+    }
+
     @GetMapping("/email/{email}")
-    public Optional<UsuarioEntity> findByEmail(@RequestParam String email) {
-        return usuarioService.findByEmail(email);
+    public UsuarioDTO findByEmail(@RequestParam String email) throws RegraDeNegocioException {
+        return usuarioService.findByEmailDTO(email);
     }
 
     @GetMapping("/id/{id}")
@@ -53,5 +62,18 @@ public class UsuarioController {
     @GetMapping("/logado")
     public LoginRetornoDTO getLoggedUser() throws RegraDeNegocioException {
         return usuarioService.getLoggedUser();
+    }
+
+    @PutMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioDTO> update(@PathVariable("idUsuario") Integer id,
+                                               @Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
+        UsuarioDTO usuarioDTO = usuarioService.update(id, usuarioCreateDTO);
+        return new ResponseEntity<>(usuarioDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioDTO> delete(@PathVariable("idUsuario") Integer id) throws RegraDeNegocioException {
+        usuarioService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
