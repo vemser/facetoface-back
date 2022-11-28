@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Getter
@@ -48,7 +50,8 @@ public class CandidatoCreateDTO {
     @Schema(description = "Número da edição que o candidato participa.")
     private EdicaoDTO edicao;
 
-    @NotNull
+    @Min(0)
+    @Max(10)
     @Schema(description = "Nota da prova do candidato.")
     private Double notaProva;
 
@@ -56,7 +59,6 @@ public class CandidatoCreateDTO {
     @Schema(description = "Lista de linguagens que o candidato conhece.")
     private List<LinguagemDTO> linguagens;
 
-    @NotNull
     @Schema(description = "Observações referentes ao candidato.")
     private String observacoes;
 

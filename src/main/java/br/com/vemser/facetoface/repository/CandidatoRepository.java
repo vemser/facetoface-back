@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface CandidatoRepository extends JpaRepository<CandidatoEntity,Integer> {
     Optional<CandidatoEntity> findByEmail(String email);
-    Page<CandidatoEntity> findByNomeCompleto(String nomeCompleto, Pageable pageable);
+    Page<CandidatoEntity> findAllByNomeCompleto(String nomeCompleto, Pageable pageable);
 
     Optional<CandidatoEntity> findByNomeCompleto(String nomeCompleto);
 

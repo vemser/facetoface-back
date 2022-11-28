@@ -179,7 +179,7 @@ public class UsuarioService {
     }
 
     public PageDTO<UsuarioDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
-        Sort ordenacao = Sort.by("nome_completo");
+        Sort ordenacao = Sort.by("nomeCompleto");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findByNomeCompleto(nomeCompleto, pageRequest);
         if(usuarioEntityPage.isEmpty()){

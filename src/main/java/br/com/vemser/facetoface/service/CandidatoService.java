@@ -117,9 +117,9 @@ public class CandidatoService {
     }
 
     public PageDTO<CandidatoDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
-        Sort ordenacao = Sort.by("nome_completo");
+        Sort ordenacao = Sort.by("nomeCompleto");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<CandidatoEntity> candidatoEntityPage = candidatoRepository.findByNomeCompleto(nomeCompleto, pageRequest);
+        Page<CandidatoEntity> candidatoEntityPage = candidatoRepository.findAllByNomeCompleto(nomeCompleto, pageRequest);
         if(candidatoEntityPage.isEmpty()){
             throw new RegraDeNegocioException("Candidato com o nome especificado não existe");
         }
