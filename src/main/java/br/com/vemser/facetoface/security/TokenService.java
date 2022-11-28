@@ -34,6 +34,9 @@ public class TokenService {
     @Value("${jwt.expirationSenha}")
     private String expirationSenha;
 
+    @Value("${jwt.expiration}")
+    private String expirationChangePassword;
+
     public String getToken(UsuarioEntity usuarioEntity, String expiration) {
         if (expiration != null) {
             this.expiration = expiration;
@@ -74,6 +77,26 @@ public class TokenService {
                 .compact();
     }
 
+    public String getTokenTrocarSenha(UsuarioEntity usuarioEntity) {
+        LocalDateTime dataAtual = LocalDateTime.now();
+        Date now = Date.from(dataAtual.atZone(ZoneId.systemDefault()).toInstant());
+
+        LocalDateTime dataExpiracao = dataAtual.plusMinutes(Long.parseLong(expirationChangePassword));
+        Date exp = Date.from(dataExpiracao.atZone(ZoneId.systemDefault()).toInstant());
+
+
+        String meuToken = Jwts.builder()
+                .setIssuer("vemser-api")
+                .claim(Claims.ID, usuarioEntity.getIdUsuario().toString())
+                .claim(KEY_CARGOS, usuarioEntity.getEmail())
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+
+        return meuToken;
+    }
+
     public UsernamePasswordAuthenticationToken isValid(String token) {
         if (token == null) {
             return null;
@@ -85,9 +108,6 @@ public class TokenService {
                 .getBody();
 
         String user = claims.get(Claims.ID, String.class);
-
-//        String cargo = claims.get(KEY_CARGOS, String.class);
-
 
         SimpleGrantedAuthority cargoSimple = new SimpleGrantedAuthority(KEY_CARGOS);
         return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(cargoSimple));
