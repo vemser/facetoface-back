@@ -28,13 +28,12 @@ public class SecurityConfiguration {
 
         http.headers().frameOptions().disable().and()
                 .cors().and()
-                .csrf().disable();
-//                .authorizeHttpRequests((authz) ->
-//                        authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
-//                                .antMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
-//                                .antMatchers(HttpMethod.POST, "/candidato").hasRole("GESTAO")
-//                                .antMatchers("/entrevista").hasAnyRole("GESTAO", "INSTRUTOR")
-//                                .anyRequest().authenticated());
+                .csrf().disable()
+                .authorizeHttpRequests((authz) ->
+                        authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                                .antMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
+                                .antMatchers( "/candidato/**").hasRole("GESTAO")
+                                .anyRequest().authenticated());
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -43,7 +42,6 @@ public class SecurityConfiguration {
     public WebSecurityCustomizer webSecurityCustomizer() {
 
         return web -> web.ignoring().antMatchers("/v3/api-docs",
-                "/**",
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui/**");

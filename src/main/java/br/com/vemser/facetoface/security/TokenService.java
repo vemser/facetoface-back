@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.security;
 
+import br.com.vemser.facetoface.entity.PerfilEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.exceptions.InvalidTokenException;
 import io.jsonwebtoken.Claims;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,10 +44,14 @@ public class TokenService {
         Date expiracao = Date.from(dateExpiracaoLocalDate.atZone(ZoneId.systemDefault()).toInstant());
 
 
+        List<String> cargosDoUsuario = usuarioEntity.getPerfis().stream()
+                .map(PerfilEntity::getAuthority)
+                .toList();
+
         return Jwts.builder().
                 setIssuer("vemser-api")
                 .claim(Claims.ID, usuarioEntity.getEmail())
-                .claim(KEY_CARGOS, usuarioEntity.getAuthorities())
+                .claim(KEY_CARGOS, cargosDoUsuario)
                 .setIssuedAt(dataAtual)
                 .setExpiration(expiracao)
                 .signWith(SignatureAlgorithm.HS256, secret)
