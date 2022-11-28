@@ -36,8 +36,8 @@ public class EntrevistaService {
 
     public EntrevistaDTO converterParaEntrevistaDTO(EntrevistaEntity entrevistaEntity) {
         EntrevistaDTO entrevistaDTO = objectMapper.convertValue(entrevistaEntity, EntrevistaDTO.class);
-        usuarioService.converterEmDTO(entrevistaEntity.getUsuarioEntity());
-        candidatoService.converterEmDTO(entrevistaEntity.getCandidatoEntity());
+        entrevistaDTO.setUsuarioDTO(usuarioService.converterEmDTO(entrevistaEntity.getUsuarioEntity()));
+        entrevistaDTO.setCandidatoDTO(candidatoService.converterEmDTO(entrevistaEntity.getCandidatoEntity()));
         return entrevistaDTO;
     }
 
