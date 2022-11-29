@@ -29,17 +29,19 @@ public class AuthService {
     private final CandidatoService candidatoService;
     private final EntrevistaRepository entrevistaRepository;
 
-
     public UsuarioEntity auth(LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),
-                loginDTO.getSenha());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        loginDTO.getEmail(),
+                        loginDTO.getSenha()
+                );
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         Object principal = authentication.getPrincipal();
         UsuarioEntity usuarioEntity = (UsuarioEntity) principal;
         return usuarioEntity;
     }
 
-    public void confirmarEntrevista(String token) throws RegraDeNegocioException{
+    public void confirmarEntrevista(String token) throws RegraDeNegocioException {
         EntrevistaEntity entrevista = procurarCandidato(token);
         entrevista.setLegenda(Legenda.CONFIRMADA);
         entrevistaRepository.save(entrevista);
@@ -52,7 +54,10 @@ public class AuthService {
             throw new RegraDeNegocioException("Usuário não existe");
         }
         String tokenSenha = tokenService.getTokenSenha(usuarioEntityOptional.get());
-        String base = "Olá " + usuarioEntityOptional.get().getNomeCompleto() + " seu token para trocar de senha é: <br>" + tokenSenha;
+        String base = "Olá "
+                + usuarioEntityOptional.get().getNomeCompleto()
+                + " seu token para trocar de senha é: <br>"
+                + tokenSenha;
         emailService.sendEmailRecuperacaoSenha(email, base);
     }
 
@@ -66,5 +71,4 @@ public class AuthService {
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(emailCandidatoByToken);
         return entrevistaService.findByCandidatoEntity(candidatoEntity);
     }
-
 }
