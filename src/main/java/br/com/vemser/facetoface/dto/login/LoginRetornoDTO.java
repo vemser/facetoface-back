@@ -8,5 +8,6 @@ import java.util.List;
 @Data
 public class LoginRetornoDTO {
     private String email;
+    private String nomeCompleto;
     private List<PerfilDTO> perfis;
 }

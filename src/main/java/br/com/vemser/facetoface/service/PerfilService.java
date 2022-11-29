@@ -42,4 +42,9 @@ public class PerfilService {
     public PerfilDTO convertToDTO(PerfilEntity perfilEntity) {
         return objectMapper.convertValue(perfilEntity, PerfilDTO.class);
     }
+
+    public void deleteFisico(Integer id) throws RegraDeNegocioException {
+        findById(id);
+        perfilRepository.deleteById(id);
+    }
 }

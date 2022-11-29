@@ -150,4 +150,9 @@ public class EntrevistaService {
         EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevista);
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
+
+    public void deleteFisico(Integer id) throws RegraDeNegocioException {
+        findById(id);
+        entrevistaRepository.deleteById(id);
+    }
 }
