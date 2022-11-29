@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
@@ -26,9 +27,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-    private static final int ROLE_ADMIN_ID = 1;
-    private static final int ROLE_GESTAO_ID = 2;
-    private static final int ROLE_INSTRUTOR_ID = 3;
     private final UsuarioService usuarioService;
     private final ImageService imageService;
 
@@ -38,10 +36,12 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioService.createUsuario(usuarioCreateDTO, genero), HttpStatus.OK);
     }
 
-//    @PostMapping("/admin")
-//    public ResponseEntity<UsuarioDTO> cadastrarUsuarioAdmin(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
-//        return new ResponseEntity<>(usuarioService.createAdmin(usuarioCreateDTO, 1), HttpStatus.OK);
-//    }
+    @GetMapping("/findbynomecompleto")
+    public PageDTO<UsuarioDTO> findByNomeCompleto(@RequestParam("nomeCompleto") String nomeCompleto,
+                                                    @RequestParam(defaultValue = "0") Integer pagina,
+                                                    @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
+        return usuarioService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
+    }
 
     @GetMapping
     public PageDTO<UsuarioDTO> list(@RequestParam(defaultValue = "0") Integer pagina,
@@ -74,7 +74,13 @@ public class UsuarioController {
 
     @DeleteMapping("/{idUsuario}")
     public ResponseEntity<UsuarioDTO> delete(@PathVariable("idUsuario") Integer id) throws RegraDeNegocioException {
-        usuarioService.delete(id);
+        usuarioService.deleteLogico(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/delete-fisico/{idUsuario}")
+    public ResponseEntity<UsuarioDTO> deleteFisico(@PathVariable("idUsuario") Integer id) throws RegraDeNegocioException {
+        usuarioService.deleteFisico(id);
         return ResponseEntity.noContent().build();
     }
 

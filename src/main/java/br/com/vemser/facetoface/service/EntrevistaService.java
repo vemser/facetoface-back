@@ -10,14 +10,19 @@ import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EntrevistaRepository;
+import br.com.vemser.facetoface.security.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +34,10 @@ public class EntrevistaService {
     private final UsuarioService usuarioService;
 
     private final ObjectMapper objectMapper;
+
+    private final EmailService emailService;
+
+    private final TokenService tokenService;
 
     public EntrevistaEntity findById(Integer id) throws RegraDeNegocioException {
         return entrevistaRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("Entrevista não encontrada!"));
@@ -55,8 +64,11 @@ public class EntrevistaService {
     }
 
     public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
-        UsuarioEntity usuario = usuarioService.findByNome(entrevistaCreateDTO.getUsuarioNome());
-        CandidatoEntity candidato = candidatoService.findByNome(entrevistaCreateDTO.getCandidatoNome());
+        Optional<UsuarioEntity> usuario = usuarioService.findByEmail(entrevistaCreateDTO.getUsuarioEmail());
+        if(usuario.isEmpty()){
+            throw new RegraDeNegocioException("Usuário não encontrado");
+        }
+        CandidatoEntity candidato = candidatoService.findByEmailEntity(entrevistaCreateDTO.getCandidatoEmail());
         if(entrevistaRepository.findByCandidatoEntity(candidato).isPresent()){
             throw new RegraDeNegocioException("Entrevista para o Candidato já agendada!");
         }
@@ -70,17 +82,37 @@ public class EntrevistaService {
         EntrevistaEntity entrevistaEntity = new EntrevistaEntity();
         entrevistaEntity.setDataEntrevista(dia);
         entrevistaEntity.setCandidatoEntity(candidato);
-        entrevistaEntity.setUsuarioEntity(usuario);
+        entrevistaEntity.setUsuarioEntity(usuario.get());
         entrevistaEntity.setCidade(cidade);
         entrevistaEntity.setEstado(estado);
         entrevistaEntity.setObservacoes(observacoes);
         entrevistaEntity.setLegenda(Legenda.PENDENTE);
 
         EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevistaEntity);
-        //enviar o email aqui para confirmar
+        tokenConfirmacao(entrevistaSalva);
+        return converterParaEntrevistaDTO(entrevistaSalva);
+    }
 
-        EntrevistaDTO entrevistaDTO = objectMapper.convertValue(entrevistaSalva, EntrevistaDTO.class);
-        return entrevistaDTO;
+    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) throws RegraDeNegocioException {
+        String tokenSenha = tokenService.getTokenConfirmacao(entrevistaEntity);
+//        try{
+//            String link = "http://localhost:8080/auth/confirmar-entrevista/";
+//            String nova = link + tokenSenha;
+//            URL url = new URL(nova);
+            String base = ("Olá " + entrevistaEntity.getCandidatoEntity().getNomeCompleto() + " seu token para confirmar entrevista é é: <br>" + tokenSenha);
+            emailService.sendEmailRecuperacaoSenha(entrevistaEntity.getCandidatoEntity().getEmail(), base);
+//        }
+//        catch(MalformedURLException e){
+//            throw new RegraDeNegocioException("Url inválida");
+//        }
+    }
+
+    public EntrevistaEntity findByCandidatoEntity(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
+        Optional<EntrevistaEntity> entrevistaEntityOptional = entrevistaRepository.findByCandidatoEntity(candidatoEntity);
+        if(entrevistaEntityOptional.isEmpty()){
+            throw new RegraDeNegocioException("Entrevista com o candidato não encontrada!");
+        }
+        return entrevistaEntityOptional.get();
     }
 
     public void deletarEntrevista(Integer idEntrevista) throws RegraDeNegocioException {
@@ -99,7 +131,6 @@ public class EntrevistaService {
         entrevista.setDataEntrevista(entrevistaCreateDTO.getDataEntrevista());
         entrevista.setLegenda(legenda);
         EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevista);
-        EntrevistaDTO entrevistaDTO = objectMapper.convertValue(entrevistaSalva, EntrevistaDTO.class);
-        return entrevistaDTO;
+        return converterParaEntrevistaDTO(entrevistaSalva);
     }
 }

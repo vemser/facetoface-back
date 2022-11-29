@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.security;
 
+import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.entity.PerfilEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.exceptions.InvalidTokenException;
@@ -77,6 +78,23 @@ public class TokenService {
                 .compact();
     }
 
+    public String getTokenConfirmacao(EntrevistaEntity entrevistaEntity){
+        LocalDateTime dataAtual = LocalDateTime.now();
+        Date now = Date.from(dataAtual.atZone(ZoneId.systemDefault()).toInstant());
+
+        LocalDateTime dataExpiracao = dataAtual.plusDays(Long.parseLong(expirationChangePassword));
+        Date exp = Date.from(dataExpiracao.atZone(ZoneId.systemDefault()).toInstant());
+
+        String meuToken = Jwts.builder()
+                .setIssuer("vemser-api")
+                .claim(Claims.ID, entrevistaEntity.getCandidatoEntity().getEmail())
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+
+        return meuToken;
+    }
     public String getTokenTrocarSenha(UsuarioEntity usuarioEntity) {
         LocalDateTime dataAtual = LocalDateTime.now();
         Date now = Date.from(dataAtual.atZone(ZoneId.systemDefault()).toInstant());

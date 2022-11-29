@@ -28,14 +28,14 @@ public class SecurityConfiguration {
 
         http.headers().frameOptions().disable().and()
                 .cors().and()
-                .csrf().disable()
-                .authorizeHttpRequests((authz) ->
-                        authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
-                                .antMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
-                                .antMatchers(HttpMethod.POST, "/candidato/**").hasRole("GESTAO")
-                                .antMatchers(HttpMethod.PUT, "/candidato/**").hasRole("GESTAO")
-                                .antMatchers(HttpMethod.POST, "/entrevista").hasAnyRole("GESTAO", "INSTRUTOR")
-                                .anyRequest().authenticated());
+                .csrf().disable();
+//                .authorizeHttpRequests((authz) ->
+//                        authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+//                                .antMatchers("/usuario/**").hasRole("ADMIN")
+//                                .antMatchers(HttpMethod.POST, "/candidato/**").hasRole("GESTAO")
+//                                .antMatchers(HttpMethod.PUT, "/candidato/**").hasRole("GESTAO")
+//                                .antMatchers(HttpMethod.POST, "/entrevista").hasAnyRole("GESTAO", "INSTRUTOR")
+//                                .anyRequest().authenticated());
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -44,6 +44,7 @@ public class SecurityConfiguration {
     public WebSecurityCustomizer webSecurityCustomizer() {
 
         return web -> web.ignoring().antMatchers("/v3/api-docs",
+                "**/auth/confirmar-entrevista/**",
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui/**");

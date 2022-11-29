@@ -11,11 +11,11 @@ public class EntrevistaCreateDTO {
 
     @NotNull
     @Schema(description = "Candidato que irá participar da entrevista.")
-    private String candidatoNome;
+    private String candidatoEmail;
 
     @NotNull
     @Schema(description = "Usuário que irá realizar a entrevista.")
-    private String usuarioNome;
+    private String usuarioEmail;
 
     @NotNull
     @Schema(description = "Dia/Mês/Ano que irá ocorrer a entrevista.")

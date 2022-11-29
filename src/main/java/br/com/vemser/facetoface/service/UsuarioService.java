@@ -35,6 +35,7 @@ public class UsuarioService {
     private final TrilhaService trilhaService;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
 
     public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
@@ -104,13 +105,19 @@ public class UsuarioService {
         usuarioEntity.setPerfis(perfilEntityList);
         usuarioEntity.setGenero(genero);
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
+        emailService.sendEmailEnvioSenha(usuarioSalvo.getEmail(), senha);
         return converterEmDTO(usuarioSalvo);
     }
 
-    public void delete(Integer id) throws RegraDeNegocioException {
+    public void deleteLogico(Integer id) throws RegraDeNegocioException {
         UsuarioEntity usuarioEntity = findById(id);
         usuarioEntity.setAtivo('F');
         usuarioRepository.save(usuarioEntity);
+    }
+
+    public void deleteFisico(Integer id) throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = findById(id);
+        usuarioRepository.deleteById(id);
     }
 
     public UsuarioDTO update(Integer id, UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
@@ -183,5 +190,11 @@ public class UsuarioService {
                 .map(perfil -> objectMapper.convertValue(perfil, PerfilDTO.class))
                 .collect(Collectors.toList()));
         return usuarioDTO;
+    }
+
+    public void atualizarSenhaUsuario(String email, String senha) {
+        Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
+        usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
+        usuarioRepository.save(usuarioEntityOptional.get());
     }
 }
