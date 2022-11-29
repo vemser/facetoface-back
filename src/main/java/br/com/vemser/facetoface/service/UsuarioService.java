@@ -75,8 +75,7 @@ public class UsuarioService {
     }
 
     private String getIdLoggedUser() {
-        String s = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        return s;
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     }
 
     public LoginRetornoDTO getLoggedUser() {

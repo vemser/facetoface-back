@@ -70,4 +70,10 @@ public class CandidatoEntity{
 
     @OneToOne(mappedBy = "candidato")
     private CurriculoEntity curriculoEntity;
+
+    public boolean isEnabled() {
+        {
+            return getAtivo() == 'T';
+        }
+    }
 }

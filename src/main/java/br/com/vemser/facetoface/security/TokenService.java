@@ -53,7 +53,7 @@ public class TokenService {
                 .toList();
 
         return Jwts.builder().
-                setIssuer("vemser-api")
+                setIssuer("facetoface-api")
                 .claim(Claims.ID, usuarioEntity.getEmail())
                 .claim(KEY_CARGOS, cargosDoUsuario)
                 .setIssuedAt(dataAtual)
@@ -70,7 +70,7 @@ public class TokenService {
         Date expiracao = Date.from(dateExpiracaoLocalDate.atZone(ZoneId.systemDefault()).toInstant());
 
         return Jwts.builder().
-                setIssuer("vemser-api")
+                setIssuer("facetoface-api")
                 .claim(Claims.ID, usuarioEntity.getEmail())
                 .setIssuedAt(dataAtual)
                 .setExpiration(expiracao)
@@ -86,7 +86,7 @@ public class TokenService {
         Date exp = Date.from(dataExpiracao.atZone(ZoneId.systemDefault()).toInstant());
 
         String meuToken = Jwts.builder()
-                .setIssuer("vemser-api")
+                .setIssuer("facetoface-api")
                 .claim(Claims.ID, entrevistaEntity.getCandidatoEntity().getEmail())
                 .setIssuedAt(now)
                 .setExpiration(exp)
@@ -104,7 +104,7 @@ public class TokenService {
 
 
         String meuToken = Jwts.builder()
-                .setIssuer("vemser-api")
+                .setIssuer("facetoface-api")
                 .claim(Claims.ID, usuarioEntity.getIdUsuario().toString())
                 .claim(KEY_CARGOS, usuarioEntity.getEmail())
                 .setIssuedAt(now)
