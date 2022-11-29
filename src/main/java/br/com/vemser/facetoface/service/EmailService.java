@@ -29,7 +29,7 @@ public class EmailService {
 //    @Value("${link.confirmacao.entrevista}")
 //    private final String link;
 
-    public void sendEmailConfimacaoEntrevista(String email, String token) {
+    public void sendEmailConfirmacaoEntrevista(String email, String token) {
         final String subject = "Confirmação de entrevista.";
         sendEmail(email, token, "envio-senha-template.html", subject);
     }
