@@ -16,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +30,10 @@ public class CandidatoService {
     private final EdicaoService edicaoService;
     private final TrilhaService trilhaService;
 
-    public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO, Genero genero) throws RegraDeNegocioException, IOException {
+    public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO, Genero genero) throws RegraDeNegocioException {
         List<LinguagemEntity> linguagemList = new ArrayList<>();
         Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByEmail(candidatoCreateDTO.getEmail());
-        if(candidatoEntityOptional.isPresent()){
+        if (candidatoEntityOptional.isPresent()) {
             throw new RegraDeNegocioException("Candidato com este e-mail já existe no sistema.");
         }
         for (LinguagemDTO linguagem : candidatoCreateDTO.getLinguagens()) {
@@ -49,7 +48,7 @@ public class CandidatoService {
         return converterEmDTO(candidatoRepository.save(candidatoEntity));
     }
 
-    public PageDTO<CandidatoDTO> list(Integer pagina, Integer tamanho){
+    public PageDTO<CandidatoDTO> list(Integer pagina, Integer tamanho) {
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
         Page<CandidatoEntity> candidatoEntityPage = candidatoRepository.findAll(pageRequest);
         List<CandidatoDTO> candidatoDTOList = candidatoEntityPage.stream()
@@ -90,16 +89,13 @@ public class CandidatoService {
     }
 
     public CandidatoDTO findByEmail(String email) throws RegraDeNegocioException {
-        Optional<CandidatoEntity> candidatoEntity = candidatoRepository.findByEmail(email);
-        if(candidatoEntity.isEmpty()){
-            throw new RegraDeNegocioException("Candidato com o e-mail especificado não existe");
-        }
-        return converterEmDTO(candidatoEntity.get());
+        CandidatoEntity candidatoEntity = findByEmailEntity(email);
+        return converterEmDTO(candidatoEntity);
     }
 
     public CandidatoEntity findByEmailEntity(String email) throws RegraDeNegocioException {
         Optional<CandidatoEntity> candidatoEntity = candidatoRepository.findByEmail(email);
-        if(candidatoEntity.isEmpty()){
+        if (candidatoEntity.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com o e-mail especificado não existe");
         }
         return candidatoEntity.get();
@@ -127,7 +123,7 @@ public class CandidatoService {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<RelatorioCandidatoCadastroDTO> candidatoEntityPage = candidatoRepository.listRelatorioCandidatoCadastroDTO(nomeCompleto, nomeTrilha, pageRequest);
-        if(candidatoEntityPage.isEmpty()){
+        if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
         }
         return new PageDTO<>(candidatoEntityPage.getTotalElements(),
@@ -136,11 +132,12 @@ public class CandidatoService {
                 tamanho,
                 candidatoEntityPage.toList());
     }
+
     public PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto, nomeTrilha, pageRequest);
-        if(candidatoEntityPage.isEmpty()){
+        if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
         }
         return new PageDTO<>(candidatoEntityPage.getTotalElements(),
@@ -165,9 +162,9 @@ public class CandidatoService {
         return candidatoDTO;
     }
 
-    public CandidatoEntity findByNome(String nome) throws RegraDeNegocioException{
+    public CandidatoEntity findByNome(String nome) throws RegraDeNegocioException {
         Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByNomeCompleto(nome);
-        if(candidatoEntityOptional.isEmpty()){
+        if (candidatoEntityOptional.isEmpty()) {
             throw new RegraDeNegocioException("Candidato não encontrado!");
         }
         return candidatoEntityOptional.get();
