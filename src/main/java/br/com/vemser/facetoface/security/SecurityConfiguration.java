@@ -32,15 +32,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authz) ->
                         authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .antMatchers(HttpMethod.PUT, "/auth/**").permitAll()
+                                .antMatchers(HttpMethod.GET, "/**").hasAnyRole("GESTAO","ADMIN","INSTRUTOR")
+                                .antMatchers(HttpMethod.PUT, "/entrevista/**").hasAnyRole("GESTAO","ADMIN","INSTRUTOR")
+                                .antMatchers(HttpMethod.POST, "/entrevista/**").hasAnyRole("GESTAO","INSTRUTOR")
+                                .antMatchers( "/candidato/**").hasAnyRole("GESTAO")
                                 .antMatchers("/usuario/**").hasRole("ADMIN")
                                 .antMatchers("/usuario").hasRole("ADMIN")
-                                .antMatchers(HttpMethod.POST, "/candidato").hasRole("GESTAO")
-                                .antMatchers(HttpMethod.GET, "/candidato").hasRole("GESTAO")
-                                .antMatchers(HttpMethod.PUT, "/candidato/**").hasRole("GESTAO")
-                                .antMatchers(HttpMethod.DELETE, "/candidato").hasAnyRole("ADMIN","GESTAO")
-                                .antMatchers(HttpMethod.POST, "/entrevista").hasAnyRole("GESTAO", "INSTRUTOR")
-                                .antMatchers(HttpMethod.GET, "/entrevista").hasRole("GESTAO")
-                                .antMatchers(HttpMethod.PUT, "/entrevista/**").hasAnyRole("ADMIN","GESTAO","INSTRUTOR")
                                 .anyRequest().authenticated());
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
