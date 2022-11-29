@@ -16,11 +16,6 @@ import java.util.List;
 public class PerfilController {
     private final PerfilService perfilService;
 
-    @GetMapping
-    public List<PerfilEntity> getPerfils() {
-        return perfilService.listarPerfis();
-    }
-
     @DeleteMapping("/delete-fisico/{idPerfil}")
     public ResponseEntity<UsuarioDTO> deleteFisico(@PathVariable("idPerfil") Integer id) throws RegraDeNegocioException {
         perfilService.deleteFisico(id);

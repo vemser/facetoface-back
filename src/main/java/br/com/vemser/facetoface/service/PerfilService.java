@@ -29,16 +29,6 @@ public class PerfilService {
                 .orElseThrow(() -> new RegraDeNegocioException("Perfil não encontrado!"));
     }
 
-    public List<PerfilEntity> listarPerfis() {
-        return perfilRepository.findAll();
-    }
-
-    public List<String> convertToStringList(Set<PerfilEntity> perfilEntities) {
-        return perfilEntities.stream()
-                .map(PerfilEntity::getNome)
-                .toList();
-    }
-
     public PerfilDTO convertToDTO(PerfilEntity perfilEntity) {
         return objectMapper.convertValue(perfilEntity, PerfilDTO.class);
     }
