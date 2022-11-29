@@ -37,15 +37,15 @@ public interface OperationControllerCandidato {
     })
     CandidatoDTO findByEmail(@PathVariable("email") String email) throws RegraDeNegocioException;
 
-    @Operation(summary = "Procurar candidato no sistema por nome completo", description = "Procura o candidato pelo nome completo se estiver cadastrado no sistema")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Pesquisa pelo nome completo realizada com sucesso!"),
-            @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
-            @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
-    })
-    public PageDTO<CandidatoDTO> findByNomeCompleto(@PathVariable("nomeCompleto") String nomeCompleto,
-                                                    @RequestParam(defaultValue = "0") Integer pagina,
-                                                    @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
+//    @Operation(summary = "Procurar candidato no sistema por nome completo", description = "Procura o candidato pelo nome completo se estiver cadastrado no sistema")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Pesquisa pelo nome completo realizada com sucesso!"),
+//            @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
+//            @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
+//    })
+//    public PageDTO<CandidatoDTO> findByNomeCompleto(@PathVariable("nomeCompleto") String nomeCompleto,
+//                                                    @RequestParam(defaultValue = "0") Integer pagina,
+//                                                    @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
 
     @Operation(summary = "Criar cadastro de Candidato", description = "Criar candidato no Sistema")
     @ApiResponses(value = {

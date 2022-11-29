@@ -97,4 +97,9 @@ public class ImageService {
     private Optional<ImageEntity> findByUsuario(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
         return imageRepository.findByUsuario(usuarioEntity);
     }
+
+    public void deleteFisico(Integer id) throws RegraDeNegocioException {
+        findById(id);
+        imageRepository.deleteById(id);
+    }
 }

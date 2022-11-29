@@ -2,6 +2,7 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.CurriculoEntity;
+import br.com.vemser.facetoface.entity.ImageEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.CurriculoRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,11 @@ public class CurriculoService {
     private final CurriculoRepository curriculoRepository;
 
     private final CandidatoService candidatoService;
+
+    public CurriculoEntity findById(Integer idCurriculo) throws RegraDeNegocioException {
+        return curriculoRepository.findById(idCurriculo)
+                .orElseThrow(() -> new RegraDeNegocioException("Currículo não encontrado!"));
+    }
 
     public void arquivarCurriculo(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
@@ -51,5 +57,10 @@ public class CurriculoService {
 
     private Optional<CurriculoEntity> findByCandidato(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
         return curriculoRepository.findByCandidato(candidatoEntity);
+    }
+
+    public void deleteFisico(Integer id) throws RegraDeNegocioException {
+        findById(id);
+        curriculoRepository.deleteById(id);
     }
 }

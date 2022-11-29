@@ -2,6 +2,8 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
+import br.com.vemser.facetoface.entity.PerfilEntity;
+import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.LinguagemRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,17 @@ public class LinguagemService {
         return linguagemEntity.get();
     }
 
+    public LinguagemEntity findById(Integer idLinguagem) throws RegraDeNegocioException {
+        return linguagemRepository.findById(idLinguagem)
+                .orElseThrow(() -> new RegraDeNegocioException("Linguagem não encontrada!"));
+    }
+
     private LinguagemEntity converterEntity(LinguagemDTO linguagemDTO) {
         return objectMapper.convertValue(linguagemDTO, LinguagemEntity.class);
+    }
+
+    public void deleteFisico(Integer id) throws RegraDeNegocioException {
+        findById(id);
+        linguagemRepository.deleteById(id);
     }
 }

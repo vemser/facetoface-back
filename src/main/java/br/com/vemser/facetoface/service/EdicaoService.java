@@ -2,6 +2,8 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.EdicaoDTO;
 import br.com.vemser.facetoface.entity.EdicaoEntity;
+import br.com.vemser.facetoface.entity.PerfilEntity;
+import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EdicaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,11 @@ import java.util.Optional;
 public class EdicaoService {
     private final EdicaoRepository edicaoRepository;
     private final ObjectMapper objectMapper;
+
+    public EdicaoEntity findById(Integer idEdicao) throws RegraDeNegocioException {
+        return edicaoRepository.findById(idEdicao)
+                .orElseThrow(() -> new RegraDeNegocioException("Edição não encontrada!"));
+    }
 
     public EdicaoEntity create(EdicaoDTO edicaoDTO){
         edicaoDTO.setNome(edicaoDTO.getNome().trim().toUpperCase());
@@ -30,5 +37,10 @@ public class EdicaoService {
 
     private EdicaoEntity converterEntity(EdicaoDTO edicaoDTO) {
         return objectMapper.convertValue(edicaoDTO, EdicaoEntity.class);
+    }
+
+    public void deleteFisico(Integer id) throws RegraDeNegocioException {
+        findById(id);
+        edicaoRepository.deleteById(id);
     }
 }

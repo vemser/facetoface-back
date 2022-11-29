@@ -1,12 +1,12 @@
 package br.com.vemser.facetoface.controller;
 
 import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerCandidato;
-import br.com.vemser.facetoface.dto.RelatorioCandidatoDTO;
+import br.com.vemser.facetoface.dto.RelatorioCandidatoCadastroDTO;
+import br.com.vemser.facetoface.dto.RelatorioCandidatoPaginaPrincipalDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
+import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
-import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
-import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.CandidatoService;
@@ -29,7 +29,7 @@ import java.io.IOException;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/candidato")
-public class CandidatoController implements OperationControllerCandidato {
+public class CandidatoController {
     private final CandidatoService candidatoService;
     private final CurriculoService curriculoService;
     private final ImageService imageService;
@@ -45,12 +45,12 @@ public class CandidatoController implements OperationControllerCandidato {
         return candidatoService.findByEmail(email);
     }
 
-    @GetMapping("/findbynomecompleto")
-    public PageDTO<CandidatoDTO> findByNomeCompleto(@RequestParam("nomeCompleto") String nomeCompleto,
-                                           @RequestParam(defaultValue = "0") Integer pagina,
-                                           @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
-        return candidatoService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
-    }
+//    @GetMapping("/findbynomecompleto")
+//    public PageDTO<CandidatoDTO> findByNomeCompleto(@RequestParam("nomeCompleto") String nomeCompleto,
+//                                           @RequestParam(defaultValue = "0") Integer pagina,
+//                                           @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
+//        return candidatoService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
+//    }
 
     @PostMapping
     public ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
@@ -67,13 +67,21 @@ public class CandidatoController implements OperationControllerCandidato {
         return new ResponseEntity<>(candidatoDTO, HttpStatus.OK);
     }
 
-//    @GetMapping("/listar-por-nome-ou-por-trilha")
-//    public PageDTO<RelatorioCandidatoDTO> listByNomeAndTrilha(@RequestParam("nomeCompleto") String nomeCompleto,
-//                                                              @RequestParam(defaultValue = "0") Integer pagina,
-//                                                              @RequestParam(defaultValue = "20") Integer tamanho,
-//                                                              @RequestParam TrilhaEntity trilhaEntity) throws RegraDeNegocioException {
-//        return candidatoService.findAllByNomeCompletoAndTrilha(nomeCompleto, pagina, tamanho, trilhaEntity);
-//    }
+    @GetMapping("/listar-candidato-cadastro-por-nome-ou-por-trilha")
+    public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(@RequestParam(value = "nomeCompleto", required = false) String nomeCompleto,
+                                                                      @RequestParam(defaultValue = "0") Integer pagina,
+                                                                      @RequestParam(defaultValue = "20") Integer tamanho,
+                                                                      @RequestParam(required = false) String nomeTrilha) throws RegraDeNegocioException {
+        return candidatoService.listRelatorioCandidatoCadastroDTO(nomeCompleto, pagina, tamanho, nomeTrilha);
+    }
+
+    @GetMapping("/listar-candidato-principal-por-nome-ou-por-trilha")
+    public PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(@RequestParam(value = "nomeCompleto", required = false) String nomeCompleto,
+                                                                                                           @RequestParam(defaultValue = "0") Integer pagina,
+                                                                                                           @RequestParam(defaultValue = "20") Integer tamanho,
+                                                                                                           @RequestParam(required = false) String nomeTrilha) throws RegraDeNegocioException {
+        return candidatoService.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto, pagina, tamanho, nomeTrilha);
+    }
 
     @DeleteMapping("/{idCandidato}")
     public ResponseEntity<CandidatoDTO> delete(@PathVariable("idCandidato") Integer id) throws RegraDeNegocioException {
@@ -103,5 +111,11 @@ public class CandidatoController implements OperationControllerCandidato {
     @GetMapping("/recuperar-curriculo")
     public ResponseEntity<String> recuperarCurriculo(@RequestParam("email") String email) throws RegraDeNegocioException{
         return new ResponseEntity<>(curriculoService.pegarCurriculoCandidato(email), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete-fisico/{idCandidato}")
+    public ResponseEntity<CandidatoDTO> deleteFisico(@PathVariable("idCandidato") Integer id) throws RegraDeNegocioException {
+        candidatoService.deleteFisico(id);
+        return ResponseEntity.noContent().build();
     }
 }

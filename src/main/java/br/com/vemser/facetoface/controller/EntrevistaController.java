@@ -5,6 +5,7 @@ import br.com.vemser.facetoface.dto.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaCreateDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
+import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.EntrevistaService;
@@ -48,5 +49,11 @@ public class EntrevistaController implements OperationControllerEntrevista {
     public ResponseEntity<PageDTO<EntrevistaDTO>> list(@RequestParam(defaultValue = "0") Integer pagina,
                                                        @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
         return new ResponseEntity<>(entrevistaService.list(pagina, tamanho), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete-fisico/{idEntrevista}")
+    public ResponseEntity<EntrevistaDTO> deleteFisico(@PathVariable("idEntrevista") Integer id) throws RegraDeNegocioException {
+        entrevistaService.deleteFisico(id);
+        return ResponseEntity.noContent().build();
     }
 }
