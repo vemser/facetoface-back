@@ -24,7 +24,7 @@ import java.time.Year;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/entrevista")
-public class EntrevistaController implements OperationControllerEntrevista {
+public class EntrevistaController {
 
     private final EntrevistaService entrevistaService;
 
