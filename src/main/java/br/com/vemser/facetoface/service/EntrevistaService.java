@@ -53,7 +53,7 @@ public class EntrevistaService {
     public PageDTO<EntrevistaDTO> list(Integer pagina, Integer tamanho){
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
         Page<EntrevistaEntity> entrevistaEntityPage = entrevistaRepository.findAll(pageRequest);
-        List<EntrevistaDTO> entrevistaDTOList = entrevistaRepository.findAll().stream()
+        List<EntrevistaDTO> entrevistaDTOList = entrevistaEntityPage.stream()
                 .map(this::converterParaEntrevistaDTO)
                 .toList();
         return new PageDTO<>(entrevistaEntityPage.getTotalElements(),

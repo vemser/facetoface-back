@@ -1,9 +1,12 @@
 package br.com.vemser.facetoface.controller;
 
 import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerCandidato;
+import br.com.vemser.facetoface.dto.RelatorioCandidatoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
+import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
+import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.CandidatoService;
@@ -63,6 +66,14 @@ public class CandidatoController implements OperationControllerCandidato {
         CandidatoDTO candidatoDTO = candidatoService.update(id, candidatoCreateDTO, genero);
         return new ResponseEntity<>(candidatoDTO, HttpStatus.OK);
     }
+
+//    @GetMapping("/listar-por-nome-ou-por-trilha")
+//    public PageDTO<RelatorioCandidatoDTO> listByNomeAndTrilha(@RequestParam("nomeCompleto") String nomeCompleto,
+//                                                              @RequestParam(defaultValue = "0") Integer pagina,
+//                                                              @RequestParam(defaultValue = "20") Integer tamanho,
+//                                                              @RequestParam TrilhaEntity trilhaEntity) throws RegraDeNegocioException {
+//        return candidatoService.findAllByNomeCompletoAndTrilha(nomeCompleto, pagina, tamanho, trilhaEntity);
+//    }
 
     @DeleteMapping("/{idCandidato}")
     public ResponseEntity<CandidatoDTO> delete(@PathVariable("idCandidato") Integer id) throws RegraDeNegocioException {

@@ -2,12 +2,14 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.EdicaoDTO;
 import br.com.vemser.facetoface.dto.LinguagemDTO;
+import br.com.vemser.facetoface.dto.RelatorioCandidatoDTO;
 import br.com.vemser.facetoface.dto.TrilhaDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
+import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.CandidatoRepository;
@@ -54,7 +56,7 @@ public class CandidatoService {
     public PageDTO<CandidatoDTO> list(Integer pagina, Integer tamanho){
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
         Page<CandidatoEntity> candidatoEntityPage = candidatoRepository.findAll(pageRequest);
-        List<CandidatoDTO> candidatoDTOList = candidatoRepository.findAll().stream()
+        List<CandidatoDTO> candidatoDTOList = candidatoEntityPage.stream()
                 .map(this::converterEmDTO)
                 .toList();
         return new PageDTO<>(candidatoEntityPage.getTotalElements(),
@@ -108,13 +110,13 @@ public class CandidatoService {
     }
 
     public PageDTO<CandidatoDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
-        Sort ordenacao = Sort.by("nomeCompleto");
+        Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<CandidatoEntity> candidatoEntityPage = candidatoRepository.findAllByNomeCompleto(nomeCompleto, pageRequest);
         if(candidatoEntityPage.isEmpty()){
             throw new RegraDeNegocioException("Candidato com o nome especificado não existe");
         }
-        List<CandidatoDTO> candidatoDTOList = candidatoRepository.findAll()
+        List<CandidatoDTO> candidatoDTOList = candidatoEntityPage
                 .stream()
                 .map(this::converterEmDTO)
                 .toList();
@@ -124,6 +126,20 @@ public class CandidatoService {
                 tamanho,
                 candidatoDTOList);
     }
+
+//    public PageDTO<RelatorioCandidatoDTO> findAllByNomeCompletoAndTrilha(String nomeCompleto, Integer pagina, Integer tamanho, TrilhaEntity trilhaEntity) throws RegraDeNegocioException {
+//        Sort ordenacao = Sort.by("notaProva");
+//        PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
+//        Page<RelatorioCandidatoDTO> candidatoEntityPage = candidatoRepository.listarRelatoriosLocacao(nomeCompleto, trilhaEntity, pageRequest);
+//        if(candidatoEntityPage.isEmpty()){
+//            throw new RegraDeNegocioException("Candidato com o nome especificado não existe");
+//        }
+//        return new PageDTO<>(candidatoEntityPage.getTotalElements(),
+//                candidatoEntityPage.getTotalPages(),
+//                pagina,
+//                tamanho,
+//                candidatoEntityPage);
+//    }
 
     private CandidatoEntity converterEntity(CandidatoCreateDTO candidatoCreateDTO) {
         return objectMapper.convertValue(candidatoCreateDTO, CandidatoEntity.class);

@@ -139,7 +139,7 @@ public class UsuarioService {
     public PageDTO<UsuarioDTO> list(Integer pagina, Integer tamanho){
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
         Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findAll(pageRequest);
-        List<UsuarioDTO> usuarioDTOList = usuarioRepository.findAll().stream()
+        List<UsuarioDTO> usuarioDTOList = usuarioEntityPage
                 .map(this::converterEmDTO)
                 .toList();
         return new PageDTO<>(usuarioEntityPage.getTotalElements(),
@@ -156,7 +156,7 @@ public class UsuarioService {
         if(usuarioEntityPage.isEmpty()){
             throw new RegraDeNegocioException("Usuário com o nome especificado não existe");
         }
-        List<UsuarioDTO> usuarioDTOList = usuarioRepository.findAll()
+        List<UsuarioDTO> usuarioDTOList = usuarioEntityPage
                 .stream()
                 .map(this::converterEmDTO)
                 .toList();
