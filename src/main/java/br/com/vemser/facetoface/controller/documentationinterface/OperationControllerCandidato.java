@@ -53,7 +53,8 @@ public interface OperationControllerCandidato {
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
-    ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO, Genero genero) throws RegraDeNegocioException;
+    public ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
+                                               Genero genero) throws RegraDeNegocioException, IOException;
 
     @Operation(summary = "Atualizar cadastro de candidato", description = "Atualizar candidato no Sistema")
     @ApiResponses(value = {
