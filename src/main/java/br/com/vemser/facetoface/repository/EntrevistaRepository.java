@@ -26,7 +26,7 @@ public interface EntrevistaRepository extends JpaRepository<EntrevistaEntity,Int
 
     @Query("SELECT e FROM ENTREVISTAS e " +
             "WHERE EXTRACT (MONTH FROM e.dataEntrevista) = :mes AND EXTRACT (YEAR FROM e.dataEntrevista) = :ano" +
-            " ORDER BY e.dataEntrevista ASC")
+            " ORDER BY e.dataEntrevista ASC  ")
     Page<EntrevistaEntity> findAllByMes(Integer mes, Integer ano, PageRequest pageRequest);
 
 }
