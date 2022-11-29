@@ -126,9 +126,13 @@ public class TokenService {
                 .getBody();
 
         String user = claims.get(Claims.ID, String.class);
+        List<String> cargos = claims.get(KEY_CARGOS, List.class);
 
-        SimpleGrantedAuthority cargoSimple = new SimpleGrantedAuthority(KEY_CARGOS);
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(cargoSimple));
+        List<SimpleGrantedAuthority> listaDeCargos = cargos.stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+
+        return new UsernamePasswordAuthenticationToken(user, null, listaDeCargos);
     }
 
     public String getEmailByToken(String token) throws InvalidTokenException {

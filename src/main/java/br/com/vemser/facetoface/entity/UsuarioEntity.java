@@ -56,7 +56,7 @@ public class UsuarioEntity implements UserDetails {
     @JoinTable(name = "USUARIO_PERFIL",
         joinColumns = @JoinColumn(name = "ID_USUARIO"),
         inverseJoinColumns = @JoinColumn(name = "ID_PERFIL"))
-    private List<PerfilEntity> perfis;
+    private Set<PerfilEntity> perfis;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuarioEntity")

@@ -22,9 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,7 +83,7 @@ public class UsuarioService {
         return loginDTO;
     }
     public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException, IOException {
-        List<PerfilEntity> perfilEntityList = new ArrayList<>();
+        Set<PerfilEntity> perfilEntityList = new HashSet<>();
         Optional<UsuarioEntity> usuario = findByEmail(usuarioCreateDTO.getEmail());
         Faker faker = new Faker();
         if (usuario.isPresent()) {
@@ -120,7 +118,7 @@ public class UsuarioService {
     }
 
     public UsuarioDTO update(Integer id, UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
-        List<PerfilEntity> perfilEntityList = new ArrayList<>();
+        Set<PerfilEntity> perfilEntityList = new HashSet<>();
         findById(id);
         UsuarioEntity usuarioEntity = converterEntity(usuarioCreateDTO);
         Faker faker = new Faker();
