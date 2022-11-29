@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.time.Month;
+import java.time.Year;
 
 public interface OperationControllerEntrevista {
 
@@ -63,4 +64,15 @@ public interface OperationControllerEntrevista {
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
     public ResponseEntity<EntrevistaDTO> deletarEntrevista(@PathVariable("idEntrevista") Integer id) throws RegraDeNegocioException;
+
+    @Operation(summary = "Listagem de entrevistas por usuarios no sistema", description = "Listagem das entrevistas de acordo com o mês no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listagem  realizada com sucesso!"),
+            @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
+            @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
+    })
+    public ResponseEntity<PageDTO<EntrevistaDTO>> listarMesAno(@RequestParam(defaultValue = "0") Integer pagina,
+                                                               @RequestParam(defaultValue = "20") Integer tamanho,
+                                                               @RequestParam Integer mes,
+                                                               @RequestParam Integer ano) throws RegraDeNegocioException;
 }

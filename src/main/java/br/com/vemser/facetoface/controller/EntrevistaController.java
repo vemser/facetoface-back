@@ -16,6 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.Month;
+import java.time.Year;
 
 @Slf4j
 @Validated
@@ -48,5 +50,13 @@ public class EntrevistaController implements OperationControllerEntrevista {
     public ResponseEntity<PageDTO<EntrevistaDTO>> list(@RequestParam(defaultValue = "0") Integer pagina,
                                                        @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
         return new ResponseEntity<>(entrevistaService.list(pagina, tamanho), HttpStatus.OK);
+    }
+
+    @GetMapping("/listar-por-mes")
+    public ResponseEntity<PageDTO<EntrevistaDTO>> listarMesAno(@RequestParam(defaultValue = "0") Integer pagina,
+                                                                  @RequestParam(defaultValue = "20") Integer tamanho,
+                                                                  @RequestParam Integer mes,
+                                                                  @RequestParam Integer ano) throws RegraDeNegocioException {
+        return new ResponseEntity<>(entrevistaService.listMes(pagina, tamanho, mes, ano), HttpStatus.OK);
     }
 }

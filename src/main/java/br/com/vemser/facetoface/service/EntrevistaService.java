@@ -13,14 +13,16 @@ import br.com.vemser.facetoface.repository.EntrevistaRepository;
 import br.com.vemser.facetoface.security.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.type.LocalDateTimeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Base64;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +56,21 @@ public class EntrevistaService {
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
         Page<EntrevistaEntity> entrevistaEntityPage = entrevistaRepository.findAll(pageRequest);
         List<EntrevistaDTO> entrevistaDTOList = entrevistaEntityPage.stream()
+                .map(this::converterParaEntrevistaDTO)
+                .toList();
+        return new PageDTO<>(entrevistaEntityPage.getTotalElements(),
+                entrevistaEntityPage.getTotalPages(),
+                pagina,
+                tamanho,
+                entrevistaDTOList);
+    }
+
+    public PageDTO<EntrevistaDTO> listMes(Integer pagina, Integer tamanho, Integer mes, Integer ano){
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+        Page<EntrevistaEntity> entrevistaEntityPage = entrevistaRepository.findAllByMes(mes, ano, pageRequest);
+
+        List<EntrevistaDTO> entrevistaDTOList = entrevistaEntityPage
+                .stream()
                 .map(this::converterParaEntrevistaDTO)
                 .toList();
         return new PageDTO<>(entrevistaEntityPage.getTotalElements(),

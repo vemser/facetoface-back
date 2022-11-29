@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @AllArgsConstructor
@@ -37,6 +38,7 @@ public class CandidatoEntity{
     @Column(name = "estado")
     private String estado;
 
+    @Email
     @Column(name = "email")
     private String email;
 

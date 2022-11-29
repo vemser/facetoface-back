@@ -2,11 +2,14 @@ package br.com.vemser.facetoface.dto.entrevista;
 
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EntrevistaCreateDTO {
 
     @NotNull
@@ -28,10 +31,6 @@ public class EntrevistaCreateDTO {
     @NotNull
     @Schema(description = "Estado em que o usuário irá realizar a entrevista")
     private String estado;
-
-//    @NotNull
-//    @Schema(description = "Hora/Min/Seg que irá ocorrer a entrevista.")
-//    private LocalTime horasMin;
 
     @NotNull
     @Schema(description = "Observações referentes a entrevista.")
