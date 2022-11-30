@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @Getter
@@ -29,6 +30,7 @@ public class UsuarioCreateDTO {
     private String estado;
 
     @NotNull
+    @Email
     @Schema(example = "priscila.matos@dbccompany.com.br", description = "E-mail do candidato.")
     private String email;
 

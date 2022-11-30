@@ -98,7 +98,11 @@ public class UsuarioService {
         usuarioEntity.setGenero(genero);
         usuarioEntity.setNomeCompleto(usuarioEntity.getNomeCompleto().trim());
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
-        emailService.sendEmailEnvioSenha(usuarioSalvo.getEmail(), senha);
+        try {
+            emailService.sendEmailEnvioSenha(usuarioSalvo.getEmail(), senha);
+        } catch (Exception e){
+            throw new RegraDeNegocioException("Email inválido!");
+        }
         return converterEmDTO(usuarioSalvo);
     }
 

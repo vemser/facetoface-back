@@ -113,7 +113,7 @@ public class EntrevistaService {
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
 
-    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) {
+    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) throws RegraDeNegocioException {
         String tokenSenha = tokenService.getTokenConfirmacao(entrevistaEntity);
 //        try{
 //            String link = "http://localhost:8080/auth/confirmar-entrevista/";
@@ -122,7 +122,11 @@ public class EntrevistaService {
         String base = ("Olá "
                 + entrevistaEntity.getCandidatoEntity().getNomeCompleto()
                 + " seu token para confirmar entrevista é é: <br>" + tokenSenha);
-        emailService.sendEmailRecuperacaoSenha(entrevistaEntity.getCandidatoEntity().getEmail(), base);
+        try {
+            emailService.sendEmailRecuperacaoSenha(entrevistaEntity.getCandidatoEntity().getEmail(), base);
+        } catch (Exception e){
+            throw new RegraDeNegocioException("Email inválido!");
+        }
 //        }
 //        catch(MalformedURLException e){
 //            throw new RegraDeNegocioException("Url inválida");

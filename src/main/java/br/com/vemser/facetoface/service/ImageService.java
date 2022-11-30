@@ -60,13 +60,14 @@ public class ImageService {
             imagemBD.get().setData(file.getBytes());
             imagemBD.get().setUsuario(usuarioEntity.get());
             imageRepository.save(imagemBD.get());
+        }else {
+            ImageEntity novaImagemBD = new ImageEntity();
+            novaImagemBD.setNome(nomeArquivo);
+            novaImagemBD.setTipo(file.getContentType());
+            novaImagemBD.setData(file.getBytes());
+            novaImagemBD.setUsuario(usuarioEntity.get());
+            imageRepository.save(novaImagemBD);
         }
-        ImageEntity novaImagemBD = new ImageEntity();
-        novaImagemBD.setNome(nomeArquivo);
-        novaImagemBD.setTipo(file.getContentType());
-        novaImagemBD.setData(file.getBytes());
-        novaImagemBD.setUsuario(usuarioEntity.get());
-        imageRepository.save(novaImagemBD);
     }
 
     public String pegarImagemCandidato(String email) throws RegraDeNegocioException{

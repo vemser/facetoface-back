@@ -58,7 +58,11 @@ public class AuthService {
                 + usuarioEntityOptional.get().getNomeCompleto()
                 + " seu token para trocar de senha é: <br>"
                 + tokenSenha;
-        emailService.sendEmailRecuperacaoSenha(email, base);
+        try {
+            emailService.sendEmailRecuperacaoSenha(email, base);
+        } catch (Exception e){
+            throw new RegraDeNegocioException("Email inválido!");
+        }
     }
 
     public String procurarUsuario(String token) throws RegraDeNegocioException {

@@ -36,13 +36,14 @@ public class CurriculoService {
             curriculoEntityOptional.get().setDado(file.getBytes());
             curriculoEntityOptional.get().setCandidato(candidatoEntity);
             curriculoRepository.save(curriculoEntityOptional.get());
+        }else {
+            CurriculoEntity curriculo = new CurriculoEntity();
+            curriculo.setNome(nomeArquivo);
+            curriculo.setTipo(file.getContentType());
+            curriculo.setDado(file.getBytes());
+            curriculo.setCandidato(candidatoEntity);
+            curriculoRepository.save(curriculo);
         }
-        CurriculoEntity curriculo = new CurriculoEntity();
-        curriculo.setNome(nomeArquivo);
-        curriculo.setTipo(file.getContentType());
-        curriculo.setDado(file.getBytes());
-        curriculo.setCandidato(candidatoEntity);
-        curriculoRepository.save(curriculo);
     }
 
     public String pegarCurriculoCandidato(String email) throws RegraDeNegocioException{
