@@ -60,7 +60,7 @@ public class UsuarioService {
         return converterEmDTO(usuarioEntity.get());
     }
 
-    private Optional<UsuarioEntity> findByLogin(String email) {
+    public Optional<UsuarioEntity> findByLogin(String email) {
         Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
         return usuarioEntity;
     }

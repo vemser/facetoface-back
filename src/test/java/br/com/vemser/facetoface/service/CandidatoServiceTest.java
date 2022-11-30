@@ -216,7 +216,7 @@ public class CandidatoServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoCandidatoNaoTiverCurrilo() throws RegraDeNegocioException {
+    public void deveRetornarUmaExcecaoQuandoCandidatoNaoTiverCurriculo() throws RegraDeNegocioException {
         final String nomeEsperado = "Heloise Isabela Lopes";
         final int pagina = 0;
         final int tamanho = 10;
