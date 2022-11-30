@@ -36,14 +36,10 @@ public class ImageServiceTest {
     @Mock
     private ImageRepository imageRepository;
 
-    @Mock
-    private CandidatoRepository candidatoRepository;
 
     @Mock
     private UsuarioService usuarioService;
 
-    @Mock
-    private UsuarioRepository usuarioRepository;
 
 
     @Test
@@ -75,7 +71,6 @@ public class ImageServiceTest {
         //Setup
         UsuarioEntity usuarioEntity = getUsuarioEntity();
         //Act
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(imageRepository.findByCandidato(any())).thenReturn(Optional.empty());
         String imagemBase64 = imageService.pegarImagemCandidato(usuarioEntity.getEmail());
     }
