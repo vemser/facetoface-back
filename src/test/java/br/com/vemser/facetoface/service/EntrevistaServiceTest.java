@@ -2,6 +2,7 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
+import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
@@ -21,13 +22,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -69,6 +74,44 @@ public class EntrevistaServiceTest {
     public void deveRetornarUmaExcecaoQuandoIdNaoCadastradoNoBanco() throws RegraDeNegocioException {
         when(entrevistaRepository.findById(1)).thenReturn(Optional.empty());
         entrevistaService.findById(1);
+    }
+
+    @Test
+    public void deveRetornarUmaListaDeEntrevistaDTO() {
+        final int tamanhoEsperado = 1;
+        final int pagina = 0;
+        final int tamanho = 5;
+
+        EntrevistaEntity entrevista = getEntrevistaEntity();
+        PageImpl<EntrevistaEntity> page =
+                new PageImpl<>(List.of(entrevista), PageRequest.of(pagina, tamanho), 0);
+
+        when(entrevistaRepository.findAll(any(PageRequest.class))).thenReturn(page);
+
+        PageDTO<EntrevistaDTO> entrevistaDTOS = entrevistaService.list(pagina, tamanho);
+
+        assertEquals(pagina, entrevistaDTOS.getPagina());
+        assertEquals(tamanho, entrevistaDTOS.getTamanho());
+        assertEquals(tamanhoEsperado, entrevistaDTOS.getElementos().size());
+    }
+
+    @Test
+    public void deveRetornarUmaListaPorMes() {
+        final int tamanhoEsperado = 1;
+        final int pagina = 0;
+        final int tamanho = 5;
+
+        EntrevistaEntity entrevista = getEntrevistaEntity();
+        PageImpl<EntrevistaEntity> page =
+                new PageImpl<>(List.of(entrevista), PageRequest.of(pagina, tamanho), 0);
+
+        when(entrevistaRepository.findAllByMes(anyInt(), anyInt(), any())).thenReturn(page);
+
+        PageDTO<EntrevistaDTO> entrevistaDTOS = entrevistaService.listMes(pagina, tamanho, 11, 2022);
+
+        assertEquals(pagina, entrevistaDTOS.getPagina());
+        assertEquals(tamanho, entrevistaDTOS.getTamanho());
+        assertEquals(tamanhoEsperado, entrevistaDTOS.getElementos().size());
     }
 
     @Test
