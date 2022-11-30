@@ -362,7 +362,7 @@ public class CandidatoServiceTest {
                 "BACKEND",
                 "Edição 10",
                 Genero.FEMININO,
-                'T', "Santana", "AP", "Java", "Sem observação", null
+                'T', "Santana", "AP", "Sem observação", null
         );
     }
 

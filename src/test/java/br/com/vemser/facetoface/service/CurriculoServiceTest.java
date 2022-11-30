@@ -10,7 +10,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HexFormat;
 import java.util.Optional;
 
@@ -18,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CurriculoServiceTest {
@@ -65,8 +69,20 @@ public class CurriculoServiceTest {
         when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
         when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.of(getCurriculoEntity()));
         String curriculoBase64 = curriculoService.pegarCurriculoCandidato(candidatoEntity.getEmail());
+    }
 
-        assertNotNull(curriculoBase64);
+    @Test(expected = RegraDeNegocioException.class)
+    public void devePegarCurriculoCandidatoComErro() throws RegraDeNegocioException {
+        //Setup
+        CandidatoEntity candidatoEntity = new CandidatoEntity();
+        candidatoEntity.setIdCandidato(2);
+        candidatoEntity.setEmail("teste@gmail.com.br");
+        //Act
+        when(candidatoService.findByEmailEntity(anyString())).thenReturn(candidatoEntity);
+        when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.empty());
+        String imagemBase64 = curriculoService.pegarCurriculoCandidato(candidatoEntity.getEmail());
+        //Assert
+        assertNotNull(imagemBase64);
     }
 
     @Test
