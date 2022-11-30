@@ -161,7 +161,7 @@ public class LinguagemServiceTest {
 
     private static CandidatoEntity getCandidatoEntity() {
         LinguagemEntity linguagemEntity = getLinguagemEntity();
-        List<LinguagemEntity> linguagemList = new ArrayList<>();
+        Set<LinguagemEntity> linguagemList = new HashSet<>();
         linguagemList.add(linguagemEntity);
 
         CandidatoEntity candidatoEntity = new CandidatoEntity();
@@ -188,7 +188,7 @@ public class LinguagemServiceTest {
 
     private static CandidatoCreateDTO getCandidatoCreateDTO() {
         LinguagemDTO linguagemDTO = new LinguagemDTO("Java");
-        List<LinguagemDTO> linguagemDTOList = new ArrayList<>();
+        Set<LinguagemDTO> linguagemDTOList = new HashSet<>();
         linguagemDTOList.add(linguagemDTO);
 
         CandidatoCreateDTO candidatoCreateDTO = new CandidatoCreateDTO();
