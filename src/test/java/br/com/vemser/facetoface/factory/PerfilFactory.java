@@ -5,7 +5,7 @@ import br.com.vemser.facetoface.entity.PerfilEntity;
 
 import java.util.Collections;
 
-    public class PerfilFactory {
+public class PerfilFactory {
     private static PerfilEntity getPerfilEntity() {
         return new PerfilEntity(2,
                 "ADMIN",
@@ -13,7 +13,7 @@ import java.util.Collections;
         );
     }
 
-        public static PerfilDTO getPerfilDTO() {
+    public static PerfilDTO getPerfilDTO() {
         return new PerfilDTO("ADMIN");
     }
 }

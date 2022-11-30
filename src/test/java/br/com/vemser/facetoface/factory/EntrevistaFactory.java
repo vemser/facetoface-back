@@ -1,9 +1,13 @@
 package br.com.vemser.facetoface.factory;
 
+import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 
 import java.time.LocalDateTime;
+
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoDTO;
+import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioDTO;
 
 public class EntrevistaFactory {
     public static EntrevistaEntity getEntrevistaEntity() {
@@ -16,5 +20,14 @@ public class EntrevistaFactory {
         entrevistaEntity.setLegenda(Legenda.PENDENTE);
 
         return entrevistaEntity;
+    }
+
+    public static EntrevistaDTO getEntrevistaDTO() {
+        EntrevistaDTO entrevistaDTO = new EntrevistaDTO();
+        entrevistaDTO.setIdEntrevista(1);
+        entrevistaDTO.setCandidatoDTO(getCandidatoDTO());
+        entrevistaDTO.setUsuarioDTO(getUsuarioDTO());
+
+        return entrevistaDTO;
     }
 }

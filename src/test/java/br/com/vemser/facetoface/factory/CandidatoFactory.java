@@ -2,6 +2,7 @@ package br.com.vemser.facetoface.factory;
 
 import br.com.vemser.facetoface.dto.LinguagemDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
+import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
@@ -14,7 +15,7 @@ import static br.com.vemser.facetoface.factory.EdicaoFactory.getEdicaoDTO;
 import static br.com.vemser.facetoface.factory.TrilhaFactory.getTrilhaDTO;
 
 public class CandidatoFactory {
-        public static CandidatoEntity getCandidatoEntity() {
+    public static CandidatoEntity getCandidatoEntity() {
         LinguagemEntity linguagemEntity = LinguagemFactory.getLinguagemEntity();
         List<LinguagemEntity> linguagemList = new ArrayList<>();
         linguagemList.add(linguagemEntity);
@@ -35,7 +36,7 @@ public class CandidatoFactory {
         return candidatoEntity;
     }
 
-        public static CandidatoCreateDTO getCandidatoCreateDTO() {
+    public static CandidatoCreateDTO getCandidatoCreateDTO() {
         LinguagemDTO linguagemDTO = new LinguagemDTO("Java");
         List<LinguagemDTO> linguagemDTOList = new ArrayList<>();
         linguagemDTOList.add(linguagemDTO);
@@ -48,9 +49,27 @@ public class CandidatoFactory {
         candidatoCreateDTO.setLinguagens(new HashSet<>(linguagemDTOList));
         candidatoCreateDTO.setTrilha(getTrilhaDTO());
         candidatoCreateDTO.setEdicao(getEdicaoDTO());
-//        candidatoCreateDTO.setGenero(Genero.FEMININO);
         candidatoCreateDTO.setAtivo('T');
 
         return candidatoCreateDTO;
+    }
+
+    public static CandidatoDTO getCandidatoDTO() {
+        LinguagemDTO linguagemDTO = new LinguagemDTO("Java");
+        List<LinguagemDTO> linguagemDTOList = new ArrayList<>();
+        linguagemDTOList.add(linguagemDTO);
+
+        CandidatoDTO candidatoDTO = new CandidatoDTO();
+        candidatoDTO.setNomeCompleto("Heloise Isabela Lopes");
+        candidatoDTO.setCidade("Santana");
+        candidatoDTO.setEstado("AP");
+        candidatoDTO.setEmail("heloise.lopes@dbccompany.com.br");
+        candidatoDTO.setLinguagens(new HashSet<>(linguagemDTOList));
+        candidatoDTO.setTrilha(getTrilhaDTO());
+        candidatoDTO.setEdicao(getEdicaoDTO());
+        candidatoDTO.setGenero(Genero.FEMININO);
+        candidatoDTO.setAtivo('T');
+
+        return candidatoDTO;
     }
 }
