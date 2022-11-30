@@ -33,13 +33,11 @@ public interface CandidatoRepository extends JpaRepository<CandidatoEntity,Integ
             " c.ativo," +
             " c.estado," +
             " c.cidade," +
-            " l.nome," +
             " c.observacoes," +
             " c.curriculoEntity.dado)" +
             "  from CANDIDATO c " +
             " left join c.trilha t" +
             " left join c.edicao e" +
-            " left join c.linguagens l" +
             " where (:nomeCompleto is null or c.nomeCompleto = :nomeCompleto)" +
             " and (:nomeTrilha is null or c.trilha.nome = :nomeTrilha)")
     Page<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(String nomeCompleto, String nomeTrilha, Pageable pageable);
