@@ -107,7 +107,11 @@ public class CandidatoService {
     public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto.trim(), nomeTrilha, pageRequest);
+        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage =
+                candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(
+                        nomeCompleto.trim(),
+                        nomeTrilha,
+                        pageRequest);
         if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
         }
@@ -115,7 +119,7 @@ public class CandidatoService {
                 .stream()
                 .map(x -> objectMapper.convertValue(x, RelatorioCandidatoCadastroDTO.class))
                 .toList();
-        for(RelatorioCandidatoCadastroDTO candidato: relatorioCandidatoCadastroDTOPage){
+        for (RelatorioCandidatoCadastroDTO candidato : relatorioCandidatoCadastroDTOPage) {
             CandidatoEntity candidatoEntity = findByEmailEntity(candidato.getEmail());
             List<String> linguagemList = candidatoEntity.getLinguagens()
                     .stream()
@@ -127,8 +131,8 @@ public class CandidatoService {
             candidato.setCidade(candidatoEntity.getCidade());
             candidato.setEstado(candidatoEntity.getEstado());
             candidato.setObservacoes(candidatoEntity.getObservacoes());
-            if(candidatoEntity.getCurriculoEntity()== null){
-                throw new RegraDeNegocioException("O candidato com o email " +candidatoEntity.getEmail() +" não possui currículo cadastrado!");
+            if (candidatoEntity.getCurriculoEntity() == null) {
+                throw new RegraDeNegocioException("O candidato com o email " + candidatoEntity.getEmail() + " não possui currículo cadastrado!");
             }
             candidato.setDado(candidatoEntity.getCurriculoEntity().getDado());
         }
