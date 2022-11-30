@@ -75,7 +75,10 @@ public class UsuarioService {
         loginDTO.setPerfis(usuarioEntity.get().getPerfis().stream().map(perfilService::convertToDTO).toList());
         return loginDTO;
     }
-    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException, IOException {
+    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
+        if(!usuarioCreateDTO.getEmail().endsWith("@dbccompany.com.br")){
+            throw new RegraDeNegocioException("E-mail inválido! Deve ser domínio @dbccompany.com.br");
+        }
         Set<PerfilEntity> perfilEntityList = new HashSet<>();
         Optional<UsuarioEntity> usuario = findByEmail(usuarioCreateDTO.getEmail());
         Faker faker = new Faker();
