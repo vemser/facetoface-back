@@ -25,7 +25,6 @@ public class RelatorioCandidatoCadastroDTO {
     private char ativo;
     private String estado;
     private String cidade;
-    private String linguagens;
     private String observacoes;
     @Lob
     private byte[] dado;
