@@ -125,15 +125,36 @@ public class CandidatoService {
     public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<RelatorioCandidatoCadastroDTO> candidatoEntityPage = candidatoRepository.listRelatorioCandidatoCadastroDTO(nomeCompleto.trim(), nomeTrilha, pageRequest);
+        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto.trim(), nomeTrilha, pageRequest);
         if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
+        }
+        List<RelatorioCandidatoCadastroDTO> relatorioCandidatoCadastroDTOPage = candidatoEntityPage
+                .stream()
+                .map(x -> objectMapper.convertValue(x, RelatorioCandidatoCadastroDTO.class))
+                .toList();
+        for(RelatorioCandidatoCadastroDTO candidato: relatorioCandidatoCadastroDTOPage){
+            CandidatoEntity candidatoEntity = findByEmailEntity(candidato.getEmail());
+            List<String> linguagemList = candidatoEntity.getLinguagens()
+                    .stream()
+                    .map(LinguagemEntity::getNome)
+                    .toList();
+            candidato.setLinguagemList(linguagemList);
+            candidato.setEdicao(candidatoEntity.getEdicao().getNome());
+            candidato.setGenero(candidatoEntity.getGenero());
+            candidato.setCidade(candidatoEntity.getCidade());
+            candidato.setEstado(candidatoEntity.getEstado());
+            candidato.setObservacoes(candidatoEntity.getObservacoes());
+            if(candidatoEntity.getCurriculoEntity()== null){
+                throw new RegraDeNegocioException("O candidato de email" +candidatoEntity.getEmail() +" não possui currículo cadastrado!");
+            }
+            candidato.setDado(candidatoEntity.getCurriculoEntity().getDado());
         }
         return new PageDTO<>(candidatoEntityPage.getTotalElements(),
                 candidatoEntityPage.getTotalPages(),
                 pagina,
                 tamanho,
-                candidatoEntityPage.toList());
+                relatorioCandidatoCadastroDTOPage);
     }
 
     public PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {

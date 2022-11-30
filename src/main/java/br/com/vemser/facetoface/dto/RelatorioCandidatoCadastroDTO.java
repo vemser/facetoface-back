@@ -28,5 +28,6 @@ public class RelatorioCandidatoCadastroDTO {
     private String observacoes;
     @Lob
     private byte[] dado;
+    private List<String> linguagemList;
 
 }
