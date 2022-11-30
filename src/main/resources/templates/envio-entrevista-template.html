@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Confirmar entrevista</title>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=OzTrgsIMrIFAOmUyC5ljHtfTAIiuBsnV9e03dE06T5Msf7PkviryLCT5MAHGeCK2I1Nwj-bf4PiCDn1P_EpKTzNRn-mBaJKCpD7cYZQl42mnvoTLy_bZjWOFkAqcELbqgekONljNnMX3o7oBKPY19w" charset="UTF-8"></script><style>
+  * {
+    font-family: 'Montserrat', sans-serif;
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    max-width: 100vw;
+    height: 100vh;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    gap: 2rem;
+  }
+
+  .container-main {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .button-confirmar {
+    width: 200px;
+    height: 50px;
+    border: none;
+    font-size: 1rem;
+    border-radius: 100px;
+    color: #fff;
+    background-color: #1e62fe;
+  }
+
+  .button-confirmar:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .container-footer {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid #999;
+    padding-top: 3rem;
+  }
+</style>
+</head>
+
+<body>
+<main>
+  <div class="container-main">
+    <img src="caminho da image" alt="logo">
+    <h1>Olá, ${nome}</h1>
+    <p>Parabéns, você passou para a próxima etapa do processo seletivo, sua<br> entrevista será dia ${data} as
+      ${horario}!</p>
+    <p>Favor confirmar sua entrevista no botão abaixo.</p>
+    <button class="button-confirmar">Confirmar entrevista</button>
+  </div>
+  <div class="container-footer">
+    <p>Enviado por <span>${colaborador}</span></p>
+  </div>
+</main>
+</body>
+
+</html>
