@@ -120,16 +120,13 @@ public class UsuarioService {
 
     public UsuarioDTO update(Integer id, UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
         Set<PerfilEntity> perfilEntityList = new HashSet<>();
-        findById(id);
+        UsuarioEntity usuarioEntitySenha = findById(id);
         UsuarioEntity usuarioEntity = converterEntity(usuarioCreateDTO);
-        Faker faker = new Faker();
         for (PerfilDTO perfilDTO : usuarioCreateDTO.getPerfis()) {
             PerfilEntity byNome = perfilService.findByNome(perfilDTO.getNome());
             perfilEntityList.add(byNome);
         }
-        String senha = faker.internet().password(8, 12, true, true, true);
-        String senhaEncode = passwordEncoder.encode(senha);
-        usuarioEntity.setSenha(senhaEncode);
+        usuarioEntity.setSenha(usuarioEntitySenha.getSenha());
         usuarioEntity.setIdUsuario(id);
         usuarioEntity.setTrilha(trilhaService.findByNome(usuarioCreateDTO.getTrilha().getNome()));
         usuarioEntity.setPerfis(perfilEntityList);

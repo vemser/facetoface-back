@@ -186,6 +186,7 @@ public class CandidatoService {
         return candidatoDTO;
     }
 
+    //excluir o metodo
     public CandidatoEntity findByNome(String nome) throws RegraDeNegocioException {
         Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByNomeCompleto(nome);
         if (candidatoEntityOptional.isEmpty()) {
