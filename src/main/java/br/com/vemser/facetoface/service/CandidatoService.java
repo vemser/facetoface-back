@@ -75,12 +75,16 @@ public class CandidatoService {
     public CandidatoDTO update(Integer id, CandidatoCreateDTO candidatoCreateDTO, Genero genero) throws RegraDeNegocioException {
         List<LinguagemEntity> linguagemList = new ArrayList<>();
         findById(id);
+        if(candidatoCreateDTO.getEmail().isEmpty() || candidatoCreateDTO.getEmail().isBlank()){
+            throw new RegraDeNegocioException("E-mail inválido! Deve ser inserido um endereço de email válido!");
+        }
         CandidatoEntity candidatoEntity = converterEntity(candidatoCreateDTO);
         for (LinguagemDTO linguagem : candidatoCreateDTO.getLinguagens()) {
             LinguagemEntity byNome = linguagemService.findByNome(linguagem.getNome());
             linguagemList.add(byNome);
         }
         candidatoEntity.setIdCandidato(id);
+        candidatoEntity.setEmail(candidatoCreateDTO.getEmail());
         candidatoEntity.setNomeCompleto(candidatoEntity.getNomeCompleto().trim());
         candidatoEntity.setTrilha(trilhaService.findByNome(candidatoCreateDTO.getTrilha().getNome()));
         candidatoEntity.setEdicao(edicaoService.findByNome(candidatoCreateDTO.getEdicao().getNome()));

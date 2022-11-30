@@ -65,7 +65,7 @@ public class UsuarioService {
         return usuarioEntity;
     }
 
-    private String getIdLoggedUser() {
+    public String getIdLoggedUser() {
         return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     }
 
