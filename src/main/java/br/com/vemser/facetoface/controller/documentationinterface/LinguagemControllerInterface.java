@@ -1,6 +1,7 @@
 package br.com.vemser.facetoface.controller.documentationinterface;
 
 import br.com.vemser.facetoface.dto.CurriculoDTO;
+import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,5 +18,5 @@ public interface LinguagemControllerInterface {
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
     @DeleteMapping
-    ResponseEntity<CurriculoDTO> deleteFisico(@PathVariable("idUsuario") Integer id) throws RegraDeNegocioException;
+    ResponseEntity<UsuarioDTO> deleteFisico(@PathVariable("idUsuario") Integer id) throws RegraDeNegocioException;
 }
