@@ -1,12 +1,10 @@
 package br.com.vemser.facetoface.controller;
 
 import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerUsuario;
-import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
-import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.ImageService;
@@ -62,7 +60,7 @@ public class UsuarioController implements OperationControllerUsuario {
     }
 
     @GetMapping("/logado")
-    public LoginRetornoDTO getLoggedUser() throws RegraDeNegocioException {
+    public LoginRetornoDTO getLoggedUser() {
         return usuarioService.getLoggedUser();
     }
 

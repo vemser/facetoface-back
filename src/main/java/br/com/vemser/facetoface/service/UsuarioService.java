@@ -22,7 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,16 +60,6 @@ public class UsuarioService {
         return converterEmDTO(usuarioEntity.get());
     }
 
-//    public UsuarioDTO createAdmin(UsuarioCreateDTO usuarioCreateDTO, Integer idPerfil) throws RegraDeNegocioException {
-//        List<PerfilEntity> perfilEntityList = perfilService.listarPerfis();
-//
-//        UsuarioEntity usuario = createUsuario(usuarioCreateDTO);
-//        usuario.setPerfis(Set.copyOf(perfilEntityList));
-//
-//        UsuarioEntity usuarioSalvo = usuarioRepository.save(usuario);
-//        return objectMapper.convertValue(usuarioSalvo, UsuarioDTO.class);
-//    }
-
     private Optional<UsuarioEntity> findByLogin(String email) {
         Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
         return usuarioEntity;
@@ -89,7 +82,6 @@ public class UsuarioService {
         if (usuario.isPresent()) {
             throw new RegraDeNegocioException("Usuário já cadastrado com o mesmo email.");
         }
-
         String senha = faker.internet().password(8, 12, true, true, true);
         String senhaEncode = passwordEncoder.encode(senha);
         for (PerfilDTO perfilDTO : usuarioCreateDTO.getPerfis()) {
@@ -164,14 +156,6 @@ public class UsuarioService {
                 pagina,
                 tamanho,
                 usuarioDTOList);
-    }
-
-    public UsuarioEntity findByNome(String nome) throws RegraDeNegocioException{
-        Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByNomeCompleto(nome);
-        if(usuarioEntityOptional.isEmpty()){
-            throw new RegraDeNegocioException("Candidato não encontrado!");
-        }
-        return usuarioEntityOptional.get();
     }
 
     private UsuarioEntity converterEntity(UsuarioCreateDTO usuarioCreateDTO) {

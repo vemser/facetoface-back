@@ -1,11 +1,9 @@
 package br.com.vemser.facetoface.controller;
 
-import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerCandidato;
 import br.com.vemser.facetoface.dto.RelatorioCandidatoCadastroDTO;
 import br.com.vemser.facetoface.dto.RelatorioCandidatoPaginaPrincipalDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
-import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
@@ -44,13 +42,6 @@ public class CandidatoController {
     public CandidatoDTO findByEmail(@PathVariable("email") String email) throws RegraDeNegocioException {
         return candidatoService.findByEmail(email);
     }
-
-//    @GetMapping("/findbynomecompleto")
-//    public PageDTO<CandidatoDTO> findByNomeCompleto(@RequestParam("nomeCompleto") String nomeCompleto,
-//                                           @RequestParam(defaultValue = "0") Integer pagina,
-//                                           @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
-//        return candidatoService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
-//    }
 
     @PostMapping
     public ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,

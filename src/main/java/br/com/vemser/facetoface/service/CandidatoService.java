@@ -104,24 +104,6 @@ public class CandidatoService {
         return candidatoEntity.get();
     }
 
-//    public PageDTO<CandidatoDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
-//        Sort ordenacao = Sort.by("notaProva");
-//        PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-//        Page<CandidatoEntity> candidatoEntityPage = candidatoRepository.findAllByNomeCompleto(nomeCompleto, pageRequest);
-//        if(candidatoEntityPage.isEmpty()){
-//            throw new RegraDeNegocioException("Candidato com o nome especificado não existe");
-//        }
-//        List<CandidatoDTO> candidatoDTOList = candidatoEntityPage
-//                .stream()
-//                .map(this::converterEmDTO)
-//                .toList();
-//        return new PageDTO<>(candidatoEntityPage.getTotalElements(),
-//                candidatoEntityPage.getTotalPages(),
-//                pagina,
-//                tamanho,
-//                candidatoDTOList);
-//    }
-
     public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
@@ -184,15 +166,6 @@ public class CandidatoService {
                 .map(linguagem -> objectMapper.convertValue(linguagem, LinguagemDTO.class))
                 .collect(Collectors.toSet()));
         return candidatoDTO;
-    }
-
-    //excluir o metodo
-    public CandidatoEntity findByNome(String nome) throws RegraDeNegocioException {
-        Optional<CandidatoEntity> candidatoEntityOptional = candidatoRepository.findByNomeCompleto(nome);
-        if (candidatoEntityOptional.isEmpty()) {
-            throw new RegraDeNegocioException("Candidato não encontrado!");
-        }
-        return candidatoEntityOptional.get();
     }
 
     public void deleteFisico(Integer id) throws RegraDeNegocioException {

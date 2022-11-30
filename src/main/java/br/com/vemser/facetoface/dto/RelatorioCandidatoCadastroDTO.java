@@ -1,6 +1,5 @@
 package br.com.vemser.facetoface.dto;
 
-import br.com.vemser.facetoface.entity.LinguagemEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

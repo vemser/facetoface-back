@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -88,25 +87,6 @@ public class TokenService {
         String meuToken = Jwts.builder()
                 .setIssuer("facetoface-api")
                 .claim(Claims.ID, entrevistaEntity.getCandidatoEntity().getEmail())
-                .setIssuedAt(now)
-                .setExpiration(exp)
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
-
-        return meuToken;
-    }
-    public String getTokenTrocarSenha(UsuarioEntity usuarioEntity) {
-        LocalDateTime dataAtual = LocalDateTime.now();
-        Date now = Date.from(dataAtual.atZone(ZoneId.systemDefault()).toInstant());
-
-        LocalDateTime dataExpiracao = dataAtual.plusMinutes(Long.parseLong(expirationChangePassword));
-        Date exp = Date.from(dataExpiracao.atZone(ZoneId.systemDefault()).toInstant());
-
-
-        String meuToken = Jwts.builder()
-                .setIssuer("facetoface-api")
-                .claim(Claims.ID, usuarioEntity.getIdUsuario().toString())
-                .claim(KEY_CARGOS, usuarioEntity.getEmail())
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(SignatureAlgorithm.HS256, secret)

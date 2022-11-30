@@ -2,7 +2,6 @@ package br.com.vemser.facetoface.controller;
 
 import br.com.vemser.facetoface.dto.CurriculoDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
-import br.com.vemser.facetoface.service.CurriculoService;
 import br.com.vemser.facetoface.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

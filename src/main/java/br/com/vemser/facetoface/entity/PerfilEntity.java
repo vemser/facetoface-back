@@ -28,11 +28,6 @@ public class PerfilEntity implements GrantedAuthority {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "perfis")
-//    @JoinTable(
-//            name = "USUARIO_PERFIL",
-//            joinColumns = @JoinColumn(name = "ID_PERFIL"),
-//            inverseJoinColumns = @JoinColumn(name = "ID_USUARIO")
-//    )
     private Set<UsuarioEntity> usuarios;
 
     @Override
