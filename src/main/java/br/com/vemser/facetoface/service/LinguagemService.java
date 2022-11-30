@@ -36,7 +36,7 @@ public class LinguagemService {
                 .orElseThrow(() -> new RegraDeNegocioException("Linguagem não encontrada!"));
     }
 
-    private LinguagemEntity converterEntity(LinguagemDTO linguagemDTO) {
+    public LinguagemEntity converterEntity(LinguagemDTO linguagemDTO) {
         return objectMapper.convertValue(linguagemDTO, LinguagemEntity.class);
     }
 

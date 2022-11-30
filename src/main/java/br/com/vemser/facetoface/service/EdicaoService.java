@@ -35,7 +35,7 @@ public class EdicaoService {
         return edicaoEntity.get();
     }
 
-    private EdicaoEntity converterEntity(EdicaoDTO edicaoDTO) {
+    public EdicaoEntity converterEntity(EdicaoDTO edicaoDTO) {
         return objectMapper.convertValue(edicaoDTO, EdicaoEntity.class);
     }
 
