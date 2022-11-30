@@ -24,4 +24,7 @@ public class EntrevistaAtualizacaoDTO {
     @NotNull
     @Schema(description = "Observações referentes a entrevista.")
     private String observacoes;
+
+    private String email;
+
 }

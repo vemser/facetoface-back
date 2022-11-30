@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,8 +90,14 @@ public class EntrevistaService {
         String estado = entrevistaCreateDTO.getEstado();
         String observacoes = entrevistaCreateDTO.getObservacoes();
         LocalDateTime dia = entrevistaCreateDTO.getDataEntrevista();
-        if (entrevistaRepository.findByDataEntrevista(dia).isPresent()) {
-            throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
+        List<EntrevistaEntity> entrevistaEntityList = entrevistaRepository.findByDataEntrevista(dia);
+        if(entrevistaEntityList.size() > 0){
+            entrevistaEntityList = entrevistaEntityList.stream()
+                    .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.get().getEmail()))
+                    .collect(Collectors.toList());
+            if (entrevistaEntityList.size()>0){
+                throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
+            }
         }
         EntrevistaEntity entrevistaEntity = new EntrevistaEntity();
         entrevistaEntity.setDataEntrevista(dia);
@@ -137,15 +144,26 @@ public class EntrevistaService {
 
     public EntrevistaDTO atualizarEntrevista(Integer idEntrevista, EntrevistaAtualizacaoDTO entrevistaCreateDTO,
                                              Legenda legenda) throws RegraDeNegocioException {
+        Optional<UsuarioEntity> usuario = usuarioService.findByEmail(entrevistaCreateDTO.getEmail());
+        if (usuario.isEmpty()) {
+            throw new RegraDeNegocioException("Usuário não encontrado");
+        }
         EntrevistaEntity entrevista = findById(idEntrevista);
-        if (entrevistaRepository.findByDataEntrevista(entrevistaCreateDTO.getDataEntrevista()).isPresent()) {
-            throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
+        List<EntrevistaEntity> entrevistaEntityList = entrevistaRepository.findByDataEntrevista(entrevista.getDataEntrevista());
+        if(entrevistaEntityList.size() > 0){
+            entrevistaEntityList = entrevistaEntityList.stream()
+                    .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.get().getEmail()))
+                    .collect(Collectors.toList());
+            if (entrevistaEntityList.size()>0){
+                throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
+            }
         }
         entrevista.setCidade(entrevistaCreateDTO.getCidade());
         entrevista.setEstado(entrevistaCreateDTO.getEstado());
         entrevista.setObservacoes(entrevistaCreateDTO.getObservacoes());
         entrevista.setDataEntrevista(entrevistaCreateDTO.getDataEntrevista());
         entrevista.setLegenda(legenda);
+        entrevista.setUsuarioEntity(usuario.get());
         EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevista);
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
