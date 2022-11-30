@@ -6,7 +6,7 @@ import br.com.vemser.facetoface.entity.PerfilEntity;
 import java.util.Collections;
 
 public class PerfilFactory {
-    private static PerfilEntity getPerfilEntity() {
+    public static PerfilEntity getPerfilEntity() {
         return new PerfilEntity(2,
                 "ADMIN",
                 Collections.emptySet()

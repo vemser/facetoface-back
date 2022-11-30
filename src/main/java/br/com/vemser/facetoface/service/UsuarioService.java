@@ -76,7 +76,7 @@ public class UsuarioService {
         return loginDTO;
     }
     public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
-        if(!usuarioCreateDTO.getEmail().endsWith("@dbccompany.com.br")){
+        if(!usuarioCreateDTO.getEmail().endsWith("@dbccompany.com.br") || usuarioCreateDTO.getEmail().isEmpty()){
             throw new RegraDeNegocioException("E-mail inválido! Deve ser domínio @dbccompany.com.br");
         }
         Set<PerfilEntity> perfilEntityList = new HashSet<>();

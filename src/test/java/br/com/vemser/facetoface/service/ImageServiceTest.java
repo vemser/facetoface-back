@@ -3,16 +3,22 @@ package br.com.vemser.facetoface.service;
 import br.com.vemser.facetoface.entity.*;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
+import br.com.vemser.facetoface.factory.ImageFactory;
+import br.com.vemser.facetoface.factory.UsuarioFactory;
 import br.com.vemser.facetoface.repository.CandidatoRepository;
 import br.com.vemser.facetoface.repository.CurriculoRepository;
 import br.com.vemser.facetoface.repository.ImageRepository;
 import br.com.vemser.facetoface.repository.UsuarioRepository;
 import org.junit.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.HexFormat;
 import java.util.Optional;
@@ -36,12 +42,39 @@ public class ImageServiceTest {
     @Mock
     private ImageRepository imageRepository;
 
-
     @Mock
     private UsuarioService usuarioService;
 
+    @Mock
+    private StringUtils stringUtils;
 
 
+
+    @Test
+    public void deveTestarUploadUsuarioImagemComSucesso() throws RegraDeNegocioException, IOException {
+        UsuarioEntity usuario = UsuarioFactory.getUsuarioEntity();
+//        ImageEntity image = ImageFactory.getImageEntity();
+        byte[] imagemBytes = new byte[10*1024];
+//        String filename = "fotodeperfil";
+        MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
+//        Integer idUsuario = 1;
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuario));
+        when(imageRepository.save(any())).thenReturn(imagem);
+
+        imageService.arquivarUsuario(imagem, usuario.getEmail());
+
+        assertNotNull(imageRepository.findByUsuario(usuario));
+
+    }
+
+    @Test
+    public void deveVerificarSeUsuarioExisteComSucesso() throws RegraDeNegocioException{
+        //Setup
+
+        //Act
+        //Assert
+    }
     @Test
     public void devePegarImagemCandidatoComSucesso() throws RegraDeNegocioException {
         //Setup

@@ -37,6 +37,9 @@ public class CandidatoService {
         if (candidatoEntityOptional.isPresent()) {
             throw new RegraDeNegocioException("Candidato com este e-mail já existe no sistema.");
         }
+        if(candidatoCreateDTO.getEmail().isEmpty() || candidatoCreateDTO.getEmail().isBlank()){
+            throw new RegraDeNegocioException("E-mail inválido! Deve ser inserido um endereço de email válido!");
+        }
         for (LinguagemDTO linguagem : candidatoCreateDTO.getLinguagens()) {
             LinguagemEntity byNome = linguagemService.findByNome(linguagem.getNome());
             linguagemList.add(byNome);
