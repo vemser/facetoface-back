@@ -146,7 +146,7 @@ public class CandidatoService {
             candidato.setEstado(candidatoEntity.getEstado());
             candidato.setObservacoes(candidatoEntity.getObservacoes());
             if(candidatoEntity.getCurriculoEntity()== null){
-                throw new RegraDeNegocioException("O candidato de email" +candidatoEntity.getEmail() +" não possui currículo cadastrado!");
+                throw new RegraDeNegocioException("O candidato com o email " +candidatoEntity.getEmail() +" não possui currículo cadastrado!");
             }
             candidato.setDado(candidatoEntity.getCurriculoEntity().getDado());
         }
