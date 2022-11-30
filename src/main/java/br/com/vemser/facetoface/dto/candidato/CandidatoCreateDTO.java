@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.Set;
@@ -33,12 +34,9 @@ public class CandidatoCreateDTO {
     private String estado;
 
     @NotNull
+    @Email
     @Schema(description = "E-mail do candidato.")
     private String email;
-
-//    @NotNull
-//    @Schema(description = "Gênero do candidato.")
-//    private Genero genero;
 
     @NotNull
     @Schema(description = "Trilha que o candidato participa.")
