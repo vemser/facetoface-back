@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.controller.documentationinterface.ImageControllerInterface;
 import br.com.vemser.facetoface.dto.CurriculoDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.ImageService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/image")
-public class ImageController {
+public class ImageController implements ImageControllerInterface {
     private final ImageService imageService;
 
     @DeleteMapping("/delete-fisico/{idImagem}")

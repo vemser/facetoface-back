@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.controller.documentationinterface.CurriculoControllerInterface;
 import br.com.vemser.facetoface.dto.CurriculoDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.CurriculoService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/curriculo")
-public class CurriculoController {
+public class CurriculoController implements CurriculoControllerInterface {
     private final CurriculoService curriculoService;
 
     @DeleteMapping("/delete-fisico/{idCurriculo}")

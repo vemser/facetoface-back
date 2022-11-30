@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.controller.documentationinterface.LinguagemControllerInterface;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.LinguagemService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/linguagem")
-public class LinguagemController {
+public class LinguagemController implements LinguagemControllerInterface {
     private final LinguagemService linguagemService;
 
     @DeleteMapping("/delete-fisico/{idLinguagem}")

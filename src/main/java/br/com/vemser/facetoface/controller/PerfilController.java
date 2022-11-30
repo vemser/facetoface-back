@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.controller.documentationinterface.PerfilControllerInterface;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.PerfilService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/perfil")
-public class PerfilController {
+public class PerfilController implements PerfilControllerInterface {
     private final PerfilService perfilService;
 
     @DeleteMapping("/delete-fisico/{idPerfil}")

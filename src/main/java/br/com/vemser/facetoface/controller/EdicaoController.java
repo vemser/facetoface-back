@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.controller;
 
+import br.com.vemser.facetoface.controller.documentationinterface.EdicaoControllerInterface;
 import br.com.vemser.facetoface.entity.EdicaoEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.EdicaoService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/edicao")
-public class EdicaoController {
+public class EdicaoController implements EdicaoControllerInterface {
     private final EdicaoService edicaoService;
 
     @DeleteMapping("/delete-fisico/{idEdicao}")
