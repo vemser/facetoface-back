@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,9 +42,10 @@ public class CandidatoService {
             linguagemList.add(byNome);
         }
         CandidatoEntity candidatoEntity = converterEntity(candidatoCreateDTO);
+        candidatoEntity.setNomeCompleto(candidatoEntity.getNomeCompleto().trim());
         candidatoEntity.setTrilha(trilhaService.findByNome(candidatoCreateDTO.getTrilha().getNome()));
         candidatoEntity.setEdicao(edicaoService.findByNome(candidatoCreateDTO.getEdicao().getNome()));
-        candidatoEntity.setLinguagens(linguagemList);
+        candidatoEntity.setLinguagens(new HashSet<>(linguagemList));
         candidatoEntity.setGenero(genero);
         return converterEmDTO(candidatoRepository.save(candidatoEntity));
     }
@@ -76,9 +78,10 @@ public class CandidatoService {
             linguagemList.add(byNome);
         }
         candidatoEntity.setIdCandidato(id);
+        candidatoEntity.setNomeCompleto(candidatoEntity.getNomeCompleto().trim());
         candidatoEntity.setTrilha(trilhaService.findByNome(candidatoCreateDTO.getTrilha().getNome()));
         candidatoEntity.setEdicao(edicaoService.findByNome(candidatoCreateDTO.getEdicao().getNome()));
-        candidatoEntity.setLinguagens(linguagemList);
+        candidatoEntity.setLinguagens(new HashSet<>(linguagemList));
         candidatoEntity.setGenero(genero);
         return converterEmDTO(candidatoRepository.save(candidatoEntity));
     }
@@ -122,7 +125,7 @@ public class CandidatoService {
     public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<RelatorioCandidatoCadastroDTO> candidatoEntityPage = candidatoRepository.listRelatorioCandidatoCadastroDTO(nomeCompleto, nomeTrilha, pageRequest);
+        Page<RelatorioCandidatoCadastroDTO> candidatoEntityPage = candidatoRepository.listRelatorioCandidatoCadastroDTO(nomeCompleto.trim(), nomeTrilha, pageRequest);
         if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
         }
@@ -136,7 +139,7 @@ public class CandidatoService {
     public PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto, nomeTrilha, pageRequest);
+        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto.trim(), nomeTrilha, pageRequest);
         if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
         }
@@ -158,7 +161,7 @@ public class CandidatoService {
         candidatoDTO.setLinguagens(candidatoEntity.getLinguagens()
                 .stream()
                 .map(linguagem -> objectMapper.convertValue(linguagem, LinguagemDTO.class))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toSet()));
         return candidatoDTO;
     }
 

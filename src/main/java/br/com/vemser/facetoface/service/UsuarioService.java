@@ -101,6 +101,7 @@ public class UsuarioService {
         usuarioEntity.setTrilha(trilhaService.findByNome(usuarioCreateDTO.getTrilha().getNome()));
         usuarioEntity.setPerfis(perfilEntityList);
         usuarioEntity.setGenero(genero);
+        usuarioEntity.setNomeCompleto(usuarioEntity.getNomeCompleto().trim());
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
         emailService.sendEmailEnvioSenha(usuarioSalvo.getEmail(), senha);
         return converterEmDTO(usuarioSalvo);
@@ -133,6 +134,7 @@ public class UsuarioService {
         usuarioEntity.setTrilha(trilhaService.findByNome(usuarioCreateDTO.getTrilha().getNome()));
         usuarioEntity.setPerfis(perfilEntityList);
         usuarioEntity.setGenero(genero);
+        usuarioEntity.setNomeCompleto(usuarioEntity.getNomeCompleto().trim());
         return converterEmDTO(usuarioRepository.save(usuarioEntity));
     }
 
@@ -152,7 +154,7 @@ public class UsuarioService {
     public PageDTO<UsuarioDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("nomeCompleto");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findByNomeCompleto(nomeCompleto, pageRequest);
+        Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findByNomeCompleto(nomeCompleto.trim(), pageRequest);
         if(usuarioEntityPage.isEmpty()){
             throw new RegraDeNegocioException("Usuário com o nome especificado não existe");
         }

@@ -13,6 +13,7 @@ import lombok.Setter;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -55,7 +56,7 @@ public class CandidatoCreateDTO {
 
     @NotNull
     @Schema(description = "Lista de linguagens que o candidato conhece.")
-    private List<LinguagemDTO> linguagens;
+    private Set<LinguagemDTO> linguagens;
 
     @Schema(description = "Observações referentes ao candidato.")
     private String observacoes;

@@ -27,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -294,7 +295,7 @@ public class CandidatoServiceTest {
         candidatoEntity.setEstado("AP");
         candidatoEntity.setEmail("heloise.lopes@dbccompany.com.br");
         candidatoEntity.setGenero(Genero.FEMININO);
-        candidatoEntity.setLinguagens(linguagemList);
+        candidatoEntity.setLinguagens(new HashSet<>(linguagemList));
         candidatoEntity.setEdicao(getEdicaoEntity());
         candidatoEntity.setTrilha(getTrilhaEntity());
         candidatoEntity.setAtivo('T');
@@ -312,7 +313,7 @@ public class CandidatoServiceTest {
         candidatoCreateDTO.setCidade("Santana");
         candidatoCreateDTO.setEstado("AP");
         candidatoCreateDTO.setEmail("heloise.lopes@dbccompany.com.br");
-        candidatoCreateDTO.setLinguagens(linguagemDTOList);
+        candidatoCreateDTO.setLinguagens(new HashSet<>(linguagemDTOList));
         candidatoCreateDTO.setTrilha(getTrilhaDTO());
         candidatoCreateDTO.setEdicao(getEdicaoDTO());
 //        candidatoCreateDTO.setGenero(Genero.FEMININO);

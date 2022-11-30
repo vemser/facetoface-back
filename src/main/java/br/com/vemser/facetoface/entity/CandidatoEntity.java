@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -59,7 +60,7 @@ public class CandidatoEntity{
     @JoinTable(name = "CANDIDATO_LINGUAGEM",
             joinColumns = @JoinColumn(name = "ID_CANDIDATO"),
             inverseJoinColumns = @JoinColumn(name = "ID_LINGUAGEM"))
-    private List<LinguagemEntity> linguagens;
+    private Set<LinguagemEntity> linguagens;
 
     @Column(name = "observacoes")
     private String observacoes;
