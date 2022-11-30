@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.HexFormat;
 import java.util.Optional;
 
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
+import static br.com.vemser.facetoface.factory.CurriculoFactory.getCurriculoEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,31 +36,26 @@ public class CurriculoServiceTest {
 
     @Mock
     private CurriculoRepository curriculoRepository;
-
-    @Mock
-    private CandidatoRepository candidatoRepository;
+    
 
 
-//    @Test
-//    public void deveTestarArquivarCurriculoComSucesso() throws RegraDeNegocioException, IOException {
-//        CandidatoEntity candidatoEntity = new CandidatoEntity();
-//        candidatoEntity.setIdCandidato(2);
-//        candidatoEntity.setEmail("teste@gmail.com.br");
-//        byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
-//        MultipartFile curriculo = new MockMultipartFile("imagem", bytes);
-//        String nomeArquivo = StringUtils.cleanPath(curriculo.getOriginalFilename());
-//
-//
-//        when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
-//        when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.of(getCurriculoEntity()));
-//        when(curriculoRepository.save(any())).thenReturn(getCurriculoEntity());
-//
-//        curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
-//
-//
-//        verify(curriculoRepository, times(1)).save(getCurriculoEntity());
-//
-//    }
+    @Test
+    public void deveTestarArquivarCurriculoComSucesso() throws RegraDeNegocioException, IOException {
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
+        MultipartFile curriculo = new MockMultipartFile("curriculo", bytes);
+
+
+        when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
+        when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.of(getCurriculoEntity()));
+        when(curriculoRepository.save(any())).thenReturn(getCurriculoEntity());
+
+        curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
+
+
+        verify(curriculoRepository, times(1)).save(any());
+
+    }
 
     @Test
     public void devePegarCurriculoCandidatoComSucesso() throws RegraDeNegocioException{
@@ -101,18 +98,5 @@ public class CurriculoServiceTest {
         Integer id = 2;
         when(curriculoRepository.findById(anyInt())).thenReturn(Optional.empty());
         curriculoService.findById(id);
-    }
-
-
-    private static CurriculoEntity getCurriculoEntity(){
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity.setIdCandidato(2);
-        candidatoEntity.setEmail("teste@gmail.com.br");
-        byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
-        return new CurriculoEntity(2,
-                "curriculo",
-                "png",
-                bytes,
-                candidatoEntity);
     }
 }

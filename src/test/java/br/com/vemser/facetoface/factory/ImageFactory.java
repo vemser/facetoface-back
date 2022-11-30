@@ -11,7 +11,6 @@ public class ImageFactory {
     public static ImageEntity getImageEntity() {
         ImageEntity imageEntity = new ImageEntity();
         imageEntity.setCandidato(getCandidatoEntity());
-        CandidatoEntity candidatoEntity = getCandidatoEntity();
         byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
         imageEntity.setData(bytes);
         imageEntity.setIdImagem(1);

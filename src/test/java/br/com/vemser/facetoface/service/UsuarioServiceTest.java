@@ -87,7 +87,7 @@ public class UsuarioServiceTest {
 
         when(usuarioService.findByEmail(anyString())).thenReturn(Optional.empty());
         when(trilhaService.findByNome(anyString())).thenReturn(trilha);
-        when(edicaoService.findByNome(anyString())).thenReturn(edicao);
+//        when(edicaoService.findByNome(anyString())).thenReturn(edicao);
         when(perfilService.findByNome(anyString())).thenReturn(perfil);
         when(passwordEncoder.encode(anyString())).thenReturn(senhaCriptografada);
         when(usuarioRepository.save(any())).thenReturn(usuarioEntity);
@@ -121,7 +121,7 @@ public class UsuarioServiceTest {
 
         when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuarioEntity));
         when(trilhaService.findByNome(anyString())).thenReturn(trilha);
-        when(edicaoService.findByNome(anyString())).thenReturn(edicao);
+//        when(edicaoService.findByNome(anyString())).thenReturn(edicao);
         when(perfilService.findByNome(anyString())).thenReturn(perfil);
         when(usuarioRepository.save(any())).thenReturn(usuarioSalvo);
 
@@ -189,7 +189,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarBuscarEmailUsuarioComSucesso() throws RegraDeNegocioException{
+    public void testarBuscarEmailUsuarioComSucesso(){
         final String emailEsperado = "julio.gabriel@dbccompany.com.br";
         UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
 
@@ -197,14 +197,6 @@ public class UsuarioServiceTest {
         Optional<UsuarioEntity> usuario = usuarioService.findByEmail(emailEsperado);
 
         assertEquals(usuario.get().getEmail(), emailEsperado);
-    }
-
-    @Test(expected = RegraDeNegocioException.class)
-    public void testarBuscarEmailUsuarioComErro() throws RegraDeNegocioException{
-        final String emailEsperado = "julio.gabriel@dbccompany.com.br";
-
-        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        usuarioService.findByEmail(emailEsperado);
     }
 
     @Test
@@ -311,7 +303,7 @@ public class UsuarioServiceTest {
         final Integer id = 2;
         UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
 
-        when(usuarioRepository.save(any())).thenReturn(Optional.empty());
+//        when(usuarioRepository.save(any())).thenReturn(Optional.empty());
         usuarioService.deleteLogico(2);
     }
 
