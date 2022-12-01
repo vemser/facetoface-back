@@ -42,9 +42,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioEntity;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -91,7 +90,6 @@ public class UsuarioServiceTest {
 
         when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.empty());
         when(trilhaService.findByNome(anyString())).thenReturn(trilha);
-//        when(edicaoService.findByNome(anyString())).thenReturn(edicao);
         when(perfilService.findByNome(anyString())).thenReturn(perfil);
         when(passwordEncoder.encode(anyString())).thenReturn(senhaCriptografada);
         when(usuarioRepository.save(any())).thenReturn(usuarioEntity);
@@ -309,6 +307,40 @@ public class UsuarioServiceTest {
 //                thenReturn();
 //    }
 
+    @Test
+    public void testarValidarFormatacaoComSucesso() throws RegraDeNegocioException{
+        String senha = "Adsafd@!153~";
+
+        boolean deuCerto = usuarioService.validarFormatacao(senha);
+
+        assertTrue(true, String.valueOf(deuCerto));
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void testarValidacaoSenhacomErro() throws RegraDeNegocioException{
+        String senha = "A#@Dsclpoe#@!SDAz#89";
+
+        boolean deuCerto = usuarioService.validarFormatacao(senha);
+
+        assertTrue(true, String.valueOf(deuCerto));
+    }
+
+//    @Test
+//    public void TestarSenhaUsuarioLogadoComSucesso() throws RegraDeNegocioException{
+//        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+//        String email = usuarioEntity.getEmail();
+//        String senha = "Adsafd@!153~";
+//        UsuarioEntity usuarioSenhaNova = getUsuarioEntity();
+//        usuarioSenhaNova.setSenha(senha);
+//
+//        UsernamePasswordAuthenticationToken dto
+//                = new UsernamePasswordAuthenticationToken(1, usuarioEntity.getEmail(), Collections.emptyList());
+//        SecurityContextHolder.getContext().setAuthentication(dto);
+//        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+//        usuarioService.atualizarSenhaUsuarioLogado(usuarioEntity.getSenha(), senha);
+//
+//        assertNotEquals(usuarioSenhaNova.getSenha(), usuarioEntity.getSenha());
+//    }
     @Test(expected = RegraDeNegocioException.class)
     public void testarDeletarUsarioLogicamenteComErro() throws RegraDeNegocioException {
         final Integer id = 2;

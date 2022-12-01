@@ -215,7 +215,7 @@ public class UsuarioService {
         return faker.internet().password(8, 12, true, true, true);
     }
 
-    private boolean validarFormatacao(String senha) throws RegraDeNegocioException {
+    public boolean validarFormatacao(String senha) throws RegraDeNegocioException {
         if(senha.matches("^(?=.*[A-Z])(?=.*[.!@$%^&(){}:;<>,?/~_+-=|])(?=.*[0-9])(?=.*[a-z]).{8,16}$")) {
             return true;
         } else {
