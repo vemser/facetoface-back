@@ -48,7 +48,7 @@ public class CandidatoController implements OperationControllerCandidato {
     public ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
                                                Genero genero) throws RegraDeNegocioException, IOException {
         CandidatoDTO candidatoDTO = candidatoService.create(candidatoCreateDTO, genero);
-        return new ResponseEntity<>(candidatoDTO, HttpStatus.OK);
+        return new ResponseEntity<>(candidatoDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{idCandidato}")

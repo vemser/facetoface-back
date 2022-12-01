@@ -35,7 +35,7 @@ public class EntrevistaController implements OperationControllerEntrevista {
 
     @PostMapping("/marcar-entrevista")
     public ResponseEntity<EntrevistaDTO> cadastrarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
-        return new ResponseEntity<>(entrevistaService.createEntrevista(entrevistaCreateDTO), HttpStatus.OK);
+        return new ResponseEntity<>(entrevistaService.createEntrevista(entrevistaCreateDTO), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{idEntrevista}")

@@ -29,20 +29,20 @@ public class AuthController implements OperationControllerAuth {
     @PostMapping("/fazer-login")
     public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) {
         UsuarioEntity usuarioEntity = authService.auth(loginDTO);
-        return new ResponseEntity<>(tokenService.getToken(usuarioEntity, null), HttpStatus.OK);
+        return new ResponseEntity<>(tokenService.getToken(usuarioEntity, null), HttpStatus.CREATED);
     }
 
     @PostMapping("/solicitar-troca-senha")
     public void trocarSenha() throws RegraDeNegocioException {
         authService.trocarSenha();
-        new ResponseEntity<>(null, HttpStatus.OK);
+        new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
     @PostMapping("/trocar-senha")
     public void trocarSenhaAuntenticado(@RequestBody @Valid UserSenhaDTO userSenhaDTO) throws RegraDeNegocioException {
         String email = authService.procurarUsuario(userSenhaDTO.getToken());
         usuarioService.atualizarSenhaUsuario(email, userSenhaDTO.getSenha());
-        new ResponseEntity<>(null, HttpStatus.OK);
+        new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
     @PutMapping("/confirmar-entrevista/{tokenEntrevista}")

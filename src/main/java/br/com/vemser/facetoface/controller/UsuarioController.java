@@ -33,7 +33,7 @@ public class UsuarioController implements OperationControllerUsuario {
     @PostMapping
     public ResponseEntity<UsuarioDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
                                                        @RequestParam Genero genero) throws RegraDeNegocioException{
-        return new ResponseEntity<>(usuarioService.createUsuario(usuarioCreateDTO, genero), HttpStatus.OK);
+        return new ResponseEntity<>(usuarioService.createUsuario(usuarioCreateDTO, genero), HttpStatus.CREATED);
     }
 
     @GetMapping("/findbynomecompleto")
