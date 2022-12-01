@@ -176,9 +176,12 @@ public class UsuarioService {
         return usuarioDTO;
     }
 
-    public void atualizarSenhaUsuario(String email, String senha) {
+    public void atualizarSenhaUsuario(String email) {
         Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
+        Faker faker = new Faker();
+        String senha = faker.internet().password(8, 12, true, true, true);
         usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
         usuarioRepository.save(usuarioEntityOptional.get());
+        emailService.sendEmailEnvioSenha(email, senha);
     }
 }

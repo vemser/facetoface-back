@@ -47,7 +47,7 @@ public interface AuthControllerInterface {
             }
     )
     @PostMapping
-    void trocarSenhaAuntenticado(@RequestBody @Valid UserSenhaDTO userSenhaDTO) throws RegraDeNegocioException;
+    void trocarSenhaAuntenticado(@RequestBody @Valid String token) throws RegraDeNegocioException;
 
     @Operation(summary = "Confirmar uma entrevista agendada.", description = "Confirma uma entrevista agendada.")
     @ApiResponses(

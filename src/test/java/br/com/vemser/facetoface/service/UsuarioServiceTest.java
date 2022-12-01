@@ -231,7 +231,7 @@ public class UsuarioServiceTest {
 
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(passwordEncoder.encode(anyString())).thenReturn(senha);
-        usuarioService.atualizarSenhaUsuario(email, senha);
+        usuarioService.atualizarSenhaUsuario(email);
 
         assertEquals(usuarioEntity.getSenha(), senha);
 
