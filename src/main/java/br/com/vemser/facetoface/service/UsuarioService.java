@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -184,12 +185,17 @@ public class UsuarioService {
         return usuarioDTO;
     }
 
-    public void atualizarSenhaUsuario(String email) {
-        Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
-        String senha = gerarSenha();
-        usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
-        usuarioRepository.save(usuarioEntityOptional.get());
-        emailService.sendEmailEnvioSenha(email, senha);
+    public void atualizarSenhaUsuario(String email) throws RegraDeNegocioException {
+        try {
+            Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
+            String senha = gerarSenha();
+            usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
+            usuarioRepository.save(usuarioEntityOptional.get());
+            emailService.sendEmailEnvioSenha(email, senha);
+        }
+        catch (MessagingException | TemplateException | IOException e){
+            throw new RegraDeNegocioException("Problema com os e-mails. Checar mensagem, template e dados.");
+        }
     }
 
     public void atualizarSenhaUsuarioLogado(String senhaAtual, String senhaNova) throws RegraDeNegocioException {

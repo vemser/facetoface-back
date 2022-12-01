@@ -226,7 +226,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarAtualizarSenhaComSucesso() {
+    public void testarAtualizarSenhaComSucesso() throws RegraDeNegocioException {
         final String email = "julio.gabriel@dbccompany.com.br";
         final String senha = "123";
         UsuarioEntity usuarioEntity = getUsuarioEntity();
