@@ -200,6 +200,13 @@ public class UsuarioServiceTest {
     }
 
     @Test
+    public void deveTestarGetIdLoggedUserComSucesso() {
+        SecurityContextHolder.getContext().setAuthentication(getAuthentication());
+    }
+
+
+
+    @Test
     public void testarBuscarLoginComsucesso() {
 
         // Criar variaveis (SETUP)
@@ -339,5 +346,11 @@ public class UsuarioServiceTest {
         when(usuarioRepository.findByNomeCompleto(anyString(), any())).thenReturn(Page.empty());
 
         usuarioService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
+    }
+
+    private static UsernamePasswordAuthenticationToken getAuthentication() {
+        return new UsernamePasswordAuthenticationToken(1,
+                null,
+                Collections.emptyList());
     }
 }
