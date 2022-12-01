@@ -30,19 +30,23 @@ public class CurriculoService {
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         Optional<CurriculoEntity> curriculoEntityOptional = findByCandidato(candidatoEntity);
         String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
-        if(curriculoEntityOptional.isPresent()){
-            curriculoEntityOptional.get().setNome(nomeArquivo);
-            curriculoEntityOptional.get().setTipo(file.getContentType());
-            curriculoEntityOptional.get().setDado(file.getBytes());
-            curriculoEntityOptional.get().setCandidato(candidatoEntity);
-            curriculoRepository.save(curriculoEntityOptional.get());
-        }else {
-            CurriculoEntity curriculo = new CurriculoEntity();
-            curriculo.setNome(nomeArquivo);
-            curriculo.setTipo(file.getContentType());
-            curriculo.setDado(file.getBytes());
-            curriculo.setCandidato(candidatoEntity);
-            curriculoRepository.save(curriculo);
+        if(!nomeArquivo.endsWith(".pdf")){
+            throw new RegraDeNegocioException("Formato de arquivo inválido! Inserir pdf");
+        } else {
+            if (curriculoEntityOptional.isPresent()) {
+                curriculoEntityOptional.get().setNome(nomeArquivo);
+                curriculoEntityOptional.get().setTipo(file.getContentType());
+                curriculoEntityOptional.get().setDado(file.getBytes());
+                curriculoEntityOptional.get().setCandidato(candidatoEntity);
+                curriculoRepository.save(curriculoEntityOptional.get());
+            } else {
+                CurriculoEntity curriculo = new CurriculoEntity();
+                curriculo.setNome(nomeArquivo);
+                curriculo.setTipo(file.getContentType());
+                curriculo.setDado(file.getBytes());
+                curriculo.setCandidato(candidatoEntity);
+                curriculoRepository.save(curriculo);
+            }
         }
     }
 

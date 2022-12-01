@@ -42,7 +42,7 @@ public class CurriculoServiceTest {
     public void deveTestarArquivarCurriculoComSucessoCandidatoSemCurriculo() throws RegraDeNegocioException, IOException {
         CandidatoEntity candidatoEntity = getCandidatoEntity();
         byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
-        MultipartFile curriculo = new MockMultipartFile("curriculo", bytes);
+        MultipartFile curriculo = new MockMultipartFile("curriculo.pdf", bytes);
 
 
         when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
@@ -70,6 +70,21 @@ public class CurriculoServiceTest {
 
         verify(curriculoRepository, times(1)).save(any());
     }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void testarUploadCurriculoSemSerPDFComErro() throws RegraDeNegocioException, IOException {
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
+        MultipartFile curriculo = new MockMultipartFile("curriculo", bytes);
+
+        when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
+        when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.of(getCurriculoEntity()));
+        when(curriculoRepository.save(any())).thenReturn(getCurriculoEntity());
+
+        curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
+
+    }
+    
     @Test(expected = IOException.class)
     public void deveTestarArquivarCurriculoComRegrasDeNegocioException() throws RegraDeNegocioException, IOException {
         CandidatoEntity candidatoEntity = getCandidatoEntity();
