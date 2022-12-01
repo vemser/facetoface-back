@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.controller.documentationinterface;
 
-import br.com.vemser.facetoface.dto.RelatorioCandidatoCadastroDTO;
-import br.com.vemser.facetoface.dto.RelatorioCandidatoPaginaPrincipalDTO;
+import br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoCadastroDTO;
+import br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoPaginaPrincipalDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
