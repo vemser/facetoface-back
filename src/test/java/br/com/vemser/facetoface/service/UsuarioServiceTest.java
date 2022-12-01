@@ -1,10 +1,13 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
+import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
-import br.com.vemser.facetoface.entity.*;
+import br.com.vemser.facetoface.entity.EdicaoEntity;
+import br.com.vemser.facetoface.entity.PerfilEntity;
+import br.com.vemser.facetoface.entity.TrilhaEntity;
+import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.factory.EdicaoFactory;
@@ -35,12 +38,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class UsuarioServiceTest {
@@ -53,8 +56,6 @@ public class UsuarioServiceTest {
 
     @Mock
     private PerfilService perfilService;
-    @Mock
-    private EdicaoService edicaoService;
     @Mock
     private TrilhaService trilhaService;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -74,12 +75,12 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarCadastarUsuarioComSucesso() throws RegraDeNegocioException{
+    public void testarCadastarUsuarioComSucesso() throws RegraDeNegocioException {
         final String emailEsperado = "julio.gabriel@dbccompany.com.br";
         final String trilhaEsperado = "BACKEND";
         final String senhaCriptografada = "j183nsur74bd83gr7";
 
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
         UsuarioCreateDTO usuarioCreateDTO = UsuarioFactory.getUsuarioDTO();
         TrilhaEntity trilha = TrilhaFactory.getTrilhaEntity();
         EdicaoEntity edicao = EdicaoFactory.getEdicaoEntity();
@@ -101,7 +102,7 @@ public class UsuarioServiceTest {
 
     @Test(expected = RegraDeNegocioException.class)
     public void testarCadastarUsuarioComErro() throws RegraDeNegocioException {
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
         UsuarioCreateDTO usuarioCreateDTO = UsuarioFactory.getUsuarioDTO();
 
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
@@ -110,14 +111,14 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarAtualizarUsuarioComSucesso() throws RegraDeNegocioException{
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+    public void testarAtualizarUsuarioComSucesso() throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
         UsuarioCreateDTO usuarioCreateDTO = UsuarioFactory.getUsuarioDTO();
         TrilhaEntity trilha = TrilhaFactory.getTrilhaEntity();
         EdicaoEntity edicao = EdicaoFactory.getEdicaoEntity();
         PerfilEntity perfil = PerfilFactory.getPerfilEntity();
 
-        UsuarioEntity usuarioSalvo = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioSalvo = getUsuarioEntity();
 
         when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuarioEntity));
         when(trilhaService.findByNome(anyString())).thenReturn(trilha);
@@ -132,9 +133,9 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarBuscarUsuarioDTOPorEmailComSucesso() throws RegraDeNegocioException{
+    public void testarBuscarUsuarioDTOPorEmailComSucesso() throws RegraDeNegocioException {
         final String emailEsperado = "julio.gabriel@dbccompany.com.br";
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         UsuarioDTO usuarioDTO = usuarioService.findByEmailDTO(emailEsperado);
@@ -143,7 +144,7 @@ public class UsuarioServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void testarBuscarUsuarioDTOPorEmailComErro() throws RegraDeNegocioException{
+    public void testarBuscarUsuarioDTOPorEmailComErro() throws RegraDeNegocioException {
         final String emailEsperado = "julio.gabriel@dbccompany.com.br";
 
         when(usuarioRepository.findByEmail(anyString())).thenReturn((Optional.empty()));
@@ -155,7 +156,7 @@ public class UsuarioServiceTest {
         final int pagina = 0;
         final int tamanho = 5;
 
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
         PageImpl<UsuarioEntity> usuarioEntities =
                 new PageImpl<>(List.of(usuarioEntity), PageRequest.of(pagina, tamanho), 0);
 
@@ -169,8 +170,8 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarDeletarLogicamenteUsuarioComSucesso() throws RegraDeNegocioException{
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+    public void testarDeletarLogicamenteUsuarioComSucesso() throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuarioEntity));
         usuarioService.deleteLogico(1);
@@ -179,8 +180,8 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarDeletarFisicamenteUsuarioComSucesso() throws RegraDeNegocioException{
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+    public void testarDeletarFisicamenteUsuarioComSucesso() throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuarioEntity));
         usuarioService.deleteFisico(1);
@@ -189,9 +190,9 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarBuscarEmailUsuarioComSucesso(){
+    public void testarBuscarEmailUsuarioComSucesso() {
         final String emailEsperado = "julio.gabriel@dbccompany.com.br";
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         Optional<UsuarioEntity> usuario = usuarioService.findByEmail(emailEsperado);
@@ -203,7 +204,6 @@ public class UsuarioServiceTest {
     public void deveTestarGetIdLoggedUserComSucesso() {
         SecurityContextHolder.getContext().setAuthentication(getAuthentication());
     }
-
 
 
     @Test
@@ -219,14 +219,14 @@ public class UsuarioServiceTest {
 
 
         // Verificação (ASSERT)
-        assertEquals("a",idLoggedUser);
+        assertEquals("a", idLoggedUser);
     }
 
     @Test
-    public void testarAtualizarSenhaComSucesso(){
+    public void testarAtualizarSenhaComSucesso() {
         final String email = "julio.gabriel@dbccompany.com.br";
         final String senha = "123";
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
 
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
@@ -238,9 +238,9 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarBuscarUsuarioPorLogingComSucesso(){
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
-        final String email = UsuarioFactory.getUsuarioEntity().getEmail();
+    public void testarBuscarUsuarioPorLogingComSucesso() {
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+        final String email = getUsuarioEntity().getEmail();
 
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         Optional<UsuarioEntity> usuarioRecuperado = usuarioService.findByLogin(email);
@@ -256,11 +256,12 @@ public class UsuarioServiceTest {
         when(usuarioRepository.findById(any())).thenReturn(Optional.empty());
         usuarioService.findById(id);
     }
+
     @Test
     public void testarBuscarUsuarioDTOPorIdComSucesso() throws RegraDeNegocioException {
         UsuarioDTO usuarioDTO = UsuarioFactory.getUsuarioDTO();
         final Integer id = 1;
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuarioEntity));
         UsuarioDTO usuarioAchado = usuarioService.findByIdDTO(id);
@@ -279,8 +280,8 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarPegarUsuarioLogador(){
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+    public void testarPegarUsuarioLogador() {
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
 
     }
@@ -308,44 +309,60 @@ public class UsuarioServiceTest {
     @Test(expected = RegraDeNegocioException.class)
     public void testarDeletarUsarioLogicamenteComErro() throws RegraDeNegocioException {
         final Integer id = 2;
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
 //        when(usuarioRepository.save(any())).thenReturn(Optional.empty());
         usuarioService.deleteLogico(2);
     }
 
-   @Test
-    public void testarBuscarUsuarioPorNomeCompletoComSucesso() throws RegraDeNegocioException{
-       final int pagina = 0;
-       final int tamanho = 5;
-       final String nomeCompleto = UsuarioFactory.getUsuarioEntity().getNomeCompleto();
+    @Test
+    public void testarBuscarUsuarioPorNomeCompletoComSucesso() throws RegraDeNegocioException {
+        final int pagina = 0;
+        final int tamanho = 5;
+        final String nomeCompleto = getUsuarioEntity().getNomeCompleto();
 
-       UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
-       PageImpl<UsuarioEntity> usuarioEntities =
-               new PageImpl<>(List.of(usuarioEntity), PageRequest.of(pagina, tamanho), 1);
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+        PageImpl<UsuarioEntity> usuarioEntities =
+                new PageImpl<>(List.of(usuarioEntity), PageRequest.of(pagina, tamanho), 1);
 
-       when(usuarioRepository.findByNomeCompleto(anyString(), any())).thenReturn(usuarioEntities);
+        when(usuarioRepository.findByNomeCompleto(anyString(), any())).thenReturn(usuarioEntities);
 
-       PageDTO<UsuarioDTO> usuarioDTOPageDTO = usuarioService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
+        PageDTO<UsuarioDTO> usuarioDTOPageDTO = usuarioService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
 
-       assertEquals(pagina, usuarioDTOPageDTO.getPagina());
-       assertEquals(1, usuarioDTOPageDTO.getElementos().size());
-       assertEquals(tamanho, usuarioDTOPageDTO.getTamanho());
-   }
+        assertEquals(pagina, usuarioDTOPageDTO.getPagina());
+        assertEquals(1, usuarioDTOPageDTO.getElementos().size());
+        assertEquals(tamanho, usuarioDTOPageDTO.getTamanho());
+    }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void testarBuscarUsuarioPorNomeCompletoComErro() throws RegraDeNegocioException{
+    public void testarBuscarUsuarioPorNomeCompletoComErro() throws RegraDeNegocioException {
         final int pagina = 0;
         final int tamanho = 5;
         final String nomeCompleto = "Abc";
 
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
         PageImpl<UsuarioEntity> usuarioEntities =
                 new PageImpl<>(List.of(usuarioEntity), PageRequest.of(pagina, tamanho), 1);
 
         when(usuarioRepository.findByNomeCompleto(anyString(), any())).thenReturn(Page.empty());
 
         usuarioService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
+    }
+
+    @Test
+    public void deveRetornarUsuarioLogadoCorretamente() {
+        final String email = "julio.gabriel@dbccompany.com.br";
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        UsernamePasswordAuthenticationToken dto
+                = new UsernamePasswordAuthenticationToken(1, email, Collections.emptyList());
+        SecurityContextHolder.getContext().setAuthentication(dto);
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+
+        LoginRetornoDTO loginRetornoDTO = usuarioService.getLoggedUser();
+
+        assertEquals(email, loginRetornoDTO.getEmail());
     }
 
     private static UsernamePasswordAuthenticationToken getAuthentication() {
