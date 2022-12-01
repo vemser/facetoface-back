@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface EdicaoControllerInterface {
     @Operation(summary = "Deleta a edição no sistema", description = "Deleta a edição no sistema")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Deletado com sucesso!"),
+            @ApiResponse(responseCode = "204", description = "Deletado com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })

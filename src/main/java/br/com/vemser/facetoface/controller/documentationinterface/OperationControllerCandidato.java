@@ -40,7 +40,7 @@ public interface OperationControllerCandidato {
 
     @Operation(summary = "Criar cadastro de Candidato", description = "Criar candidato no Sistema")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cadastro de candidato realizado com sucesso!"),
+            @ApiResponse(responseCode = "201", description = "Cadastro de candidato realizado com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
@@ -108,7 +108,7 @@ public interface OperationControllerCandidato {
 
     @Operation(summary = "Deletar o cadastro no banco de Usuario", description = "Deletaro cadastro no banco Usuario.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário removido do sistema com sucesso!"),
+            @ApiResponse(responseCode = "204", description = "Usuário removido do sistema com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })

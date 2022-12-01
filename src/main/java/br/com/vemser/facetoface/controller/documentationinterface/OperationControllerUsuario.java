@@ -20,7 +20,7 @@ public interface OperationControllerUsuario {
 
     @Operation(summary = "Criar Usuario", description = "Criar usuario no Sistema")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cadastro de usuario realizado com sucesso!"),
+            @ApiResponse(responseCode = "201", description = "Cadastro de usuario realizado com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
@@ -98,7 +98,7 @@ public interface OperationControllerUsuario {
 
     @Operation(summary = "Deleta o usuário fisicamente/definitivamente no sistema", description = "Deleta o usuário fisicamente/definitivamente no sistema")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Deletado com sucesso!"),
+            @ApiResponse(responseCode = "204", description = "Deletado com sucesso!"),
             @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
