@@ -150,8 +150,10 @@ public class EntrevistaService {
             entrevistaEntityList = entrevistaEntityList.stream()
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.get().getEmail()))
                     .collect(Collectors.toList());
-            if (entrevistaEntityList.size() > 0) {
-                throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
+            for (int i = 0; i < entrevistaEntityList.size(); i++) {
+                if (entrevistaEntityList.get(i).getDataEntrevista() == entrevistaCreateDTO.getDataEntrevista() && entrevistaEntityList.get(i).getUsuarioEntity().getEmail() == entrevistaCreateDTO.getEmail()) {
+                    throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
+                }
             }
         }
         entrevista.setCidade(entrevistaCreateDTO.getCidade());
