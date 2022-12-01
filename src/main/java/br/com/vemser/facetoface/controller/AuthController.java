@@ -36,8 +36,8 @@ public class AuthController implements AuthControllerInterface {
     }
 
     @PostMapping("/solicitar-troca-senha")
-    public void trocarSenha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        authService.trocarSenha();
+    public void trocarSenha(@RequestParam @Valid String email) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        authService.trocarSenha(email);
         new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 

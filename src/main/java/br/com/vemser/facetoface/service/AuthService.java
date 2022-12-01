@@ -50,8 +50,7 @@ public class AuthService {
         entrevistaRepository.save(entrevista);
     }
 
-    public void trocarSenha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    public void trocarSenha(String email) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         UsuarioEntity usuarioEntityOptional = usuarioService.findByEmail(email);
 
         String tokenSenha = tokenService.getTokenSenha(usuarioEntityOptional);

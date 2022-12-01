@@ -105,7 +105,7 @@ public class AuthServiceTest {
         when(usuarioService.findByEmail(any())).thenReturn(usuarioEntity);
         when(tokenService.getTokenSenha(any())).thenReturn(token);
 
-        authService.trocarSenha();
+        authService.trocarSenha(email);
 
         verify(usuarioService).findByEmail(any());
         verify(tokenService).getTokenSenha(any());
@@ -120,7 +120,7 @@ public class AuthServiceTest {
         SecurityContextHolder.getContext().setAuthentication(dto);
 
         when(usuarioService.findByEmail(any())).thenThrow(RegraDeNegocioException.class);
-        authService.trocarSenha();
+        authService.trocarSenha(email);
     }
 
     @Test

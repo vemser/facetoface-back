@@ -39,7 +39,7 @@ public interface AuthControllerInterface {
             }
     )
     @PostMapping
-    void trocarSenha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
+    void trocarSenha(String email) throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
 
     @Operation(summary = "Inserir um token válido para troca de senha do usuário.", description = "Insira um token válido para troca de senha do usuário.")
     @ApiResponses(
