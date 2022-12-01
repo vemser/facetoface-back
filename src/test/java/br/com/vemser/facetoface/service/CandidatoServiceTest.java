@@ -294,6 +294,18 @@ public class CandidatoServiceTest {
         verify(candidatoRepository).deleteById(any());
     }
 
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoCandidatoEmailNaoForValido() throws RegraDeNegocioException {
+        CandidatoCreateDTO candidatoCreateDTO = getCandidatoCreateDTO();
+        candidatoCreateDTO.setEmail("");
+
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+
+        when(candidatoRepository.findById(1)).thenReturn(Optional.of(candidatoEntity));
+
+        candidatoService.update(1, candidatoCreateDTO, Genero.FEMININO);
+    }
+
     private static CandidatoEntity getCandidatoEntity() {
         LinguagemEntity linguagemEntity = getLinguagemEntity();
         List<LinguagemEntity> linguagemList = new ArrayList<>();
