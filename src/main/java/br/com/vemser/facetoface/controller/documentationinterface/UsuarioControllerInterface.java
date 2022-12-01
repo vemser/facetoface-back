@@ -125,4 +125,15 @@ public interface UsuarioControllerInterface {
     @GetMapping
     ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException;
 
-    }
+    @Operation(summary = "Atualizar a senha de usuário logado.", description = "Atualiza a senha de usuário logado.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Senha atualizada."),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping
+    void confirmarEntrevista(@RequestParam @Valid String senhaAtual,
+                             @RequestParam @Valid String senhaNova) throws RegraDeNegocioException;
+}

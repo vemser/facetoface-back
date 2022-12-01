@@ -81,11 +81,10 @@ public class UsuarioService {
         }
         Set<PerfilEntity> perfilEntityList = new HashSet<>();
         Optional<UsuarioEntity> usuario = findByEmail(usuarioCreateDTO.getEmail());
-        Faker faker = new Faker();
         if (usuario.isPresent()) {
             throw new RegraDeNegocioException("Usuário já cadastrado com o mesmo email.");
         }
-        String senha = faker.internet().password(8, 12, true, true, true);
+        String senha = gerarSenha();
         String senhaEncode = passwordEncoder.encode(senha);
         for (PerfilDTO perfilDTO : usuarioCreateDTO.getPerfis()) {
             PerfilEntity byNome = perfilService.findByNome(perfilDTO.getNome());
@@ -178,10 +177,34 @@ public class UsuarioService {
 
     public void atualizarSenhaUsuario(String email) {
         Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
-        Faker faker = new Faker();
-        String senha = faker.internet().password(8, 12, true, true, true);
+        String senha = gerarSenha();
         usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
         usuarioRepository.save(usuarioEntityOptional.get());
         emailService.sendEmailEnvioSenha(email, senha);
+    }
+
+    public void atualizarSenhaUsuarioLogado(String senhaAtual, String senhaNova) throws RegraDeNegocioException {
+        String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Optional<UsuarioEntity> usuarioEntity = findByEmail(email);
+        if(!passwordEncoder.matches(senhaAtual,usuarioEntity.get().getSenha())){
+            throw new RegraDeNegocioException("Senha informada deve ser igual à senha atual");
+        }
+        if(validarFormatacao(senhaNova)){
+            usuarioEntity.get().setSenha(senhaNova);
+            usuarioRepository.save(usuarioEntity.get());
+        }
+    }
+
+    private String gerarSenha(){
+        Faker faker = new Faker();
+        return faker.internet().password(8, 12, true, true, true);
+    }
+
+    private boolean validarFormatacao(String senha) throws RegraDeNegocioException {
+        if(senha.matches("^(?=.*[A-Z])(?=.*[.!@$%^&(){}:;<>,?/~_+-=|])(?=.*[0-9])(?=.*[a-z]).{8,16}$")) {
+            return true;
+        } else {
+            throw new RegraDeNegocioException("A senha deve ter entre 8 e 16 caracteres, com letras, números e caracteres especiais. Digitar novamente!");
+        }
     }
 }

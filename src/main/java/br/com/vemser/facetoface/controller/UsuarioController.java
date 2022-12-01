@@ -95,4 +95,11 @@ public class UsuarioController implements UsuarioControllerInterface {
     public ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException{
         return new ResponseEntity<>(imageService.pegarImagemUsuario(email), HttpStatus.OK);
     }
+
+    @PutMapping("/trocar-senha-usuario-logado")
+    public void confirmarEntrevista(@RequestParam @Valid String senhaAtual,
+                                    @RequestParam @Valid String senhaNova) throws RegraDeNegocioException {
+        usuarioService.atualizarSenhaUsuarioLogado(senhaAtual, senhaNova);
+        new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }
