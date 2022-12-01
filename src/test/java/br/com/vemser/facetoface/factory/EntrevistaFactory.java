@@ -7,7 +7,9 @@ import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoDTO;
 import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioDTO;
@@ -16,7 +18,7 @@ public class EntrevistaFactory {
     public static EntrevistaEntity getEntrevistaEntity() {
         EntrevistaEntity entrevistaEntity = new EntrevistaEntity();
         entrevistaEntity.setIdEntrevista(1);
-        entrevistaEntity.setDataEntrevista(LocalDateTime.now().plusDays(1));
+        entrevistaEntity.setDataEntrevista(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 00)));
         entrevistaEntity.setCidade("Santana");
         entrevistaEntity.setEstado("AP");
         entrevistaEntity.setObservacoes("Sem observações.");
@@ -42,11 +44,11 @@ public class EntrevistaFactory {
     public static EntrevistaAtualizacaoDTO getEntrevistaAtualizacaoDTO() {
         EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO =
                 new EntrevistaAtualizacaoDTO(
-                        LocalDateTime.now().plusDays(1),
+                        LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 00)),
                         "Santana",
                         "AP",
                         "Sem observações",
-                        "teste@email.com.br"
+                        "julio.gabriel@dbccompany.com.br"
                 );
 
         return entrevistaAtualizacaoDTO;
