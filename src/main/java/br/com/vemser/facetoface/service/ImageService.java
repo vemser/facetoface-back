@@ -38,13 +38,14 @@ public class ImageService {
             imagemBD.get().setData(file.getBytes());
             imagemBD.get().setCandidato(candidatoEntity);
             imageRepository.save(imagemBD.get());
+        }else {
+            ImageEntity novaImagemBD = new ImageEntity();
+            novaImagemBD.setNome(nomeArquivo);
+            novaImagemBD.setTipo(file.getContentType());
+            novaImagemBD.setData(file.getBytes());
+            novaImagemBD.setCandidato(candidatoEntity);
+            imageRepository.save(novaImagemBD);
         }
-        ImageEntity novaImagemBD = new ImageEntity();
-        novaImagemBD.setNome(nomeArquivo);
-        novaImagemBD.setTipo(file.getContentType());
-        novaImagemBD.setData(file.getBytes());
-        novaImagemBD.setCandidato(candidatoEntity);
-        imageRepository.save(novaImagemBD);
     }
 
     public void arquivarUsuario(MultipartFile file, String email) throws IOException, RegraDeNegocioException {

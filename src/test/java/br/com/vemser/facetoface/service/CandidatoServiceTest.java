@@ -91,6 +91,16 @@ public class CandidatoServiceTest {
 
         candidatoService.create(candidatoCreateDTO, Genero.FEMININO);
     }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoCadastrarCandidatoEEmailForInvalido() throws RegraDeNegocioException {
+        CandidatoCreateDTO candidatoCreateDTO = getCandidatoCreateDTO();
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        candidatoCreateDTO.setEmail("");
+
+        when(candidatoRepository.findByEmail("")).thenThrow(new RegraDeNegocioException("E-mail inválido"));
+
+        candidatoService.create(candidatoCreateDTO, Genero.FEMININO);
+    }
 
     @Test
     public void deveRetornarUmaListaPaginada() {
