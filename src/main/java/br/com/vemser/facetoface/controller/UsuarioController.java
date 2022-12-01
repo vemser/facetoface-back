@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.controller;
 
-import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerUsuario;
+import br.com.vemser.facetoface.controller.documentationinterface.UsuarioControllerInterface;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
@@ -26,7 +26,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/usuario")
-public class UsuarioController implements OperationControllerUsuario {
+public class UsuarioController implements UsuarioControllerInterface {
     private final UsuarioService usuarioService;
     private final ImageService imageService;
 

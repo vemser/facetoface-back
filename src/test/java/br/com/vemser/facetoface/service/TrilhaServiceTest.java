@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
 import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.TrilhaRepository;

@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.controller.documentationinterface;
 
-import br.com.vemser.facetoface.dto.login.UserSenhaDTO;
 import br.com.vemser.facetoface.dto.login.LoginDTO;
+import br.com.vemser.facetoface.dto.login.UserSenhaDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
-public interface OperationControllerAuth {
+public interface AuthControllerInterface {
 
     @Operation(summary = "Logar com um usuário.", description = "Loga no sistema com um login de usuário.")
     @ApiResponses(

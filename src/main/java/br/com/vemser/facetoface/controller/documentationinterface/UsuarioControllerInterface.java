@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 
-public interface OperationControllerUsuario {
+public interface UsuarioControllerInterface {
 
     @Operation(summary = "Criar Usuario", description = "Criar usuario no Sistema")
     @ApiResponses(value = {

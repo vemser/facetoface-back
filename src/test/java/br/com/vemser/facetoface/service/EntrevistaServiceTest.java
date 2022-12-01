@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.EntrevistaAtualizacaoDTO;
+import br.com.vemser.facetoface.dto.entrevista.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaCreateDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;

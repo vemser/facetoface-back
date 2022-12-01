@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.repository;
 
-import br.com.vemser.facetoface.dto.RelatorioCandidatoPaginaPrincipalDTO;
+import br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoPaginaPrincipalDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface CandidatoRepository extends JpaRepository<CandidatoEntity,Integer> {
     Optional<CandidatoEntity> findByEmail(String email);
 
-    @Query(" select new br.com.vemser.facetoface.dto.RelatorioCandidatoPaginaPrincipalDTO(" +
+    @Query(" select new br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoPaginaPrincipalDTO(" +
             " c.idCandidato," +
             " c.nomeCompleto," +
             " c.email," +

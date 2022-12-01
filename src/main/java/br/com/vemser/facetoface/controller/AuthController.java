@@ -1,8 +1,8 @@
 package br.com.vemser.facetoface.controller;
 
-import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerAuth;
-import br.com.vemser.facetoface.dto.UserSenhaDTO;
+import br.com.vemser.facetoface.controller.documentationinterface.AuthControllerInterface;
 import br.com.vemser.facetoface.dto.login.LoginDTO;
+import br.com.vemser.facetoface.dto.login.UserSenhaDTO;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.security.TokenService;
@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 @Validated
 @RequiredArgsConstructor
-public class AuthController implements OperationControllerAuth {
+public class AuthController implements AuthControllerInterface {
     private final UsuarioService usuarioService;
     private final TokenService tokenService;
     private final AuthService authService;

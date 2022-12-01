@@ -1,4 +1,4 @@
-package br.com.vemser.facetoface.dto;
+package br.com.vemser.facetoface.dto.relatorios;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

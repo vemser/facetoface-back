@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.controller;
 
 import br.com.vemser.facetoface.controller.documentationinterface.ImageControllerInterface;
-import br.com.vemser.facetoface.dto.CurriculoDTO;
+import br.com.vemser.facetoface.dto.curriculo.CurriculoDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.ImageService;
 import lombok.RequiredArgsConstructor;

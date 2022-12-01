@@ -1,11 +1,11 @@
 package br.com.vemser.facetoface.controller;
 
-import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerCandidato;
-import br.com.vemser.facetoface.dto.RelatorioCandidatoCadastroDTO;
-import br.com.vemser.facetoface.dto.RelatorioCandidatoPaginaPrincipalDTO;
+import br.com.vemser.facetoface.controller.documentationinterface.CandidatoControllerInterface;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
+import br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoCadastroDTO;
+import br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoPaginaPrincipalDTO;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.CandidatoService;
@@ -28,7 +28,7 @@ import java.io.IOException;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/candidato")
-public class CandidatoController implements OperationControllerCandidato {
+public class CandidatoController implements CandidatoControllerInterface {
     private final CandidatoService candidatoService;
     private final CurriculoService curriculoService;
     private final ImageService imageService;

@@ -1,8 +1,8 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.EdicaoDTO;
-import br.com.vemser.facetoface.dto.LinguagemDTO;
-import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.dto.edicao.EdicaoDTO;
+import br.com.vemser.facetoface.dto.linguagem.LinguagemDTO;
+import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.EdicaoEntity;

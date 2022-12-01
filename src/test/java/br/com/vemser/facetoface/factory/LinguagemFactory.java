@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.factory;
 
-import br.com.vemser.facetoface.dto.LinguagemDTO;
+import br.com.vemser.facetoface.dto.linguagem.LinguagemDTO;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
 
 public class LinguagemFactory {

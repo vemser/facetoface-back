@@ -1,8 +1,8 @@
 package br.com.vemser.facetoface.dto.candidato;
 
-import br.com.vemser.facetoface.dto.EdicaoDTO;
-import br.com.vemser.facetoface.dto.LinguagemDTO;
-import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.dto.edicao.EdicaoDTO;
+import br.com.vemser.facetoface.dto.linguagem.LinguagemDTO;
+import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

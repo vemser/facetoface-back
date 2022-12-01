@@ -1,9 +1,8 @@
 package br.com.vemser.facetoface.factory;
 
-import br.com.vemser.facetoface.dto.PerfilDTO;
+import br.com.vemser.facetoface.dto.perfil.PerfilDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.PerfilEntity;
-import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
 

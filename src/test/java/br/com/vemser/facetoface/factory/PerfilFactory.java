@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.factory;
 
-import br.com.vemser.facetoface.dto.PerfilDTO;
+import br.com.vemser.facetoface.dto.perfil.PerfilDTO;
 import br.com.vemser.facetoface.entity.PerfilEntity;
 
 import java.util.Collections;

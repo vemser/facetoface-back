@@ -1,9 +1,9 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.PerfilDTO;
-import br.com.vemser.facetoface.dto.TrilhaDTO;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
+import br.com.vemser.facetoface.dto.perfil.PerfilDTO;
+import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.PerfilEntity;

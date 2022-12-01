@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-public interface OperationControllerEntrevista {
+public interface EntrevistaControllerInterface {
 
     @Operation(summary = "Listagem de entrevistas no sistema", description = "Listagem das entrevistas presentes no sistema")
     @ApiResponses(value = {

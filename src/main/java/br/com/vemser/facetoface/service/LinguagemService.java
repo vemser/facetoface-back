@@ -1,8 +1,7 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.LinguagemDTO;
+import br.com.vemser.facetoface.dto.linguagem.LinguagemDTO;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
-import br.com.vemser.facetoface.entity.PerfilEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.LinguagemRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package br.com.vemser.facetoface.dto;
+package br.com.vemser.facetoface.dto.relatorios;
 
 import br.com.vemser.facetoface.entity.enums.Genero;
 import lombok.AllArgsConstructor;

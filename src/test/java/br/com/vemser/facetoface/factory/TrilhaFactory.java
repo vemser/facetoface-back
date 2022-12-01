@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.factory;
 
-import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
 import br.com.vemser.facetoface.entity.TrilhaEntity;
 
 public class TrilhaFactory {

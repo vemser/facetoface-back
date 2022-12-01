@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.controller;
 
 import br.com.vemser.facetoface.controller.documentationinterface.CurriculoControllerInterface;
-import br.com.vemser.facetoface.dto.CurriculoDTO;
+import br.com.vemser.facetoface.dto.curriculo.CurriculoDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.CurriculoService;
 import lombok.RequiredArgsConstructor;

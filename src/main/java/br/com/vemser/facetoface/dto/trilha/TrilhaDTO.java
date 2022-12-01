@@ -1,4 +1,4 @@
-package br.com.vemser.facetoface.dto;
+package br.com.vemser.facetoface.dto.trilha;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

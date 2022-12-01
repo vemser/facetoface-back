@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.controller;
 
-import br.com.vemser.facetoface.controller.documentationinterface.OperationControllerEntrevista;
-import br.com.vemser.facetoface.dto.EntrevistaAtualizacaoDTO;
+import br.com.vemser.facetoface.controller.documentationinterface.EntrevistaControllerInterface;
+import br.com.vemser.facetoface.dto.entrevista.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaCreateDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/entrevista")
-public class EntrevistaController implements OperationControllerEntrevista {
+public class EntrevistaController implements EntrevistaControllerInterface {
 
     private final EntrevistaService entrevistaService;
 

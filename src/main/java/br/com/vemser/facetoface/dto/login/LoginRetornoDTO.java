@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.dto.login;
 
-import br.com.vemser.facetoface.dto.PerfilDTO;
+import br.com.vemser.facetoface.dto.perfil.PerfilDTO;
 import lombok.Data;
 
 import java.util.List;

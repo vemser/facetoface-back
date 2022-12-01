@@ -1,6 +1,6 @@
 package br.com.vemser.facetoface.factory;
 
-import br.com.vemser.facetoface.dto.EdicaoDTO;
+import br.com.vemser.facetoface.dto.edicao.EdicaoDTO;
 import br.com.vemser.facetoface.entity.EdicaoEntity;
 
 public class EdicaoFactory {

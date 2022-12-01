@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.dto.usuario;
 
-import br.com.vemser.facetoface.dto.PerfilDTO;
-import br.com.vemser.facetoface.dto.TrilhaDTO;
+import br.com.vemser.facetoface.dto.perfil.PerfilDTO;
+import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
