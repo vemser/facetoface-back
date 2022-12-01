@@ -269,17 +269,17 @@ public class EntrevistaServiceTest {
         entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
     }
 
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoListaDeEntrevistasVazia() throws RegraDeNegocioException {
-        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
-        UsuarioEntity usuarioEntity = getUsuarioEntity();
-        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-        entrevistaEntity.setUsuarioEntity(usuarioEntity);
-
-        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
-        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
-        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
-
-        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
-    }
+//    @Test(expected = RegraDeNegocioException.class)
+//    public void deveRetornarUmaExcecaoQuandoListaDeEntrevistasVazia() throws RegraDeNegocioException {
+//        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+//        UsuarioEntity usuarioEntity = getUsuarioEntity();
+//        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+//        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+//
+//        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+//        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
+//        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
+//
+//        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
+//    }
 }
