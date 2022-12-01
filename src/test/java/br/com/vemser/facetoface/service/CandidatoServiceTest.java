@@ -97,7 +97,7 @@ public class CandidatoServiceTest {
         CandidatoEntity candidatoEntity = getCandidatoEntity();
         candidatoCreateDTO.setEmail("");
 
-        when(candidatoRepository.findByEmail("")).thenThrow(new RegraDeNegocioException("E-mail inválido"));
+        when(candidatoRepository.findByEmail("")).thenReturn(Optional.empty());
 
         candidatoService.create(candidatoCreateDTO, Genero.FEMININO);
     }
