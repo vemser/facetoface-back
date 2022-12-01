@@ -91,11 +91,11 @@ public class EntrevistaService {
         String observacoes = entrevistaCreateDTO.getObservacoes();
         LocalDateTime dia = entrevistaCreateDTO.getDataEntrevista();
         List<EntrevistaEntity> entrevistaEntityList = entrevistaRepository.findByDataEntrevista(dia);
-        if(entrevistaEntityList.size() > 0){
+        if (entrevistaEntityList.size() > 0) {
             entrevistaEntityList = entrevistaEntityList.stream()
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.get().getEmail()))
                     .collect(Collectors.toList());
-            if (entrevistaEntityList.size()>0){
+            if (entrevistaEntityList.size() > 0) {
                 throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
             }
         }
@@ -113,24 +113,13 @@ public class EntrevistaService {
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
 
-    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) throws RegraDeNegocioException {
+    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) {
         String tokenSenha = tokenService.getTokenConfirmacao(entrevistaEntity);
-//        try{
-//            String link = "http://localhost:8080/auth/confirmar-entrevista/";
-//            String nova = link + tokenSenha;
-//            URL url = new URL(nova);
+
         String base = ("Olá "
                 + entrevistaEntity.getCandidatoEntity().getNomeCompleto()
                 + " seu token para confirmar entrevista é é: <br>" + tokenSenha);
-        try {
-            emailService.sendEmailRecuperacaoSenha(entrevistaEntity.getCandidatoEntity().getEmail(), base);
-        } catch (Exception e){
-            throw new RegraDeNegocioException("Email inválido!");
-        }
-//        }
-//        catch(MalformedURLException e){
-//            throw new RegraDeNegocioException("Url inválida");
-//        }
+        emailService.sendEmailRecuperacaoSenha(entrevistaEntity.getCandidatoEntity().getEmail(), base);
     }
 
     public EntrevistaEntity findByCandidatoEntity(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
@@ -154,11 +143,11 @@ public class EntrevistaService {
         }
         EntrevistaEntity entrevista = findById(idEntrevista);
         List<EntrevistaEntity> entrevistaEntityList = entrevistaRepository.findByDataEntrevista(entrevista.getDataEntrevista());
-        if(entrevistaEntityList.size() > 0){
+        if (entrevistaEntityList.size() > 0) {
             entrevistaEntityList = entrevistaEntityList.stream()
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.get().getEmail()))
                     .collect(Collectors.toList());
-            if (entrevistaEntityList.size()>0){
+            if (entrevistaEntityList.size() > 0) {
                 throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
             }
         }

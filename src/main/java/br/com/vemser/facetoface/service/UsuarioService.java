@@ -21,7 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +53,7 @@ public class UsuarioService {
 
     public UsuarioDTO findByEmailDTO(String email) throws RegraDeNegocioException {
         Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
-        if(usuarioEntity.isEmpty()){
+        if (usuarioEntity.isEmpty()) {
             throw new RegraDeNegocioException("Usuário com o e-mail especificado não existe");
         }
         return converterEmDTO(usuarioEntity.get());
@@ -75,8 +74,9 @@ public class UsuarioService {
         loginDTO.setPerfis(usuarioEntity.get().getPerfis().stream().map(perfilService::convertToDTO).toList());
         return loginDTO;
     }
+
     public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
-        if(!usuarioCreateDTO.getEmail().endsWith("@dbccompany.com.br") || usuarioCreateDTO.getEmail().isEmpty()){
+        if (!usuarioCreateDTO.getEmail().endsWith("@dbccompany.com.br") || usuarioCreateDTO.getEmail().isEmpty()) {
             throw new RegraDeNegocioException("E-mail inválido! Deve ser domínio @dbccompany.com.br");
         }
         Set<PerfilEntity> perfilEntityList = new HashSet<>();
@@ -98,11 +98,8 @@ public class UsuarioService {
         usuarioEntity.setGenero(genero);
         usuarioEntity.setNomeCompleto(usuarioEntity.getNomeCompleto().trim());
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
-        try {
-            emailService.sendEmailEnvioSenha(usuarioSalvo.getEmail(), senha);
-        } catch (Exception e){
-            throw new RegraDeNegocioException("Email inválido!");
-        }
+        emailService.sendEmailEnvioSenha(usuarioSalvo.getEmail(), senha);
+
         return converterEmDTO(usuarioSalvo);
     }
 
@@ -134,7 +131,7 @@ public class UsuarioService {
         return converterEmDTO(usuarioRepository.save(usuarioEntity));
     }
 
-    public PageDTO<UsuarioDTO> list(Integer pagina, Integer tamanho){
+    public PageDTO<UsuarioDTO> list(Integer pagina, Integer tamanho) {
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
         Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findAll(pageRequest);
         List<UsuarioDTO> usuarioDTOList = usuarioEntityPage
@@ -151,7 +148,7 @@ public class UsuarioService {
         Sort ordenacao = Sort.by("nomeCompleto");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findByNomeCompleto(nomeCompleto.trim(), pageRequest);
-        if(usuarioEntityPage.isEmpty()){
+        if (usuarioEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Usuário com o nome especificado não existe");
         }
         List<UsuarioDTO> usuarioDTOList = usuarioEntityPage
