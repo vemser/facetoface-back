@@ -34,5 +34,5 @@ public interface EdicaoControllerInterface {
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
     @PostMapping
-    ResponseEntity<EdicaoEntity> cadastrarEdicao(@Valid @RequestBody EdicaoDTO edicaoDTO);
+    ResponseEntity<EdicaoDTO> cadastrarEdicao(@Valid @RequestBody EdicaoDTO edicaoDTO);
 }

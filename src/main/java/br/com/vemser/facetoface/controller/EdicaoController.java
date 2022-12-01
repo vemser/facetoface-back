@@ -30,7 +30,7 @@ public class EdicaoController implements EdicaoControllerInterface {
     }
 
     @PostMapping("/criar-edicao")
-    public ResponseEntity<EdicaoEntity> cadastrarEdicao(@Valid @RequestBody EdicaoDTO edicaoDTO)  {
-        return new ResponseEntity<>(edicaoService.create(edicaoDTO), HttpStatus.CREATED);
+    public ResponseEntity<EdicaoDTO> cadastrarEdicao(@Valid @RequestBody EdicaoDTO edicaoDTO)  {
+        return new ResponseEntity<>(edicaoService.createAndReturnDTO(edicaoDTO), HttpStatus.CREATED);
     }
 }

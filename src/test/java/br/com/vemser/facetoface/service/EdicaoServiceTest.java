@@ -133,11 +133,9 @@ public class EdicaoServiceTest {
         edicaoEntity.setIdEdicao(id);
         //Act
         when(edicaoRepository.save(any())).thenReturn(edicaoEntity);
-        EdicaoEntity edicaoEntityResponse = edicaoService.create(edicaoDTO);
+        EdicaoDTO edicaoEntityResponse = edicaoService.createAndReturnDTO(edicaoDTO);
         //Assert
-        assertEquals(2, edicaoEntityResponse.getIdEdicao());
         assertEquals(edicaoEntity.getNome(), edicaoEntityResponse.getNome());
-        assertEquals(edicaoEntity.getIdEdicao(), edicaoEntityResponse.getIdEdicao());
     }
 
     @Test
@@ -151,12 +149,9 @@ public class EdicaoServiceTest {
         edicaoEntity.setCandidatoEntities(lista);
         // Act
         when(edicaoRepository.save(any())).thenReturn(edicaoEntity);
-        EdicaoEntity edicaoDTOResponse = edicaoService.create(edicaoDTO);
+        EdicaoDTO edicaoDTOResponse = edicaoService.createAndReturnDTO(edicaoDTO);
         // Assert
-        assertEquals(1, edicaoDTOResponse.getIdEdicao());
         assertEquals(edicaoEntity.getNome(), edicaoDTOResponse.getNome());
-        assertEquals(edicaoEntity.getIdEdicao(), edicaoDTOResponse.getIdEdicao());
-        assertEquals(1, edicaoDTOResponse.getCandidatoEntities().size());
     }
 
     @Test(expected = RegraDeNegocioException.class)
