@@ -116,7 +116,7 @@ public class CandidatoService {
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage =
                 candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(
-                        nomeCompleto.trim(),
+                        nomeCompleto,
                         nomeTrilha,
                         pageRequest);
         if (candidatoEntityPage.isEmpty()) {
