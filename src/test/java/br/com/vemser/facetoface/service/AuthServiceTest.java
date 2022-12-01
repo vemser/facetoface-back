@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
+import static br.com.vemser.facetoface.factory.EntrevistaFactory.getEntrevistaEntity;
+import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -53,7 +56,7 @@ public class AuthServiceTest {
     public void deveAutenticarCorretamente() {
         final String nomeEsperado = "Heloise Isabela Lopes";
         final String senha = "123";
-        final String email = "heloise.lopes@dbccompany.com.br";
+        final String email = "julio.gabriel@dbccompany.com.br";
 
         UsuarioEntity usuario = getUsuarioEntity();
 
@@ -126,7 +129,7 @@ public class AuthServiceTest {
     @Test
     public void deveEncontrarEmailDoUsuarioLogado() throws RegraDeNegocioException {
         final String token = "token";
-        final String emailEsperado = "heloise.lopes@dbccompany.com.br";
+        final String emailEsperado = "julio.gabriel@dbccompany.com.br";
 
         UsuarioEntity usuarioEntity = getUsuarioEntity();
 
@@ -158,42 +161,5 @@ public class AuthServiceTest {
         assertEquals(idEsperado, entrevista.getIdEntrevista());
         assertEquals(cidadeEsperado, entrevista.getCidade());
         assertEquals(estadoEsperado, entrevista.getEstado());
-    }
-
-    private static CandidatoEntity getCandidatoEntity() {
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity.setIdCandidato(1);
-        candidatoEntity.setNomeCompleto("Heloise Isabela Lopes");
-        candidatoEntity.setCidade("Santana");
-        candidatoEntity.setEstado("AP");
-        candidatoEntity.setEmail("heloise.lopes@dbccompany.com.br");
-        candidatoEntity.setGenero(Genero.FEMININO);
-        candidatoEntity.setAtivo('T');
-
-        return candidatoEntity;
-    }
-
-    private static UsuarioEntity getUsuarioEntity() {
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setIdUsuario(1);
-        usuarioEntity.setNomeCompleto("Heloise Isabela Lopes");
-        usuarioEntity.setCidade("Santana");
-        usuarioEntity.setEstado("AP");
-        usuarioEntity.setEmail("heloise.lopes@dbccompany.com.br");
-        usuarioEntity.setGenero(Genero.FEMININO);
-        usuarioEntity.setAtivo('T');
-
-        return usuarioEntity;
-    }
-
-    private static EntrevistaEntity getEntrevistaEntity() {
-        EntrevistaEntity entrevistaEntity = new EntrevistaEntity();
-        entrevistaEntity.setIdEntrevista(1);
-        entrevistaEntity.setDataEntrevista(LocalDateTime.now().plusDays(1));
-        entrevistaEntity.setCidade("Santana");
-        entrevistaEntity.setEstado("AP");
-        entrevistaEntity.setLegenda(Legenda.PENDENTE);
-
-        return entrevistaEntity;
     }
 }

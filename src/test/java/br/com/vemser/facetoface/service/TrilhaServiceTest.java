@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Collections;
 import java.util.Optional;
 
+import static br.com.vemser.facetoface.factory.TrilhaFactory.getTrilhaEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -45,13 +46,13 @@ public class TrilhaServiceTest {
 
     @Test
     public void deveTestarFindByIdComSucesso() throws RegraDeNegocioException {
-        Integer id = 2;
+        Integer id = 1;
 
         when(trilhaRepository.findById(anyInt())).thenReturn(Optional.of(getTrilhaEntity()));
         TrilhaEntity trilhaEntity = trilhaService.findById(id);
 
         assertNotNull(trilhaEntity);
-        assertEquals(trilhaEntity.getIdTrilha(), id);
+        assertEquals(id, trilhaEntity.getIdTrilha());
     }
 
     @Test(expected = RegraDeNegocioException.class)
@@ -63,7 +64,7 @@ public class TrilhaServiceTest {
 
     @Test
     public void deveTestarFindByNomeComSucesso() throws RegraDeNegocioException {
-        String nome = "QA";
+        String nome = "BACKEND";
 
         when(trilhaRepository.findByNome(anyString())).thenReturn(Optional.of(getTrilhaEntity()));
         TrilhaEntity trilhaEntity = trilhaService.findByNome(nome);
@@ -77,19 +78,6 @@ public class TrilhaServiceTest {
         String nome = "QA";
         when(trilhaRepository.findByNome(anyString())).thenReturn(Optional.empty());
         trilhaService.findByNome(nome);
-    }
-
-
-    private static TrilhaEntity getTrilhaEntity() {
-        return new TrilhaEntity(2,
-                "QA",
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
-    }
-
-    private static TrilhaDTO getTrilhaDTO() {
-        return new TrilhaDTO("QA");
     }
 }
 
