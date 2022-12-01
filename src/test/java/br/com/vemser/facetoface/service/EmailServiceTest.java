@@ -39,7 +39,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void deveEnviarEmailComAConfirmacaoDaEntrevista() throws IOException {
+    public void deveEnviarEmailComAConfirmacaoDaEntrevista() throws IOException, MessagingException, TemplateException {
         Template template = new Template("template.html", Reader.nullReader());
 
         final String email = "teste@email.com.br";
@@ -54,7 +54,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void deveEnviarEmailComASenha() throws IOException {
+    public void deveEnviarEmailComASenha() throws IOException, MessagingException, TemplateException {
         Template template = new Template("template.html", Reader.nullReader());
 
         final String email = "teste@email.com.br";
@@ -69,7 +69,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void deveEnviarEmailDeRecuperacaoDeSenha() throws IOException {
+    public void deveEnviarEmailDeRecuperacaoDeSenha() throws IOException, MessagingException, TemplateException {
         Template template = new Template("template.html", Reader.nullReader());
 
         final String email = "teste@email.com.br";

@@ -8,6 +8,7 @@ import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EntrevistaRepository;
 import br.com.vemser.facetoface.security.TokenService;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -47,15 +50,13 @@ public class AuthService {
         entrevistaRepository.save(entrevista);
     }
 
-    public void trocarSenha() throws RegraDeNegocioException {
+    public void trocarSenha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        Optional<UsuarioEntity> usuarioEntityOptional = usuarioService.findByEmail(email);
-        if (usuarioEntityOptional.isEmpty()) {
-            throw new RegraDeNegocioException("Usuário não existe");
-        }
-        String tokenSenha = tokenService.getTokenSenha(usuarioEntityOptional.get());
+        UsuarioEntity usuarioEntityOptional = usuarioService.findByEmail(email);
+
+        String tokenSenha = tokenService.getTokenSenha(usuarioEntityOptional);
         String base = "Olá "
-                + usuarioEntityOptional.get().getNomeCompleto()
+                + usuarioEntityOptional.getNomeCompleto()
                 + " seu token para trocar de senha é: <br>"
                 + tokenSenha;
         emailService.sendEmailRecuperacaoSenha(email, base);
@@ -63,7 +64,7 @@ public class AuthService {
 
     public String procurarUsuario(String token) throws RegraDeNegocioException {
         String cpfByToken = tokenService.getEmailByToken(token);
-        return usuarioService.findByEmail(cpfByToken).get().getEmail();
+        return usuarioService.findByEmail(cpfByToken).getEmail();
     }
 
     public EntrevistaEntity procurarCandidato(String token) throws RegraDeNegocioException {

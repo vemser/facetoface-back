@@ -6,6 +6,7 @@ import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
+import freemarker.template.TemplateException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 
@@ -26,7 +28,7 @@ public interface UsuarioControllerInterface {
     })
     @PostMapping
     ResponseEntity<UsuarioDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
-                                                       @RequestParam Genero genero) throws RegraDeNegocioException, IOException;
+                                                       @RequestParam Genero genero) throws RegraDeNegocioException, IOException, MessagingException, TemplateException;
 
     @Operation(summary = "Procurar usuario por email", description = "Procura o e-mail do usuário cadastrado no sistema")
     @ApiResponses(value = {

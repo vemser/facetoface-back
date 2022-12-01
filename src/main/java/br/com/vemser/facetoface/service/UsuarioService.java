@@ -13,6 +13,7 @@ import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -47,8 +50,13 @@ public class UsuarioService {
         return converterEmDTO(findById(idUsuario));
     }
 
-    public Optional<UsuarioEntity> findByEmail(String email) {
+    public Optional<UsuarioEntity> findOptionalByEmail(String email) {
         return usuarioRepository.findByEmail(email);
+    }
+
+    public UsuarioEntity findByEmail(String email) throws RegraDeNegocioException {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário com o e-mail especificado não existe"));
     }
 
     public UsuarioDTO findByEmailDTO(String email) throws RegraDeNegocioException {
@@ -75,12 +83,13 @@ public class UsuarioService {
         return loginDTO;
     }
 
-    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
+    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO,
+                                    Genero genero) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         if (!usuarioCreateDTO.getEmail().endsWith("@dbccompany.com.br") || usuarioCreateDTO.getEmail().isEmpty()) {
             throw new RegraDeNegocioException("E-mail inválido! Deve ser domínio @dbccompany.com.br");
         }
         Set<PerfilEntity> perfilEntityList = new HashSet<>();
-        Optional<UsuarioEntity> usuario = findByEmail(usuarioCreateDTO.getEmail());
+        Optional<UsuarioEntity> usuario = findOptionalByEmail(usuarioCreateDTO.getEmail());
         Faker faker = new Faker();
         if (usuario.isPresent()) {
             throw new RegraDeNegocioException("Usuário já cadastrado com o mesmo email.");
