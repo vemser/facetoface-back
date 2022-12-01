@@ -64,7 +64,8 @@ public class ImageServiceTest {
         byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
         MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
 
-        when(imageRepository.findByCandidato(any())).thenReturn(Optional.ofNullable(candidatoEntity.getImageEntity()));
+        when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
+        when(imageRepository.findByCandidato(any())).thenReturn(Optional.of(getImageEntity()));
         when(imageRepository.save(any())).thenReturn(ImageFactory.getImageEntity());
 
         imageService.arquivarCandidato(imagem, candidatoEntity.getEmail());
@@ -73,7 +74,7 @@ public class ImageServiceTest {
     }
 
     @Test
-    public void deveTestarUploadUsuarioImagemComSucesso() throws RegraDeNegocioException, IOException {
+    public void deveTestarUploadUsuarioCasoExistaImagemComSucesso() throws RegraDeNegocioException, IOException {
         UsuarioEntity usuario = UsuarioFactory.getUsuarioEntity();
         byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
         MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
@@ -87,12 +88,13 @@ public class ImageServiceTest {
         verify(imageRepository, times(1)).save(any());
     }
     @Test
-    public void testarUploadImagemUsuarioCasoExistaComSucesso() throws RegraDeNegocioException, IOException{
+    public void testarUploadImagemUsuarioCasoNaoExistaComSucesso() throws RegraDeNegocioException, IOException{
         UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
         byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
         MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
 
-        when(imageRepository.findByUsuario(any())).thenReturn(Optional.ofNullable(usuarioEntity.getImageEntity()));
+        when(usuarioService.findByEmail(any())).thenReturn(Optional.of(usuarioEntity));
+        when(imageRepository.findByUsuario(any())).thenReturn(Optional.empty());
         when(imageRepository.save(any())).thenReturn(ImageFactory.getImageEntity());
 
         imageService.arquivarUsuario(imagem, usuarioEntity.getEmail());
@@ -166,8 +168,26 @@ public class ImageServiceTest {
         //Setup
         final String emailEsperado = "abc@dbccompany.com.br";
         //Act
-        when(imageRepository.findByUsuario(any())).thenReturn(Optional.empty());
         imageService.pegarImagemUsuario(emailEsperado);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void devePegarImagemUsuarioImagemComErro() throws RegraDeNegocioException{
+        //Setup
+        final Integer id = 2;
+        //Act
+        when(imageRepository.findById(anyInt())).thenReturn(Optional.empty());
+        //Assert
+        imageService.findById(2);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveArquivarUsuarioComEmailDarErro() throws RegraDeNegocioException {
+        //Setup
+        final String email = "abc@dbccompany.com.br";
+        // act
+        when(usuarioService.findByEmail(any())).thenReturn(Optional.empty());
+
     }
 
     @Test
