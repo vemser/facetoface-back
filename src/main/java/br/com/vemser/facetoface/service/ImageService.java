@@ -31,7 +31,7 @@ public class ImageService {
     public void arquivarCandidato(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
         CandidatoEntity candidatoEntity = candidatoService.findByEmailEntity(email);
         Optional<ImageEntity> imagemBD = findByCandidato(candidatoEntity);
-        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
+        String nomeArquivo = StringUtils.cleanPath((file.getOriginalFilename()));
         if(imagemBD.isPresent()){
             imagemBD.get().setNome(nomeArquivo);
             imagemBD.get().setTipo(file.getContentType());
@@ -53,7 +53,7 @@ public class ImageService {
             throw new RegraDeNegocioException("Usuário não está cadastrado no sistema.");
         }
         Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity.get());
-        String nomeArquivo = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
+        String nomeArquivo = StringUtils.cleanPath((file.getOriginalFilename()));
         if(imagemBD.isPresent()){
             imagemBD.get().setNome(nomeArquivo);
             imagemBD.get().setTipo(file.getContentType());
