@@ -256,7 +256,6 @@ public class ImageServiceTest {
         UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         when(usuarioService.findByEmail(any())).thenReturn(Optional.of(usuarioEntity));
-        when(imageRepository.findByCandidato(any())).thenReturn(Optional.empty());
 
         imageService.pegarImagemUsuario(email);
     }
