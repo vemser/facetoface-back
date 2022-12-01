@@ -9,6 +9,7 @@ import br.com.vemser.facetoface.entity.PerfilEntity;
 import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
+import br.com.vemser.facetoface.entity.enums.TipoEmails;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.factory.EdicaoFactory;
 import br.com.vemser.facetoface.factory.PerfilFactory;
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.javafaker.Bool;
 import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UsuarioServiceTest {

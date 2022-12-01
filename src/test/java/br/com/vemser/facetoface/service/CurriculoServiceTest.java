@@ -84,7 +84,7 @@ public class CurriculoServiceTest {
         curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
 
     }
-    
+
     @Test(expected = IOException.class)
     public void deveTestarArquivarCurriculoComRegrasDeNegocioException() throws RegraDeNegocioException, IOException {
         CandidatoEntity candidatoEntity = getCandidatoEntity();
