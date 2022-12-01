@@ -22,6 +22,9 @@ import java.util.HexFormat;
 import java.util.Optional;
 import java.util.Set;
 
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
+import static br.com.vemser.facetoface.factory.ImageFactory.getImageEntity;
+import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
@@ -44,12 +47,12 @@ public class ImageServiceTest {
 
     @Test
     public void deveTestarUploadCandidatoImagemComSucesso() throws RegraDeNegocioException, IOException {
-        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
         byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
         MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
 
         when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
-        when(imageRepository.save(any())).thenReturn(ImageFactory.getImageEntity());
+        when(imageRepository.save(any())).thenReturn(getImageEntity());
 
         imageService.arquivarCandidato(imagem, candidatoEntity.getEmail());
 
@@ -58,13 +61,13 @@ public class ImageServiceTest {
 
     @Test
     public void testarUploadImagemCandidatoCasoExistaComSucesso() throws RegraDeNegocioException, IOException {
-        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
         byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
         MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
 
         when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
         when(imageRepository.findByCandidato(any())).thenReturn(Optional.of(getImageEntity()));
-        when(imageRepository.save(any())).thenReturn(ImageFactory.getImageEntity());
+        when(imageRepository.save(any())).thenReturn(getImageEntity());
 
         imageService.arquivarCandidato(imagem, candidatoEntity.getEmail());
 
@@ -73,7 +76,7 @@ public class ImageServiceTest {
 
     @Test
     public void deveTestarUploadUsuarioCasoExistaImagemComSucesso() throws RegraDeNegocioException, IOException {
-        UsuarioEntity usuario = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuario = getUsuarioEntity();
         byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
         MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
 
@@ -88,13 +91,13 @@ public class ImageServiceTest {
 
     @Test
     public void testarUploadImagemUsuarioCasoNaoExistaComSucesso() throws RegraDeNegocioException, IOException {
-        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
         byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
         MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
 
         when(usuarioService.findByEmail(any())).thenReturn(usuarioEntity);
         when(imageRepository.findByUsuario(any())).thenReturn(Optional.empty());
-        when(imageRepository.save(any())).thenReturn(ImageFactory.getImageEntity());
+        when(imageRepository.save(any())).thenReturn(getImageEntity());
 
         imageService.arquivarUsuario(imagem, usuarioEntity.getEmail());
 
@@ -226,7 +229,7 @@ public class ImageServiceTest {
     @Test
     public void testarDeleteFisicoComSucesso() throws RegraDeNegocioException {
         final Integer id = 1;
-        when(imageRepository.findById(anyInt())).thenReturn(Optional.of(ImageFactory.getImageEntity()));
+        when(imageRepository.findById(anyInt())).thenReturn(Optional.of(getImageEntity()));
         imageService.deleteFisico(id);
 
     }
@@ -258,75 +261,5 @@ public class ImageServiceTest {
         when(usuarioService.findByEmail(any())).thenReturn(usuarioEntity);
 
         imageService.pegarImagemUsuario(email);
-    }
-
-    private static ImageEntity getImageEntity() {
-        ImageEntity imageEntity = new ImageEntity();
-        imageEntity.setCandidato(getCandidatoEntity());
-        byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
-        imageEntity.setData(bytes);
-        imageEntity.setIdImagem(1);
-        imageEntity.setTipo("png");
-        imageEntity.setCandidato(getCandidatoEntity());
-        return imageEntity;
-    }
-
-    private static CandidatoEntity getCandidatoEntity() {
-        LinguagemEntity linguagemEntity = getLinguagemEntity();
-        Set<LinguagemEntity> linguagemList = new HashSet<>();
-        linguagemList.add(linguagemEntity);
-
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity.setIdCandidato(1);
-        candidatoEntity.setNotaProva(8.00);
-        candidatoEntity.setNomeCompleto("Heloise Isabela Lopes");
-        candidatoEntity.setCidade("Santana");
-        candidatoEntity.setEstado("AP");
-        candidatoEntity.setEmail("heloise.lopes@dbccompany.com.br");
-        candidatoEntity.setGenero(Genero.FEMININO);
-        candidatoEntity.setLinguagens(linguagemList);
-        candidatoEntity.setEdicao(getEdicaoEntity());
-        candidatoEntity.setTrilha(getTrilhaEntity());
-        candidatoEntity.setAtivo('T');
-
-        return candidatoEntity;
-    }
-
-    private static UsuarioEntity getUsuarioEntity() {
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setSenha("123");
-        usuarioEntity.setIdUsuario(1);
-        usuarioEntity.setGenero(Genero.MASCULINO);
-        usuarioEntity.setTrilha(getTrilhaEntity());
-        usuarioEntity.setAtivo('T');
-        usuarioEntity.setNomeCompleto("Heloise Isabela Lopes");
-        usuarioEntity.setCidade("Santana");
-        usuarioEntity.setEstado("AP");
-        usuarioEntity.setEmail("heloise.lopes@dbccompany.com.br");
-        return usuarioEntity;
-    }
-
-    private static LinguagemEntity getLinguagemEntity() {
-        LinguagemEntity linguagemEntity = new LinguagemEntity();
-        linguagemEntity.setIdLinguagem(1);
-        linguagemEntity.setNome("Java");
-
-        return linguagemEntity;
-    }
-
-    private static TrilhaEntity getTrilhaEntity() {
-        TrilhaEntity trilha = new TrilhaEntity();
-        trilha.setIdTrilha(1);
-        trilha.setNome("BACKEND");
-
-        return trilha;
-    }
-
-    private static EdicaoEntity getEdicaoEntity() {
-        EdicaoEntity edicao = new EdicaoEntity();
-        edicao.setIdEdicao(1);
-        edicao.setNome("Edição 10");
-
-        return edicao;
     }
 }

@@ -1,14 +1,8 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.edicao.EdicaoDTO;
 import br.com.vemser.facetoface.dto.linguagem.LinguagemDTO;
-import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
-import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
-import br.com.vemser.facetoface.entity.EdicaoEntity;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
-import br.com.vemser.facetoface.entity.TrilhaEntity;
-import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.LinguagemRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -27,6 +21,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
+import static br.com.vemser.facetoface.factory.LinguagemFactory.getLinguagemDTO;
+import static br.com.vemser.facetoface.factory.LinguagemFactory.getLinguagemEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -53,7 +50,7 @@ public class LinguagemServiceTest {
     }
 
     @Test
-    public void testarBuscarLinguagemPeloNomeComSucesso(){
+    public void testarBuscarLinguagemPeloNomeComSucesso() {
         //Setup
         final String NOME = "Java";
         final int id = 1;
@@ -152,89 +149,4 @@ public class LinguagemServiceTest {
         assertEquals(linguagem.getNome(), linguagemEntityResponse.getNome());
         assertEquals(linguagem.getIdLinguagem(), linguagemEntityResponse.getIdLinguagem());
     }
-
-    private static CandidatoEntity getCandidatoEntity() {
-        LinguagemEntity linguagemEntity = getLinguagemEntity();
-        Set<LinguagemEntity> linguagemList = new HashSet<>();
-        linguagemList.add(linguagemEntity);
-
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity.setIdCandidato(1);
-        candidatoEntity.setNotaProva(8.00);
-        candidatoEntity.setNomeCompleto("Heloise Isabela Lopes");
-        candidatoEntity.setCidade("Santana");
-        candidatoEntity.setEstado("AP");
-        candidatoEntity.setEmail("heloise.lopes@dbccompany.com.br");
-        candidatoEntity.setGenero(Genero.FEMININO);
-        candidatoEntity.setLinguagens(linguagemList);
-        candidatoEntity.setEdicao(getEdicaoEntity());
-        candidatoEntity.setTrilha(getTrilhaEntity());
-        candidatoEntity.setAtivo('T');
-
-        return candidatoEntity;
-    }
-
-    private static Set<CandidatoEntity> getListaCandidato() {
-        Set<CandidatoEntity> lista = new HashSet<>();
-        lista.add(getCandidatoEntity());
-        return lista;
-    }
-
-    private static CandidatoCreateDTO getCandidatoCreateDTO() {
-        LinguagemDTO linguagemDTO = new LinguagemDTO("Java");
-        Set<LinguagemDTO> linguagemDTOList = new HashSet<>();
-        linguagemDTOList.add(linguagemDTO);
-
-        CandidatoCreateDTO candidatoCreateDTO = new CandidatoCreateDTO();
-        candidatoCreateDTO.setNomeCompleto("Heloise Isabela Lopes");
-        candidatoCreateDTO.setCidade("Santana");
-        candidatoCreateDTO.setEstado("AP");
-        candidatoCreateDTO.setEmail("heloise.lopes@dbccompany.com.br");
-        candidatoCreateDTO.setLinguagens(linguagemDTOList);
-        candidatoCreateDTO.setTrilha(getTrilhaDTO());
-        candidatoCreateDTO.setEdicao(getEdicaoDTO());
-//        candidatoCreateDTO.setGenero(Genero.FEMININO);
-        candidatoCreateDTO.setAtivo('T');
-
-        return candidatoCreateDTO;
-    }
-
-    private static TrilhaDTO getTrilhaDTO() {
-        return new TrilhaDTO("BACKEND");
-    }
-
-    private static EdicaoDTO getEdicaoDTO() {
-        return new EdicaoDTO("Edição 10");
-    }
-
-    private static LinguagemEntity getLinguagemEntity() {
-        LinguagemEntity linguagemEntity = new LinguagemEntity();
-        linguagemEntity.setIdLinguagem(1);
-        linguagemEntity.setNome("Java");
-
-        return linguagemEntity;
-    }
-
-    private static TrilhaEntity getTrilhaEntity() {
-        TrilhaEntity trilha = new TrilhaEntity();
-        trilha.setIdTrilha(1);
-        trilha.setNome("BACKEND");
-
-        return trilha;
-    }
-
-    private static EdicaoEntity getEdicaoEntity() {
-        EdicaoEntity edicao = new EdicaoEntity();
-        edicao.setIdEdicao(1);
-        edicao.setNome("Edição 10");
-
-        return edicao;
-    }
-
-    private static LinguagemDTO getLinguagemDTO() {
-        LinguagemDTO linguagemDTO = new LinguagemDTO();
-        linguagemDTO.setNome("Java");
-        return linguagemDTO;
-    }
-
 }

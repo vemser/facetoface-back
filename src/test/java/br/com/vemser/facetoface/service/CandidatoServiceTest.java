@@ -32,7 +32,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoCreateDTO;
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
 import static br.com.vemser.facetoface.factory.CurriculoFactory.getCurriculoEntity;
+import static br.com.vemser.facetoface.factory.EdicaoFactory.getEdicaoEntity;
+import static br.com.vemser.facetoface.factory.LinguagemFactory.getLinguagemEntity;
+import static br.com.vemser.facetoface.factory.TrilhaFactory.getTrilhaEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -308,95 +313,6 @@ public class CandidatoServiceTest {
         when(candidatoRepository.findById(1)).thenReturn(Optional.of(candidatoEntity));
 
         candidatoService.update(1, candidatoCreateDTO, Genero.FEMININO);
-    }
-
-    private static CandidatoEntity getCandidatoEntity() {
-        LinguagemEntity linguagemEntity = getLinguagemEntity();
-        List<LinguagemEntity> linguagemList = new ArrayList<>();
-        linguagemList.add(linguagemEntity);
-
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity.setIdCandidato(1);
-        candidatoEntity.setNotaProva(8.00);
-        candidatoEntity.setNomeCompleto("Heloise Isabela Lopes");
-        candidatoEntity.setCidade("Santana");
-        candidatoEntity.setEstado("AP");
-        candidatoEntity.setEmail("heloise.lopes@dbccompany.com.br");
-        candidatoEntity.setGenero(Genero.FEMININO);
-        candidatoEntity.setLinguagens(new HashSet<>(linguagemList));
-        candidatoEntity.setEdicao(getEdicaoEntity());
-        candidatoEntity.setTrilha(getTrilhaEntity());
-        candidatoEntity.setAtivo('T');
-
-        return candidatoEntity;
-    }
-
-    private static CandidatoCreateDTO getCandidatoCreateDTO() {
-        LinguagemDTO linguagemDTO = new LinguagemDTO("Java");
-        List<LinguagemDTO> linguagemDTOList = new ArrayList<>();
-        linguagemDTOList.add(linguagemDTO);
-
-        CandidatoCreateDTO candidatoCreateDTO = new CandidatoCreateDTO();
-        candidatoCreateDTO.setNomeCompleto("Heloise Isabela Lopes");
-        candidatoCreateDTO.setCidade("Santana");
-        candidatoCreateDTO.setEstado("AP");
-        candidatoCreateDTO.setEmail("heloise.lopes@dbccompany.com.br");
-        candidatoCreateDTO.setLinguagens(new HashSet<>(linguagemDTOList));
-        candidatoCreateDTO.setTrilha(getTrilhaDTO());
-        candidatoCreateDTO.setEdicao(getEdicaoDTO());
-//        candidatoCreateDTO.setGenero(Genero.FEMININO);
-        candidatoCreateDTO.setAtivo('T');
-
-        return candidatoCreateDTO;
-    }
-
-    private static TrilhaDTO getTrilhaDTO() {
-        return new TrilhaDTO("BACKEND");
-    }
-
-    private static EdicaoDTO getEdicaoDTO() {
-        return new EdicaoDTO("Edição 10");
-    }
-
-    private static LinguagemEntity getLinguagemEntity() {
-        LinguagemEntity linguagemEntity = new LinguagemEntity();
-        linguagemEntity.setIdLinguagem(1);
-        linguagemEntity.setNome("Java");
-
-        return linguagemEntity;
-    }
-
-    private static TrilhaEntity getTrilhaEntity() {
-        TrilhaEntity trilha = new TrilhaEntity();
-        trilha.setIdTrilha(1);
-        trilha.setNome("BACKEND");
-
-        return trilha;
-    }
-
-    private static EdicaoEntity getEdicaoEntity() {
-        EdicaoEntity edicao = new EdicaoEntity();
-        edicao.setIdEdicao(1);
-        edicao.setNome("Edição 10");
-
-        return edicao;
-    }
-
-    private static RelatorioCandidatoCadastroDTO getRelatorioCandidatoCadastroDTO() {
-        return new RelatorioCandidatoCadastroDTO(1,
-                "Heloise Isabela Lopes",
-                "heloise.lopes@dbccompany.com.br",
-                8.25,
-                "BACKEND",
-                "Edição 10",
-                Genero.FEMININO,
-                'T',
-                "Santana",
-                "AP",
-                "Sem observação",
-                null,
-                List.of("Java")
-        );
     }
 
     private static RelatorioCandidatoPaginaPrincipalDTO getRelatorioCandidatoPaginaPrincipalDTO() {

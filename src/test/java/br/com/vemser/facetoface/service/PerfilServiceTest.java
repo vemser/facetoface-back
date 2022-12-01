@@ -19,6 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Collections;
 import java.util.Optional;
 
+import static br.com.vemser.facetoface.factory.PerfilFactory.getPerfilEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -41,7 +42,6 @@ public class PerfilServiceTest {
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         ReflectionTestUtils.setField(perfilService, "objectMapper", objectMapper);
     }
-
 
     @Test
     public void deveTestarDeleteComSucesso() throws RegraDeNegocioException {
@@ -103,16 +103,5 @@ public class PerfilServiceTest {
 
         assertNotNull(perfilDTO);
         assertEquals(perfilEntity.getNome(), perfilDTO.getNome());
-    }
-
-    private static PerfilEntity getPerfilEntity() {
-        return new PerfilEntity(2,
-                "ADMIN",
-                Collections.emptySet()
-                );
-    }
-
-    private static PerfilDTO getPerfilDTO() {
-        return new PerfilDTO("ADMIN");
     }
 }

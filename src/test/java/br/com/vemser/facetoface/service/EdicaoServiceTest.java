@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static br.com.vemser.facetoface.factory.EdicaoFactory.getEdicaoEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -66,7 +67,7 @@ public class EdicaoServiceTest {
 
     @Test
     public void deveCriarUmaNovaEdicaoCasoNaoExistaONomeNoBanco() {
-        final String edicaoNome = "10";
+        final String edicaoNome = "Edição 10";
         EdicaoEntity edicao = getEdicaoEntity();
 
         when(edicaoRepository.findByNome(anyString())).thenReturn(Optional.empty());
@@ -80,14 +81,14 @@ public class EdicaoServiceTest {
     @Test
     public void deveRetornarEdicaoQuandoEdicaoEstiverCadastradaNoBancoPeloNomeComSucesso() throws RegraDeNegocioException {
         //Setup
-        String nome = "10";
+        String nome = "Edição 10";
 
         final int ID_EDICAO_ESPERADO = 2;
         EdicaoEntity edicaoEsperada = new EdicaoEntity();
         edicaoEsperada.setNome(nome);
         edicaoEsperada.setIdEdicao(ID_EDICAO_ESPERADO);
         // Act
-        when(edicaoRepository.findByNome(nome)).thenReturn(Optional.of(edicaoEsperada));
+        when(edicaoRepository.findByNome(anyString())).thenReturn(Optional.of(edicaoEsperada));
         EdicaoEntity edicaoResponse = edicaoService.findByNome(nome);
 
         // Assert
@@ -163,15 +164,6 @@ public class EdicaoServiceTest {
         final int id = 1;
         when(edicaoRepository.findById(id)).thenReturn(Optional.empty());
         edicaoService.findById(id);
-    }
-
-    private static EdicaoEntity getEdicaoEntity() {
-        final String nome = "10";
-        final int id = 1;
-        EdicaoEntity edicaoEntity = new EdicaoEntity();
-        edicaoEntity.setIdEdicao(id);
-        edicaoEntity.setNome(nome);
-        return edicaoEntity;
     }
 
     private static EdicaoDTO getEdicaoDTO() {

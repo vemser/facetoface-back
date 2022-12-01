@@ -35,8 +35,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static br.com.vemser.facetoface.factory.EntrevistaFactory.getEntrevistaAtualizacaoDTO;
-import static br.com.vemser.facetoface.factory.EntrevistaFactory.getEntrevistaDTO;
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoDTO;
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
+import static br.com.vemser.facetoface.factory.EntrevistaFactory.*;
+import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioDTO;
+import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -278,69 +281,5 @@ public class EntrevistaServiceTest {
         when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
 
         entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
-    }
-
-    private static EntrevistaEntity getEntrevistaEntity() {
-        EntrevistaEntity entrevistaEntity = new EntrevistaEntity();
-        entrevistaEntity.setIdEntrevista(1);
-        entrevistaEntity.setDataEntrevista(LocalDateTime.now().plusDays(1));
-        entrevistaEntity.setCidade("Santana");
-        entrevistaEntity.setEstado("AP");
-        entrevistaEntity.setObservacoes("Sem observações.");
-        entrevistaEntity.setLegenda(Legenda.PENDENTE);
-
-        return entrevistaEntity;
-    }
-
-    private static CandidatoEntity getCandidatoEntity() {
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity.setIdCandidato(1);
-        candidatoEntity.setNotaProva(8.00);
-        candidatoEntity.setNomeCompleto("Heloise Isabela Lopes");
-        candidatoEntity.setCidade("Santana");
-        candidatoEntity.setEstado("AP");
-        candidatoEntity.setEmail("heloise.lopes@dbccompany.com.br");
-        candidatoEntity.setGenero(Genero.FEMININO);
-        candidatoEntity.setAtivo('T');
-
-        return candidatoEntity;
-    }
-
-    private static CandidatoDTO getCandidatoDTO() {
-        CandidatoDTO candidatoDTO = new CandidatoDTO();
-        candidatoDTO.setNomeCompleto("Heloise Isabela Lopes");
-        candidatoDTO.setCidade("Santana");
-        candidatoDTO.setEstado("AP");
-        candidatoDTO.setEmail("heloise.lopes@dbccompany.com.br");
-//        candidatoDTO.setGenero(Genero.FEMININO);
-        candidatoDTO.setAtivo('T');
-
-        return candidatoDTO;
-    }
-
-    private static UsuarioEntity getUsuarioEntity() {
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setIdUsuario(1);
-        usuarioEntity.setNomeCompleto("Débora Sophia da Silva");
-        usuarioEntity.setEmail("debora.silva@dbccompany.com.br");
-        usuarioEntity.setGenero(Genero.FEMININO);
-        usuarioEntity.setCidade("Mossoró");
-        usuarioEntity.setEstado("RN");
-        usuarioEntity.setAtivo('T');
-
-        return usuarioEntity;
-    }
-
-    private static UsuarioDTO getUsuarioDTO() {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setIdUsuario(1);
-        usuarioDTO.setNomeCompleto("Débora Sophia da Silva");
-        usuarioDTO.setEmail("debora.silva@dbccompany.com.br");
-        usuarioDTO.setGenero(Genero.FEMININO);
-        usuarioDTO.setCidade("Mossoró");
-        usuarioDTO.setEstado("RN");
-        usuarioDTO.setAtivo('T');
-
-        return usuarioDTO;
     }
 }

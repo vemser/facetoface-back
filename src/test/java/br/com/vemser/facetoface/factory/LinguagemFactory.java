@@ -12,7 +12,7 @@ public class LinguagemFactory {
         return linguagemEntity;
     }
 
-    private static LinguagemDTO getLinguagemDTO() {
+    public static LinguagemDTO getLinguagemDTO() {
         LinguagemDTO linguagemDTO = new LinguagemDTO();
         linguagemDTO.setNome("Java");
         return linguagemDTO;
