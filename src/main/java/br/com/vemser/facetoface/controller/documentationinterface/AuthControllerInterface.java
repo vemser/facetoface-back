@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -39,7 +36,7 @@ public interface AuthControllerInterface {
             }
     )
     @PostMapping
-    void trocarSenha(String email) throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
+    void trocarSenha(@RequestParam @Valid String email) throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
 
     @Operation(summary = "Inserir um token válido para troca de senha do usuário.", description = "Insira um token válido para troca de senha do usuário.")
     @ApiResponses(
