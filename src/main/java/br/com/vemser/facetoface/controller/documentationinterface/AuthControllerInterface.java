@@ -3,6 +3,7 @@ package br.com.vemser.facetoface.controller.documentationinterface;
 import br.com.vemser.facetoface.dto.login.LoginDTO;
 import br.com.vemser.facetoface.dto.login.UserSenhaDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
+import freemarker.template.TemplateException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.IOException;
 
 public interface AuthControllerInterface {
 
@@ -36,7 +39,7 @@ public interface AuthControllerInterface {
             }
     )
     @PostMapping
-    void trocarSenha() throws RegraDeNegocioException;
+    void trocarSenha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
 
     @Operation(summary = "Inserir um token válido para troca de senha do usuário.", description = "Insira um token válido para troca de senha do usuário.")
     @ApiResponses(

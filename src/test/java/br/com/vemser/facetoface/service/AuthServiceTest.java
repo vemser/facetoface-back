@@ -9,27 +9,24 @@ import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EntrevistaRepository;
 import br.com.vemser.facetoface.security.TokenService;
+import freemarker.template.TemplateException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.internet.MimeMessage;
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -96,7 +93,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void deveTrocarSenha() throws RegraDeNegocioException {
+    public void deveTrocarSenha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         final String token = "token";
         final String email = "heloise.lopes@dbccompany.com.br";
         UsernamePasswordAuthenticationToken dto =
@@ -105,7 +102,7 @@ public class AuthServiceTest {
 
         UsuarioEntity usuarioEntity = getUsuarioEntity();
 
-        when(usuarioService.findByEmail(any())).thenReturn(Optional.of(usuarioEntity));
+        when(usuarioService.findByEmail(any())).thenReturn(usuarioEntity);
         when(tokenService.getTokenSenha(any())).thenReturn(token);
 
         authService.trocarSenha();
@@ -116,13 +113,13 @@ public class AuthServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEncontrado() throws RegraDeNegocioException {
+    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEncontrado() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         final String email = "heloise.lopes@dbccompany.com.br";
         UsernamePasswordAuthenticationToken dto =
                 new UsernamePasswordAuthenticationToken(1, email, Collections.emptyList());
         SecurityContextHolder.getContext().setAuthentication(dto);
 
-        when(usuarioService.findByEmail(any())).thenReturn(Optional.empty());
+        when(usuarioService.findByEmail(any())).thenThrow(RegraDeNegocioException.class);
         authService.trocarSenha();
     }
 
@@ -134,7 +131,7 @@ public class AuthServiceTest {
         UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         when(tokenService.getEmailByToken(token)).thenReturn(emailEsperado);
-        when(usuarioService.findByEmail(emailEsperado)).thenReturn(Optional.of(usuarioEntity));
+        when(usuarioService.findByEmail(emailEsperado)).thenReturn(usuarioEntity);
         String email = authService.procurarUsuario(token);
 
         assertEquals(emailEsperado, email);

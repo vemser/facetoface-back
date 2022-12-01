@@ -9,6 +9,7 @@ import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.ImageService;
 import br.com.vemser.facetoface.service.UsuarioService;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 
@@ -32,7 +34,7 @@ public class UsuarioController implements UsuarioControllerInterface {
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
-                                                       @RequestParam Genero genero) throws RegraDeNegocioException{
+                                                       @RequestParam Genero genero) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         return new ResponseEntity<>(usuarioService.createUsuario(usuarioCreateDTO, genero), HttpStatus.CREATED);
     }
 

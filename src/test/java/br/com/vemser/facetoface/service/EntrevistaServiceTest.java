@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -145,7 +148,7 @@ public class EntrevistaServiceTest {
     }
 
     @Test
-    public void deveCadastrarUmaEntrevistaCorretamente() throws RegraDeNegocioException {
+    public void deveCadastrarUmaEntrevistaCorretamente() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         final int idEsperado = 1;
         final String token = "token";
 
@@ -156,7 +159,7 @@ public class EntrevistaServiceTest {
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
         entrevistaEntity.setCandidatoEntity(candidato);
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
         when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
         when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
@@ -170,22 +173,22 @@ public class EntrevistaServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
+    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.empty());
 
         entrevistaService.createEntrevista(entrevistaCreateDTO);
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoUsuarioJaEstiverOcupado() throws RegraDeNegocioException {
+    public void deveRetornarUmaExcecaoQuandoUsuarioJaEstiverOcupado() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         UsuarioEntity usuarioEntity = getUsuarioEntity();
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
         entrevistaEntity.setUsuarioEntity(usuarioEntity);
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
         when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
 
@@ -193,12 +196,12 @@ public class EntrevistaServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoCandidaoNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
+    public void deveRetornarUmaExcecaoQuandoCandidaoNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
         UsuarioEntity usuarioEntity = getUsuarioEntity();
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
 
         entrevistaService.createEntrevista(entrevistaCreateDTO);
@@ -244,7 +247,7 @@ public class EntrevistaServiceTest {
         UsuarioEntity usuarioEntity = getUsuarioEntity();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
         when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
         when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
@@ -259,7 +262,7 @@ public class EntrevistaServiceTest {
     public void deveRetornarUmaExcecaoQuandoUsuarioNaoForCadastrado() throws RegraDeNegocioException {
         EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.empty());
         entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
     }
 
@@ -270,7 +273,7 @@ public class EntrevistaServiceTest {
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
         entrevistaEntity.setUsuarioEntity(usuarioEntity);
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
         when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
 

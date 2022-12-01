@@ -8,6 +8,7 @@ import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.service.EntrevistaService;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Slf4j
 @Validated
@@ -34,7 +37,7 @@ public class EntrevistaController implements EntrevistaControllerInterface {
     }
 
     @PostMapping("/marcar-entrevista")
-    public ResponseEntity<EntrevistaDTO> cadastrarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
+    public ResponseEntity<EntrevistaDTO> cadastrarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         return new ResponseEntity<>(entrevistaService.createEntrevista(entrevistaCreateDTO), HttpStatus.CREATED);
     }
 

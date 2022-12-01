@@ -8,13 +8,16 @@ import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.security.TokenService;
 import br.com.vemser.facetoface.service.AuthService;
 import br.com.vemser.facetoface.service.UsuarioService;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,7 +36,7 @@ public class AuthController implements AuthControllerInterface {
     }
 
     @PostMapping("/solicitar-troca-senha")
-    public void trocarSenha() throws RegraDeNegocioException {
+    public void trocarSenha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         authService.trocarSenha();
         new ResponseEntity<>(null, HttpStatus.CREATED);
     }

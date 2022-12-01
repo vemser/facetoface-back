@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +35,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +78,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarCadastarUsuarioComSucesso() throws RegraDeNegocioException {
+    public void testarCadastarUsuarioComSucesso() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         final String emailEsperado = "julio.gabriel@dbccompany.com.br";
         final String trilhaEsperado = "BACKEND";
         final String senhaCriptografada = "j183nsur74bd83gr7";
@@ -86,7 +89,7 @@ public class UsuarioServiceTest {
         EdicaoEntity edicao = EdicaoFactory.getEdicaoEntity();
         PerfilEntity perfil = PerfilFactory.getPerfilEntity();
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.empty());
         when(trilhaService.findByNome(anyString())).thenReturn(trilha);
 //        when(edicaoService.findByNome(anyString())).thenReturn(edicao);
         when(perfilService.findByNome(anyString())).thenReturn(perfil);
@@ -101,7 +104,7 @@ public class UsuarioServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void testarCadastarUsuarioComErro() throws RegraDeNegocioException {
+    public void testarCadastarUsuarioComErro() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         UsuarioEntity usuarioEntity = getUsuarioEntity();
         UsuarioCreateDTO usuarioCreateDTO = UsuarioFactory.getUsuarioDTO();
 
@@ -195,7 +198,7 @@ public class UsuarioServiceTest {
         UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
-        Optional<UsuarioEntity> usuario = usuarioService.findByEmail(emailEsperado);
+        Optional<UsuarioEntity> usuario = usuarioService.findOptionalByEmail(emailEsperado);
 
         assertEquals(usuario.get().getEmail(), emailEsperado);
     }
@@ -287,11 +290,11 @@ public class UsuarioServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void testarCriarUsuarioComErroDeEmail() throws RegraDeNegocioException {
+    public void testarCriarUsuarioComErroDeEmail() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         UsuarioCreateDTO usuarioCreateDTO = UsuarioFactory.getUsuarioDTO();
         usuarioCreateDTO.setEmail("abc");
 
-        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.empty());
         usuarioService.createUsuario(usuarioCreateDTO, Genero.MASCULINO);
 
     }
@@ -363,6 +366,28 @@ public class UsuarioServiceTest {
         LoginRetornoDTO loginRetornoDTO = usuarioService.getLoggedUser();
 
         assertEquals(email, loginRetornoDTO.getEmail());
+    }
+
+    @Test
+    public void deveRetornarUmUsuarioQuandoEmailEstiverCadastradoNoBanco() throws RegraDeNegocioException {
+        final String email = "julio.gabriel@dbccompany.com.br";
+
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+
+        UsuarioEntity usuario = usuarioService.findByEmail(email);
+
+        assertEquals(email, usuario.getEmail());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoEmailDoUsuarioNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
+        final String email = "julio.gabriel@dbccompany.com.br";
+
+        when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        UsuarioEntity usuario = usuarioService.findByEmail(email);
     }
 
     private static UsernamePasswordAuthenticationToken getAuthentication() {

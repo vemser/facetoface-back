@@ -6,13 +6,16 @@ import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
+import freemarker.template.TemplateException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.IOException;
 
 public interface EntrevistaControllerInterface {
 
@@ -43,7 +46,7 @@ public interface EntrevistaControllerInterface {
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
     @PostMapping
-    ResponseEntity<EntrevistaDTO> cadastrarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException;
+    ResponseEntity<EntrevistaDTO> cadastrarEntrevista(@Valid @RequestBody EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException;
 
     @Operation(summary = "Deletar cadastro de Entrevista", description = "Deletar entrevista no Sistema")
     @ApiResponses(value = {
