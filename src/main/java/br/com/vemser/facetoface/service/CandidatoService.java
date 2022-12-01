@@ -153,7 +153,7 @@ public class CandidatoService {
     public PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto.trim(), nomeTrilha, pageRequest);
+        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto, nomeTrilha, pageRequest);
         if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
         }
