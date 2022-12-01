@@ -1,6 +1,9 @@
 package br.com.vemser.facetoface.factory;
 
+import br.com.vemser.facetoface.dto.EntrevistaAtualizacaoDTO;
+import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
+import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 
@@ -23,11 +26,29 @@ public class EntrevistaFactory {
     }
 
     public static EntrevistaDTO getEntrevistaDTO() {
+        CandidatoDTO candidatoDTO = getCandidatoDTO();
+        UsuarioDTO usuarioDTO = getUsuarioDTO();
+
         EntrevistaDTO entrevistaDTO = new EntrevistaDTO();
         entrevistaDTO.setIdEntrevista(1);
-        entrevistaDTO.setCandidatoDTO(getCandidatoDTO());
-        entrevistaDTO.setUsuarioDTO(getUsuarioDTO());
+        entrevistaDTO.setCandidatoDTO(candidatoDTO);
+        entrevistaDTO.setUsuarioDTO(usuarioDTO);
+        entrevistaDTO.setUsuarioEmail(usuarioDTO.getEmail());
+        entrevistaDTO.setCandidatoEmail(candidatoDTO.getEmail());
 
         return entrevistaDTO;
+    }
+
+    public static EntrevistaAtualizacaoDTO getEntrevistaAtualizacaoDTO() {
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO =
+                new EntrevistaAtualizacaoDTO(
+                        LocalDateTime.now().plusDays(1),
+                        "Santana",
+                        "AP",
+                        "Sem observações",
+                        "teste@email.com.br"
+                );
+
+        return entrevistaAtualizacaoDTO;
     }
 }

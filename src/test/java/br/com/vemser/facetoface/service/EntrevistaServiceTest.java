@@ -1,6 +1,8 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.dto.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
+import br.com.vemser.facetoface.dto.entrevista.EntrevistaCreateDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
@@ -30,9 +32,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.vemser.facetoface.factory.EntrevistaFactory.getEntrevistaAtualizacaoDTO;
+import static br.com.vemser.facetoface.factory.EntrevistaFactory.getEntrevistaDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -49,7 +53,7 @@ public class EntrevistaServiceTest {
     private EmailService emailService;
     @Mock
     private TokenService tokenService;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
     public void init() {
@@ -138,6 +142,139 @@ public class EntrevistaServiceTest {
         assertEquals(idEsperado, entrevistaDTO.getIdEntrevista());
         assertEquals(nomeCandidatoEsperado, entrevistaDTO.getCandidatoDTO().getNomeCompleto());
         assertEquals(nomeUsuarioesperado, entrevistaDTO.getUsuarioDTO().getNomeCompleto());
+    }
+
+    @Test
+    public void deveCadastrarUmaEntrevistaCorretamente() throws RegraDeNegocioException {
+        final int idEsperado = 1;
+        final String token = "token";
+
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
+
+        CandidatoEntity candidato = getCandidatoEntity();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setCandidatoEntity(candidato);
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
+        when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
+        when(tokenService.getTokenConfirmacao(any())).thenReturn(token);
+
+        EntrevistaDTO entrevistaDTO = entrevistaService.createEntrevista(entrevistaCreateDTO);
+
+        assertEquals(idEsperado, entrevistaDTO.getIdEntrevista());
+        assertEquals("Santana", entrevistaDTO.getCidade());
+        assertEquals("AP", entrevistaDTO.getEstado());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
+        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        entrevistaService.createEntrevista(entrevistaCreateDTO);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoUsuarioJaEstiverOcupado() throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
+
+        entrevistaService.createEntrevista(entrevistaCreateDTO);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoCandidaoNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
+        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
+
+        entrevistaService.createEntrevista(entrevistaCreateDTO);
+    }
+
+    @Test
+    public void deveBuscarEntrevistaPeloCandidatoCorretamente() throws RegraDeNegocioException {
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setCandidatoEntity(candidatoEntity);
+
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
+
+        EntrevistaEntity entrevistaRetornada = entrevistaService.findByCandidatoEntity(candidatoEntity);
+
+        assertEquals(1, entrevistaRetornada.getIdEntrevista());
+        assertEquals(candidatoEntity.getNomeCompleto(), entrevistaEntity.getCandidatoEntity().getNomeCompleto());
+        assertEquals(candidatoEntity.getEmail(), entrevistaEntity.getCandidatoEntity().getEmail());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoCandidatoNaoTiverEntrevistas() throws RegraDeNegocioException {
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
+
+        entrevistaService.findByCandidatoEntity(candidatoEntity);
+    }
+
+    @Test
+    public void deveDeletarUmaEntrevistaCorretamente() throws RegraDeNegocioException {
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+
+        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
+
+        entrevistaService.deletarEntrevista(1);
+        verify(entrevistaRepository).delete(any());
+    }
+
+    @Test
+    public void deveAtualizarEntrevistaCorretamente() throws RegraDeNegocioException {
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
+        when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
+
+        EntrevistaDTO entrevistaDTO =
+                entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CONFIRMADA);
+
+        assertEquals(1, entrevistaDTO.getIdEntrevista());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoUsuarioNaoForCadastrado() throws RegraDeNegocioException {
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.empty());
+        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoListaDeEntrevistasVazia() throws RegraDeNegocioException {
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
+
+        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
     }
 
     private static EntrevistaEntity getEntrevistaEntity() {
