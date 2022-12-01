@@ -3,15 +3,15 @@ package br.com.vemser.facetoface.service;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.CurriculoEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
-import br.com.vemser.facetoface.repository.CandidatoRepository;
+import br.com.vemser.facetoface.factory.CurriculoFactory;
 import br.com.vemser.facetoface.repository.CurriculoRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,9 +36,24 @@ public class CurriculoServiceTest {
 
     @Mock
     private CurriculoRepository curriculoRepository;
-    
 
 
+    @Test
+    public void deveTestarArquivarCurriculoComSucessoCandidatoSemCurriculo() throws RegraDeNegocioException, IOException {
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
+        MultipartFile curriculo = new MockMultipartFile("curriculo", bytes);
+
+
+        when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
+        when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.empty());
+        when(curriculoRepository.save(any())).thenReturn(getCurriculoEntity());
+
+        curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
+
+
+        verify(curriculoRepository, times(1)).save(any());
+    }
     @Test
     public void deveTestarArquivarCurriculoComSucesso() throws RegraDeNegocioException, IOException {
         CandidatoEntity candidatoEntity = getCandidatoEntity();
@@ -54,7 +69,27 @@ public class CurriculoServiceTest {
 
 
         verify(curriculoRepository, times(1)).save(any());
+    }
+    @Test(expected = IOException.class)
+    public void deveTestarArquivarCurriculoComRegrasDeNegocioException() throws RegraDeNegocioException, IOException {
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        final MultipartFile curriculo = Mockito.mock(MultipartFile.class, Mockito.RETURNS_DEEP_STUBS);
 
+        when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
+        when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.of(getCurriculoEntity()));
+        when(curriculo.getBytes()).thenThrow(new IOException("Teste"));
+
+        curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
+    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveTestarArquivarCurriculoComIOException() throws RegraDeNegocioException, IOException {
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
+        MultipartFile curriculo = new MockMultipartFile("curriculo", bytes);
+
+
+        when(candidatoService.findByEmailEntity(any())).thenThrow(new RegraDeNegocioException("Erro"));
+        curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
     }
 
     @Test
@@ -98,5 +133,23 @@ public class CurriculoServiceTest {
         Integer id = 2;
         when(curriculoRepository.findById(anyInt())).thenReturn(Optional.empty());
         curriculoService.findById(id);
+    }
+
+    @Test
+    public void testarDeletarFisicamenteUsuarioComSucesso() throws RegraDeNegocioException {
+        CurriculoEntity curriculoEntity = CurriculoFactory.getCurriculoEntity();
+
+        when(curriculoRepository.findById(any())).thenReturn(Optional.of(curriculoEntity));
+        curriculoService.deleteFisico(1);
+
+        verify(curriculoRepository).deleteById(any());
+    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void testarDeletarFisicamenteUsuarioComErro() throws RegraDeNegocioException {
+
+        when(curriculoRepository.findById(any())).thenReturn(Optional.empty());
+        curriculoService.deleteFisico(1);
+
+        verify(curriculoRepository).deleteById(any());
     }
 }

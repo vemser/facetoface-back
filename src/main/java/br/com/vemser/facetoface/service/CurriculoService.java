@@ -55,7 +55,7 @@ public class CurriculoService {
         return Base64Utils.encodeToString(curriculo.get().getDado());
     }
 
-    private Optional<CurriculoEntity> findByCandidato(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
+    private Optional<CurriculoEntity> findByCandidato(CandidatoEntity candidatoEntity){
         return curriculoRepository.findByCandidato(candidatoEntity);
     }
 
