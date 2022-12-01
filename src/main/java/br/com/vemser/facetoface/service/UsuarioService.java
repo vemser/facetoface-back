@@ -185,17 +185,12 @@ public class UsuarioService {
         return usuarioDTO;
     }
 
-    public void atualizarSenhaUsuario(String email) throws RegraDeNegocioException {
-        try {
+    public void atualizarSenhaUsuario(String email) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
             Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
             String senha = gerarSenha();
             usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
             usuarioRepository.save(usuarioEntityOptional.get());
             emailService.sendEmailEnvioSenha(email, senha);
-        }
-        catch (MessagingException | TemplateException | IOException e){
-            throw new RegraDeNegocioException("Problema com os e-mails. Checar mensagem, template e dados.");
-        }
     }
 
     public void atualizarSenhaUsuarioLogado(String senhaAtual, String senhaNova) throws RegraDeNegocioException {

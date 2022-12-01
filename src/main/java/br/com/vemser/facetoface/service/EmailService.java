@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
@@ -27,33 +28,37 @@ public class EmailService {
     private final JavaMailSender emailSender;
 
     public void sendEmailConfirmacaoEntrevista(String email,
-                                               String token) throws MessagingException, TemplateException, IOException {
+                                               String token) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
         final String subject = "Confirmação de entrevista.";
         sendEmail(email, token, "envio-senha-template.html", subject);
     }
 
     public void sendEmailEnvioSenha(String email,
-                                    String senha) throws MessagingException, TemplateException, IOException {
+                                    String senha) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
         String subject = "Cadastro concluído com sucesso.";
         sendEmail(email, senha, "envio-senha-template.html", subject);
     }
 
     public void sendEmailRecuperacaoSenha(String email,
-                                          String token) throws MessagingException, TemplateException, IOException {
+                                          String token) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
         final String subject = "Recuperação de senha concluída com sucesso.";
         sendEmail(email, token, "envio-senha-template.html", subject);
     }
 
     public void sendEmail(String email, String info, String nomeTemplate,
-                          String assunto) throws MessagingException, TemplateException, IOException {
+                          String assunto) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
+        try {
 
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-        mimeMessageHelper.setFrom(from);
-        mimeMessageHelper.setTo(email);
-        mimeMessageHelper.setSubject(assunto);
-        mimeMessageHelper.setText(getContentFromTemplate(info, nomeTemplate), true);
-        emailSender.send(mimeMessageHelper.getMimeMessage());
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setFrom(from);
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setSubject(assunto);
+            mimeMessageHelper.setText(getContentFromTemplate(info, nomeTemplate), true);
+            emailSender.send(mimeMessageHelper.getMimeMessage());
+        } catch (MessagingException | IOException | TemplateException e){
+            throw new RegraDeNegocioException("Email inválido! inserir outro e-mail.");
+        }
     }
 
     public String getContentFromTemplate(String info, String nomeTemplate) throws IOException, TemplateException {

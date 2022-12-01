@@ -1,5 +1,8 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.entity.UsuarioEntity;
+import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
+import br.com.vemser.facetoface.factory.UsuarioFactory;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.junit.Before;
@@ -18,8 +21,7 @@ import java.io.Reader;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmailServiceTest {
@@ -39,7 +41,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void deveEnviarEmailComAConfirmacaoDaEntrevista() throws IOException, MessagingException, TemplateException {
+    public void deveEnviarEmailComAConfirmacaoDaEntrevista() throws IOException, MessagingException, TemplateException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
 
         final String email = "teste@email.com.br";
@@ -54,7 +56,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void deveEnviarEmailComASenha() throws IOException, MessagingException, TemplateException {
+    public void deveEnviarEmailComASenha() throws IOException, MessagingException, TemplateException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
 
         final String email = "teste@email.com.br";
@@ -69,7 +71,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void deveEnviarEmailDeRecuperacaoDeSenha() throws IOException, MessagingException, TemplateException {
+    public void deveEnviarEmailDeRecuperacaoDeSenha() throws IOException, MessagingException, TemplateException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
 
         final String email = "teste@email.com.br";
@@ -84,7 +86,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void deveEnviarEmail() throws IOException, MessagingException, TemplateException {
+    public void deveEnviarEmail() throws IOException, MessagingException, TemplateException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
 
         final String email = "teste@email.com.br";
@@ -101,7 +103,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void deveRetornarUmaExcecaoQuandoOcorrerUmErroNoEnvioDoEmail() throws IOException, MessagingException, TemplateException {
+    public void deveRetornarUmaExcecaoQuandoOcorrerUmErroNoEnvioDoEmail() throws IOException, MessagingException, TemplateException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
 
         final String email = "teste@email.com.br";
@@ -127,5 +129,20 @@ public class EmailServiceTest {
         String content = emailService.getContentFromTemplate(token, nomeTemplate);
 
         assertNotNull(content);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveTestarSendEmailComIOException() throws IOException, MessagingException, TemplateException, RegraDeNegocioException {
+        Template template = new Template("template.html", Reader.nullReader());
+        final String email = "teste@email.com.br";
+        final String token = "$123token";
+        final String nomeTemplate = "template.html";
+        final String assunto = "Recuperação de senha concluída com sucesso.";
+        mimeMessage.setFrom(from);
+
+        when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
+        doThrow(new IOException()).when(fmConfiguration).getTemplate(anyString());
+
+        emailService.sendEmail(email, token, nomeTemplate, assunto);
     }
 }

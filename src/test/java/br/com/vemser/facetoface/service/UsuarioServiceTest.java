@@ -227,7 +227,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testarAtualizarSenhaComSucesso() throws RegraDeNegocioException {
+    public void testarAtualizarSenhaComSucesso() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         final String email = "julio.gabriel@dbccompany.com.br";
         final String senha = "123";
         UsuarioEntity usuarioEntity = getUsuarioEntity();
@@ -352,6 +352,8 @@ public class UsuarioServiceTest {
 //        when(usuarioRepository.save(any())).thenReturn(Optional.empty());
         usuarioService.deleteLogico(2);
     }
+
+
 
     @Test
     public void testarBuscarUsuarioPorNomeCompletoComSucesso() throws RegraDeNegocioException {

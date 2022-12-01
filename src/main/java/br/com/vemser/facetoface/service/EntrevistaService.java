@@ -116,7 +116,7 @@ public class EntrevistaService {
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
 
-    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) throws MessagingException, TemplateException, IOException {
+    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
         String tokenSenha = tokenService.getTokenConfirmacao(entrevistaEntity);
 
         String base = ("Olá "

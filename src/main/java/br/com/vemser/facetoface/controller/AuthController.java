@@ -42,7 +42,7 @@ public class AuthController implements AuthControllerInterface {
     }
 
     @PostMapping("/trocar-senha")
-    public void trocarSenhaAuntenticado(@RequestParam String token) throws RegraDeNegocioException {
+    public void trocarSenhaAuntenticado(@RequestParam String token) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
         String email = authService.procurarUsuario(token);
         usuarioService.atualizarSenhaUsuario(email);
         new ResponseEntity<>(null, HttpStatus.CREATED);
