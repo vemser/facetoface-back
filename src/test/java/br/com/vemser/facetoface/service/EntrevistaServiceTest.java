@@ -149,17 +149,20 @@ public class EntrevistaServiceTest {
     }
 
     @Test
-    public void deveCadastrarUmaEntrevistaCorretamente() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public void deveCadastrarUmaEntrevistaCorretamente() throws RegraDeNegocioException {
         final int idEsperado = 1;
         final String token = "token";
 
         UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        CandidatoDTO candidatoDTO = getCandidatoDTO();
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
 
         CandidatoEntity candidato = getCandidatoEntity();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
         entrevistaEntity.setCandidatoEntity(candidato);
 
+        when(candidatoService.findByEmailEntity(anyString())).thenReturn(candidato);
         when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
         when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
@@ -174,7 +177,7 @@ public class EntrevistaServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
 
         when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.empty());
@@ -183,7 +186,7 @@ public class EntrevistaServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoUsuarioJaEstiverOcupado() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public void deveRetornarUmaExcecaoQuandoUsuarioJaEstiverOcupado() throws RegraDeNegocioException {
         UsuarioEntity usuarioEntity = getUsuarioEntity();
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
@@ -197,7 +200,7 @@ public class EntrevistaServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoCandidaoNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public void deveRetornarUmaExcecaoQuandoCandidaoNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
         UsuarioEntity usuarioEntity = getUsuarioEntity();
