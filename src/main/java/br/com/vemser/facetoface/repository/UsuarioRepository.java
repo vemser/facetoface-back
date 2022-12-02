@@ -13,6 +13,6 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
 
     Optional<UsuarioEntity> findByEmail(String email);
 
-    Page<UsuarioEntity> findByNomeCompleto(String nomeCompleto, Pageable pageable);
+    Page<UsuarioEntity> findByNomeCompletoContaining(String nomeCompleto, Pageable pageable);
 
 }

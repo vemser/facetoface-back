@@ -156,7 +156,7 @@ public class UsuarioService {
     public PageDTO<UsuarioDTO> findByNomeCompleto(String nomeCompleto, Integer pagina, Integer tamanho) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("nomeCompleto");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findByNomeCompleto(nomeCompleto.trim(), pageRequest);
+        Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findByNomeCompletoContaining(nomeCompleto.trim(), pageRequest);
         if (usuarioEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Usuário com o nome especificado não existe");
         }

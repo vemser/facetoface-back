@@ -43,8 +43,8 @@ public class AuthController implements AuthControllerInterface {
         new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
-    @PutMapping("/confirmar-entrevista/{tokenEntrevista}")
-    public void confirmarEntrevista(@PathVariable @Valid String tokenEntrevista) throws RegraDeNegocioException {
+    @PutMapping("/confirmar-entrevista")
+    public void confirmarEntrevista(@RequestParam @Valid String tokenEntrevista) throws RegraDeNegocioException {
         authService.confirmarEntrevista(tokenEntrevista);
         new ResponseEntity<>(null, HttpStatus.OK);
     }

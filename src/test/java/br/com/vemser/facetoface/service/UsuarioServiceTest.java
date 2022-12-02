@@ -363,7 +363,7 @@ public class UsuarioServiceTest {
         PageImpl<UsuarioEntity> usuarioEntities =
                 new PageImpl<>(List.of(usuarioEntity), PageRequest.of(pagina, tamanho), 1);
 
-        when(usuarioRepository.findByNomeCompleto(anyString(), any())).thenReturn(usuarioEntities);
+        when(usuarioRepository.findByNomeCompletoContaining(anyString(), any())).thenReturn(usuarioEntities);
 
         PageDTO<UsuarioDTO> usuarioDTOPageDTO = usuarioService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
 
@@ -382,7 +382,7 @@ public class UsuarioServiceTest {
         PageImpl<UsuarioEntity> usuarioEntities =
                 new PageImpl<>(List.of(usuarioEntity), PageRequest.of(pagina, tamanho), 1);
 
-        when(usuarioRepository.findByNomeCompleto(anyString(), any())).thenReturn(Page.empty());
+        when(usuarioRepository.findByNomeCompletoContaining(anyString(), any())).thenReturn(Page.empty());
 
         usuarioService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
     }
