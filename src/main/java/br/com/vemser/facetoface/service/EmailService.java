@@ -67,7 +67,7 @@ public class EmailService {
             mimeMessageHelper.setFrom(from);
             mimeMessageHelper.setTo(email);
             mimeMessageHelper.setSubject(assunto);
-            mimeMessageHelper.setText(getContentFromTemplateEntrevista(entrevistaEntity.getDataEntrevista(), entrevistaEntity.getCandidatoEntity().getNomeCompleto(), nomeTemplate, token));
+            mimeMessageHelper.setText(getContentFromTemplateEntrevista(entrevistaEntity.getDataEntrevista(), entrevistaEntity.getCandidatoEntity().getNomeCompleto(), nomeTemplate, token), true);
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
             throw new RegraDeNegocioException("Email inválido! inserir outro e-mail.");
@@ -79,7 +79,7 @@ public class EmailService {
         dados.put("email", from);
         dados.put("nome", nome);
         dados.put("data", data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-        dados.put("token", "http://vemser-dbc.dbccompany.com.br:39000/yuriatzler/facetoface-front/confirm-interview?token="+token);
+        dados.put("token", "https://facetoface-front.vercel.app/confirm-interview?token="+token);
         dados.put("colaborador", from);
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);

@@ -154,9 +154,19 @@ public class EntrevistaService {
         entrevista.setEstado(entrevistaCreateDTO.getEstado());
         entrevista.setObservacoes(entrevistaCreateDTO.getObservacoes());
         entrevista.setDataEntrevista(entrevistaCreateDTO.getDataEntrevista());
-        entrevista.setLegenda(legenda);
-        entrevista.setUsuarioEntity(usuario.get());
-        EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevista);
-        return converterParaEntrevistaDTO(entrevistaSalva);
+        if (!entrevista.getDataEntrevista().equals(entrevistaCreateDTO.getDataEntrevista()) && entrevista.getLegenda() == Legenda.CONFIRMADA) {
+            entrevista.setUsuarioEntity(usuario.get());
+            entrevista.setLegenda(Legenda.PENDENTE);
+            tokenConfirmacao(entrevista);
+            EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevista);
+            return converterParaEntrevistaDTO(entrevistaSalva);
+        } else if (!entrevista.getDataEntrevista().equals(entrevistaCreateDTO.getDataEntrevista()) && entrevista.getLegenda() == Legenda.PENDENTE) {
+            entrevista.setLegenda(Legenda.PENDENTE);
+            entrevista.setUsuarioEntity(usuario.get());
+            tokenConfirmacao(entrevista);
+            EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevista);
+            return converterParaEntrevistaDTO(entrevistaSalva);
+        }
+        return null;
     }
 }
