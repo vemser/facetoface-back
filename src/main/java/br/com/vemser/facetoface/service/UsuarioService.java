@@ -198,8 +198,7 @@ public class UsuarioService {
         Optional<UsuarioEntity> usuarioEntity = findOptionalByEmail(email);
         if(!passwordEncoder.matches(senhaAtual,usuarioEntity.get().getSenha())){
             throw new RegraDeNegocioException("Senha informada deve ser igual à senha atual");
-        }
-        if(validarFormatacao(senhaNova)){
+        } else if(validarFormatacao(senhaNova)){
             usuarioEntity.get().setSenha(senhaNova);
             usuarioRepository.save(usuarioEntity.get());
         }

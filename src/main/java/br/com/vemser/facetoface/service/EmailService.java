@@ -68,4 +68,12 @@ public class EmailService {
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }
+
+    public String getContentFromTemplateEntrevista(String info, String nomeTemplate) throws IOException, TemplateException {
+        Map<String, Object> dados = new HashMap<>();
+        dados.put("email", from);
+        dados.put("texto1", info);
+        Template template = fmConfiguration.getTemplate(nomeTemplate);
+        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+    }
 }
