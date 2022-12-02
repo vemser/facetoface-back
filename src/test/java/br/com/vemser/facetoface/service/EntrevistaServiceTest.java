@@ -163,7 +163,6 @@ public class EntrevistaServiceTest {
         entrevistaEntity.setCandidatoEntity(candidato);
 
         when(candidatoService.findByEmailEntity(anyString())).thenReturn(candidato);
-        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
         when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
         when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
@@ -251,7 +250,6 @@ public class EntrevistaServiceTest {
         UsuarioEntity usuarioEntity = getUsuarioEntity();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
 
-        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
         when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
         when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
         when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
@@ -286,9 +284,8 @@ public class EntrevistaServiceTest {
 
         when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.empty());
         when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
-
         entrevistaService.atualizarObservacaoEntrevista(1, "obs");
-        
+
     }
 
     @Test(expected = RegraDeNegocioException.class)

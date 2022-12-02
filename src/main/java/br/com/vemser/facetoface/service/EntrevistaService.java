@@ -79,9 +79,6 @@ public class EntrevistaService {
 
     public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
         UsuarioEntity usuario = usuarioService.findByEmail(entrevistaCreateDTO.getUsuarioEmail());
-//        if (usuario.isEmpty()) {
-//            throw new RegraDeNegocioException("Usuário não encontrado");
-//        }
         CandidatoEntity candidato = candidatoService.findByEmailEntity(entrevistaCreateDTO.getCandidatoEmail());
         if (entrevistaRepository.findByCandidatoEntity(candidato).isPresent()) {
             throw new RegraDeNegocioException("Entrevista para o Candidato já agendada!");
