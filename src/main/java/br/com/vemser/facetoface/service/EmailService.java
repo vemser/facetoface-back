@@ -68,6 +68,7 @@ public class EmailService {
             mimeMessageHelper.setTo(email);
             mimeMessageHelper.setSubject(assunto);
             mimeMessageHelper.setText(getContentFromTemplateEntrevista(entrevistaEntity.getDataEntrevista(), entrevistaEntity.getCandidatoEntity().getNomeCompleto(), nomeTemplate, token));
+            emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
             throw new RegraDeNegocioException("Email inválido! inserir outro e-mail.");
         }
