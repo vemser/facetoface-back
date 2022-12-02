@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoDTO;
+import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
 import static br.com.vemser.facetoface.factory.UsuarioFactory.getUsuarioDTO;
 
 public class EntrevistaFactory {
@@ -23,6 +24,7 @@ public class EntrevistaFactory {
         entrevistaEntity.setEstado("AP");
         entrevistaEntity.setObservacoes("Sem observações.");
         entrevistaEntity.setLegenda(Legenda.PENDENTE);
+        entrevistaEntity.setCandidatoEntity(getCandidatoEntity());
 
         return entrevistaEntity;
     }

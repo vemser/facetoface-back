@@ -33,7 +33,7 @@ public class EmailService {
 
     public void sendEmailEnvioSenha(String email, String senha) throws RegraDeNegocioException {
         String subject = "Cadastro concluído com sucesso.";
-        sendEmail(email, senha, "envio-senha-template-dois.html", subject);
+        sendEmail(email, senha, "envio-senha-template.html", subject);
     }
 
     public void sendEmailRecuperacaoSenha(String email, String token) throws RegraDeNegocioException {
