@@ -86,11 +86,11 @@ public class ImageService {
         return Base64Utils.encodeToString(imagemBD.get().getData());
     }
 
-    private Optional<ImageEntity> findByCandidato(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
+    private Optional<ImageEntity> findByCandidato(CandidatoEntity candidatoEntity) {
         return imageRepository.findByCandidato(candidatoEntity);
     }
 
-    private Optional<ImageEntity> findByUsuario(UsuarioEntity usuarioEntity) throws RegraDeNegocioException {
+    private Optional<ImageEntity> findByUsuario(UsuarioEntity usuarioEntity){
         return imageRepository.findByUsuario(usuarioEntity);
     }
 
