@@ -55,9 +55,9 @@ public class EntrevistaController implements EntrevistaControllerInterface {
 
     @GetMapping("/listar-por-mes")
     public ResponseEntity<PageDTO<EntrevistaDTO>> listarMesAno(@RequestParam(defaultValue = "0") Integer pagina,
-                                                                  @RequestParam(defaultValue = "20") Integer tamanho,
-                                                                  @RequestParam Integer mes,
-                                                                  @RequestParam Integer ano) {
+                                                               @RequestParam(defaultValue = "20") Integer tamanho,
+                                                               @RequestParam Integer mes,
+                                                               @RequestParam Integer ano) {
         return new ResponseEntity<>(entrevistaService.listMes(pagina, tamanho, mes, ano), HttpStatus.OK);
     }
 }

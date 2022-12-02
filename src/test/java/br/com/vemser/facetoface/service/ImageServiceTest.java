@@ -1,11 +1,10 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.entity.*;
-import br.com.vemser.facetoface.entity.enums.Genero;
+import br.com.vemser.facetoface.entity.CandidatoEntity;
+import br.com.vemser.facetoface.entity.ImageEntity;
+import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
-import br.com.vemser.facetoface.factory.CandidatoFactory;
 import br.com.vemser.facetoface.factory.ImageFactory;
-import br.com.vemser.facetoface.factory.UsuarioFactory;
 import br.com.vemser.facetoface.repository.ImageRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +16,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.HexFormat;
 import java.util.Optional;
-import java.util.Set;
 
 import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
 import static br.com.vemser.facetoface.factory.ImageFactory.getImageEntity;

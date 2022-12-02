@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CandidatoDTO extends CandidatoCreateDTO{
+public class CandidatoDTO extends CandidatoCreateDTO {
     private Integer idCandidato;
     private Genero genero;
 }

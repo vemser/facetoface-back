@@ -1,6 +1,5 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
 import br.com.vemser.facetoface.entity.TrilhaEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.TrilhaRepository;
@@ -10,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import static br.com.vemser.facetoface.factory.TrilhaFactory.getTrilhaEntity;

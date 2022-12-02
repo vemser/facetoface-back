@@ -17,14 +17,15 @@ public class LinguagemService {
     private final LinguagemRepository linguagemRepository;
     private final ObjectMapper objectMapper;
 
-    public LinguagemEntity create(LinguagemDTO linguagemDTO){
+    public LinguagemEntity create(LinguagemDTO linguagemDTO) {
         linguagemDTO.setNome(linguagemDTO.getNome().trim().toUpperCase());
         return linguagemRepository.save(converterEntity(linguagemDTO));
     }
-    public LinguagemEntity findByNome(String nome){
+
+    public LinguagemEntity findByNome(String nome) {
         nome = nome.trim().toUpperCase();
         Optional<LinguagemEntity> linguagemEntity = linguagemRepository.findByNome(nome);
-        if(linguagemEntity.isEmpty()){
+        if (linguagemEntity.isEmpty()) {
             return create(new LinguagemDTO(nome));
         }
         return linguagemEntity.get();

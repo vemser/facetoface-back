@@ -53,7 +53,7 @@ public class CandidatoController implements CandidatoControllerInterface {
 
     @PutMapping("/{idCandidato}")
     public ResponseEntity<CandidatoDTO> update(@PathVariable("idCandidato") Integer id,
-                                                 @Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
+                                               @Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
                                                Genero genero) throws RegraDeNegocioException {
         CandidatoDTO candidatoDTO = candidatoService.update(id, candidatoCreateDTO, genero);
         return new ResponseEntity<>(candidatoDTO, HttpStatus.OK);
@@ -61,9 +61,9 @@ public class CandidatoController implements CandidatoControllerInterface {
 
     @GetMapping("/listar-candidato-cadastro-por-nome-ou-por-trilha")
     public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(@RequestParam(value = "nomeCompleto", required = false) String nomeCompleto,
-                                                                      @RequestParam(defaultValue = "0") Integer pagina,
-                                                                      @RequestParam(defaultValue = "20") Integer tamanho,
-                                                                      @RequestParam(required = false) String nomeTrilha) throws RegraDeNegocioException {
+                                                                                    @RequestParam(defaultValue = "0") Integer pagina,
+                                                                                    @RequestParam(defaultValue = "20") Integer tamanho,
+                                                                                    @RequestParam(required = false) String nomeTrilha) throws RegraDeNegocioException {
         return candidatoService.listRelatorioCandidatoCadastroDTO(nomeCompleto, pagina, tamanho, nomeTrilha);
     }
 
@@ -82,26 +82,26 @@ public class CandidatoController implements CandidatoControllerInterface {
     }
 
     @PutMapping(value = "/upload-foto", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Void> uploadFoto(@RequestPart("file")MultipartFile file,
-                                              @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
-            imageService.arquivarCandidato(file, email);
-            return ResponseEntity.ok().build();
+    public ResponseEntity<Void> uploadFoto(@RequestPart("file") MultipartFile file,
+                                           @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
+        imageService.arquivarCandidato(file, email);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/recuperar-imagem")
-    public ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException{
+    public ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException {
         return new ResponseEntity<>(imageService.pegarImagemCandidato(email), HttpStatus.OK);
     }
 
     @PutMapping(value = "/upload-curriculo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Void> uploadCurriculo(@RequestPart("file")MultipartFile file,
+    public ResponseEntity<Void> uploadCurriculo(@RequestPart("file") MultipartFile file,
                                                 @RequestParam("email") String email) throws RegraDeNegocioException, IOException {
         curriculoService.arquivarCurriculo(file, email);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/recuperar-curriculo")
-    public ResponseEntity<String> recuperarCurriculo(@RequestParam("email") String email) throws RegraDeNegocioException{
+    public ResponseEntity<String> recuperarCurriculo(@RequestParam("email") String email) throws RegraDeNegocioException {
         return new ResponseEntity<>(curriculoService.pegarCurriculoCandidato(email), HttpStatus.OK);
     }
 

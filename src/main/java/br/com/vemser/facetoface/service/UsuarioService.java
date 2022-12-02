@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -40,7 +39,6 @@ public class UsuarioService {
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
-
 
     public UsuarioEntity findById(Integer idUsuario) throws RegraDeNegocioException {
         return usuarioRepository.findById(idUsuario)
@@ -185,33 +183,33 @@ public class UsuarioService {
         return usuarioDTO;
     }
 
-    public void atualizarSenhaUsuario(String email) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-            Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
-            String senha = gerarSenha();
-            usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
-            usuarioRepository.save(usuarioEntityOptional.get());
-            emailService.sendEmailEnvioSenha(email, senha);
+    public void atualizarSenhaUsuario(String email) throws RegraDeNegocioException {
+        Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
+        String senha = gerarSenha();
+        usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
+        usuarioRepository.save(usuarioEntityOptional.get());
+        emailService.sendEmailEnvioSenha(email, senha);
     }
 
     public void atualizarSenhaUsuarioLogado(String senhaAtual, String senhaNova) throws RegraDeNegocioException {
         String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<UsuarioEntity> usuarioEntity = findOptionalByEmail(email);
-        if(!passwordEncoder.matches(senhaAtual,usuarioEntity.get().getSenha())){
+        if (!passwordEncoder.matches(senhaAtual, usuarioEntity.get().getSenha())) {
             throw new RegraDeNegocioException("Senha informada deve ser igual à senha atual");
         }
-        if(validarFormatacao(senhaNova)){
+        if (validarFormatacao(senhaNova)) {
             usuarioEntity.get().setSenha(senhaNova);
             usuarioRepository.save(usuarioEntity.get());
         }
     }
 
-    private String gerarSenha(){
+    private String gerarSenha() {
         Faker faker = new Faker();
         return faker.internet().password(8, 12, true, true, true);
     }
 
     public boolean validarFormatacao(String senha) throws RegraDeNegocioException {
-        if(senha.matches("^(?=.*[A-Z])(?=.*[.!@$%^&(){}:;<>,?/~_+-=|])(?=.*[0-9])(?=.*[a-z]).{8,16}$")) {
+        if (senha.matches("^(?=.*[A-Z])(?=.*[.!@$%^&(){}:;<>,?/~_+-=|])(?=.*[0-9])(?=.*[a-z]).{8,16}$")) {
             return true;
         } else {
             throw new RegraDeNegocioException("A senha deve ter entre 8 e 16 caracteres, com letras, números e caracteres especiais. Digitar novamente!");

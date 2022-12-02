@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.factory;
 
-import br.com.vemser.facetoface.dto.entrevista.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
+import br.com.vemser.facetoface.dto.entrevista.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;

@@ -27,7 +27,7 @@ public interface CandidatoControllerInterface {
     })
     @GetMapping
     PageDTO<CandidatoDTO> list(@RequestParam(defaultValue = "0") Integer pagina,
-                                      @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
+                               @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
 
     @Operation(summary = "Procurar candidato no sistema por email", description = "Procura o candidato pelo e-mail se estiver cadastrado no sistema")
     @ApiResponses(value = {
@@ -46,7 +46,7 @@ public interface CandidatoControllerInterface {
     })
     @PostMapping
     ResponseEntity<CandidatoDTO> create(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
-                                               Genero genero) throws RegraDeNegocioException, IOException;
+                                        Genero genero) throws RegraDeNegocioException, IOException;
 
     @Operation(summary = "Atualizar cadastro de candidato", description = "Atualizar candidato no Sistema")
     @ApiResponses(value = {
@@ -56,7 +56,7 @@ public interface CandidatoControllerInterface {
     })
     @PutMapping
     ResponseEntity<CandidatoDTO> update(@PathVariable("idCandidato") Integer id,
-                                               @Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
+                                        @Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO,
                                         Genero genero) throws RegraDeNegocioException;
 
     @Operation(summary = "Deletar cadastro de Usuario", description = "Deletar Usuario no Sistema")
@@ -76,7 +76,7 @@ public interface CandidatoControllerInterface {
     })
     @PutMapping
     ResponseEntity<Void> uploadFoto(@RequestPart("file") MultipartFile file,
-                                              @RequestParam("email") String email) throws RegraDeNegocioException, IOException;
+                                    @RequestParam("email") String email) throws RegraDeNegocioException, IOException;
 
     @Operation(summary = "Recuperar imagem cadastrada no sistema", description = "Recupera a imagem de um usuário especifico do sistema pelo e-mail")
     @ApiResponses(value = {
@@ -94,8 +94,8 @@ public interface CandidatoControllerInterface {
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
     @PutMapping
-    ResponseEntity<Void> uploadCurriculo(@RequestPart("file")MultipartFile file,
-                                                        @RequestParam("email") String email) throws RegraDeNegocioException, IOException;
+    ResponseEntity<Void> uploadCurriculo(@RequestPart("file") MultipartFile file,
+                                         @RequestParam("email") String email) throws RegraDeNegocioException, IOException;
 
     @Operation(summary = "Recuperar curriculo cadastrado no sistema", description = "Recupera o curriculo de um candidato especifico do sistema pelo e-mail")
     @ApiResponses(value = {

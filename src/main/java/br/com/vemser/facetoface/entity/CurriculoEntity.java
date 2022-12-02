@@ -18,7 +18,7 @@ public class CurriculoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CURRICULO")
     @SequenceGenerator(name = "SEQ_CURRICULO", sequenceName = "seq_curriculo", allocationSize = 1)
-    @Column(name="ID_CURRICULO")
+    @Column(name = "ID_CURRICULO")
     private Integer idCurriculo;
 
     @Column(name = "nome")

@@ -1,7 +1,6 @@
 package br.com.vemser.facetoface.controller.documentationinterface;
 
 import br.com.vemser.facetoface.dto.login.LoginDTO;
-import br.com.vemser.facetoface.dto.login.UserSenhaDTO;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import freemarker.template.TemplateException;
 import io.swagger.v3.oas.annotations.Operation;

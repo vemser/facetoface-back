@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import static br.com.vemser.facetoface.factory.PerfilFactory.getPerfilEntity;
@@ -97,7 +96,7 @@ public class PerfilServiceTest {
     }
 
     @Test
-    public void deveConverterEmDTOComSucesso(){
+    public void deveConverterEmDTOComSucesso() {
         PerfilEntity perfilEntity = getPerfilEntity();
         PerfilDTO perfilDTO = perfilService.convertToDTO(perfilEntity);
 

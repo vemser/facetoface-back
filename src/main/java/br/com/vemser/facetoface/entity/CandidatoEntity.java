@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "CANDIDATO")
-public class CandidatoEntity{
+public class CandidatoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CANDIDATO")
     @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "SEQ_ID_CANDIDATO", allocationSize = 1)

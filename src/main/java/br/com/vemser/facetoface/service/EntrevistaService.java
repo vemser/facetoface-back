@@ -12,14 +12,11 @@ import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EntrevistaRepository;
 import br.com.vemser.facetoface.security.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -80,7 +77,7 @@ public class EntrevistaService {
                 entrevistaDTOList);
     }
 
-    public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public EntrevistaDTO createEntrevista(EntrevistaCreateDTO entrevistaCreateDTO) throws RegraDeNegocioException {
         Optional<UsuarioEntity> usuario = usuarioService.findOptionalByEmail(entrevistaCreateDTO.getUsuarioEmail());
         if (usuario.isEmpty()) {
             throw new RegraDeNegocioException("Usuário não encontrado");
@@ -116,7 +113,7 @@ public class EntrevistaService {
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
 
-    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
+    public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) throws RegraDeNegocioException {
         String tokenSenha = tokenService.getTokenConfirmacao(entrevistaEntity);
 
         String base = ("Olá "

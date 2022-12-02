@@ -28,7 +28,7 @@ public interface UsuarioControllerInterface {
     })
     @PostMapping
     ResponseEntity<UsuarioDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
-                                                       @RequestParam Genero genero) throws RegraDeNegocioException, IOException, MessagingException, TemplateException;
+                                                @RequestParam Genero genero) throws RegraDeNegocioException, IOException, MessagingException, TemplateException;
 
     @Operation(summary = "Procurar usuario por email", description = "Procura o e-mail do usuário cadastrado no sistema")
     @ApiResponses(value = {
@@ -56,8 +56,8 @@ public interface UsuarioControllerInterface {
     })
     @GetMapping
     PageDTO<UsuarioDTO> findByNomeCompleto(@RequestParam("nomeCompleto") String nomeCompleto,
-                                                  @RequestParam(defaultValue = "0") Integer pagina,
-                                                  @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
+                                           @RequestParam(defaultValue = "0") Integer pagina,
+                                           @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
 
     @Operation(summary = "Listar usuarios por página", description = "Lista os usuários presentes no sistema.")
     @ApiResponses(value = {
@@ -67,7 +67,7 @@ public interface UsuarioControllerInterface {
     })
     @GetMapping
     PageDTO<UsuarioDTO> list(@RequestParam(defaultValue = "0") Integer pagina,
-                                    @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
+                             @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
 
     @Operation(summary = "Procurar usuario pelo id", description = "Procura o usuário pelo id que esta no sistema")
     @ApiResponses(value = {
@@ -115,7 +115,7 @@ public interface UsuarioControllerInterface {
     })
     @PutMapping
     ResponseEntity<Void> uploadFoto(@RequestPart("file") MultipartFile file,
-                                           @RequestParam("email") String email) throws RegraDeNegocioException, IOException;
+                                    @RequestParam("email") String email) throws RegraDeNegocioException, IOException;
 
 
     @Operation(summary = "Recuperar imagem no sistema", description = "Recupera a imagem do usuário no sistema")

@@ -1,8 +1,8 @@
 package br.com.vemser.facetoface.factory;
 
-import br.com.vemser.facetoface.dto.linguagem.LinguagemDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
+import br.com.vemser.facetoface.dto.linguagem.LinguagemDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.LinguagemEntity;
 import br.com.vemser.facetoface.entity.enums.Genero;
