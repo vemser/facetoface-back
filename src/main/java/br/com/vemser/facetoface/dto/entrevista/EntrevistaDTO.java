@@ -2,6 +2,7 @@ package br.com.vemser.facetoface.dto.entrevista;
 
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
+import br.com.vemser.facetoface.entity.enums.Legenda;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,6 @@ public class EntrevistaDTO extends EntrevistaCreateDTO {
     private CandidatoDTO candidatoDTO;
 
     private UsuarioDTO usuarioDTO;
+
+    private Legenda legenda;
 }
