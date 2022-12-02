@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TrilhaRepository extends JpaRepository<TrilhaEntity,Integer> {
+public interface TrilhaRepository extends JpaRepository<TrilhaEntity, Integer> {
     Optional<TrilhaEntity> findByNome(String nome);
 
 }

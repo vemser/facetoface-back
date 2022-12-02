@@ -26,7 +26,7 @@ public interface EntrevistaControllerInterface {
             @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
     })
     ResponseEntity<PageDTO<EntrevistaDTO>> list(@RequestParam(defaultValue = "0") Integer pagina,
-                                                       @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
+                                                @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException;
 
     @Operation(summary = "Atualizar entrevista de candidato", description = "Atualizar entrevista no Sistema")
     @ApiResponses(value = {
@@ -36,8 +36,8 @@ public interface EntrevistaControllerInterface {
     })
     @PutMapping
     ResponseEntity<EntrevistaDTO> updateEntrevista(@Valid @RequestBody EntrevistaAtualizacaoDTO entrevistaCreateDTO,
-                                                          @PathVariable("idEntrevista") Integer id,
-                                                          Legenda legenda) throws RegraDeNegocioException;
+                                                   @PathVariable("idEntrevista") Integer id,
+                                                   Legenda legenda) throws RegraDeNegocioException;
 
     @Operation(summary = "Criar entrevista para Candidatos", description = "Criar entrevistas no Sistema")
     @ApiResponses(value = {
@@ -65,7 +65,7 @@ public interface EntrevistaControllerInterface {
     })
     @GetMapping
     ResponseEntity<PageDTO<EntrevistaDTO>> listarMesAno(@RequestParam(defaultValue = "0") Integer pagina,
-                                                       @RequestParam(defaultValue = "20") Integer tamanho,
-                                                       @RequestParam Integer mes,
-                                                       @RequestParam Integer ano);
+                                                        @RequestParam(defaultValue = "20") Integer tamanho,
+                                                        @RequestParam Integer mes,
+                                                        @RequestParam Integer ano);
 }

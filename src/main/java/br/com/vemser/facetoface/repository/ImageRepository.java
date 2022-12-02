@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ImageRepository extends JpaRepository<ImageEntity,Integer> {
+public interface ImageRepository extends JpaRepository<ImageEntity, Integer> {
     Optional<ImageEntity> findByCandidato(CandidatoEntity candidatoEntity);
+
     Optional<ImageEntity> findByUsuario(UsuarioEntity usuarioEntity);
 }

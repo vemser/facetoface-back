@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CandidatoRepository extends JpaRepository<CandidatoEntity,Integer> {
+public interface CandidatoRepository extends JpaRepository<CandidatoEntity, Integer> {
     Optional<CandidatoEntity> findByEmail(String email);
 
     @Query(" select new br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoPaginaPrincipalDTO(" +

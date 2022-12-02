@@ -40,14 +40,14 @@ public class UsuarioController implements UsuarioControllerInterface {
 
     @GetMapping("/findbynomecompleto")
     public PageDTO<UsuarioDTO> findByNomeCompleto(@RequestParam("nomeCompleto") String nomeCompleto,
-                                                    @RequestParam(defaultValue = "0") Integer pagina,
-                                                    @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
+                                                  @RequestParam(defaultValue = "0") Integer pagina,
+                                                  @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
         return usuarioService.findByNomeCompleto(nomeCompleto, pagina, tamanho);
     }
 
     @GetMapping
     public PageDTO<UsuarioDTO> list(@RequestParam(defaultValue = "0") Integer pagina,
-                                      @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
+                                    @RequestParam(defaultValue = "20") Integer tamanho) throws RegraDeNegocioException {
         return usuarioService.list(pagina, tamanho);
     }
 
@@ -68,7 +68,7 @@ public class UsuarioController implements UsuarioControllerInterface {
 
     @PutMapping("/{idUsuario}")
     public ResponseEntity<UsuarioDTO> update(@PathVariable("idUsuario") Integer id,
-                                               @Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
+                                             @Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
                                              Genero genero) throws RegraDeNegocioException {
         UsuarioDTO usuarioDTO = usuarioService.update(id, usuarioCreateDTO, genero);
         return new ResponseEntity<>(usuarioDTO, HttpStatus.OK);
@@ -94,13 +94,13 @@ public class UsuarioController implements UsuarioControllerInterface {
     }
 
     @GetMapping("/recuperar-imagem")
-    public ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException{
+    public ResponseEntity<String> recuperarImagem(@RequestParam("email") String email) throws RegraDeNegocioException {
         return new ResponseEntity<>(imageService.pegarImagemUsuario(email), HttpStatus.OK);
     }
 
     @PutMapping("/trocar-senha-usuario-logado")
     public void trocarSenhaLogado(@RequestParam @Valid String senhaAtual,
-                                    @RequestParam @Valid String senhaNova) throws RegraDeNegocioException {
+                                  @RequestParam @Valid String senhaNova) throws RegraDeNegocioException {
         usuarioService.atualizarSenhaUsuarioLogado(senhaAtual, senhaNova);
         new ResponseEntity<>(null, HttpStatus.OK);
     }

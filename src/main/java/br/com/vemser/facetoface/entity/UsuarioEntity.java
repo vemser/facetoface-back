@@ -55,8 +55,8 @@ public class UsuarioEntity implements UserDetails {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USUARIO_PERFIL",
-        joinColumns = @JoinColumn(name = "ID_USUARIO"),
-        inverseJoinColumns = @JoinColumn(name = "ID_PERFIL"))
+            joinColumns = @JoinColumn(name = "ID_USUARIO"),
+            inverseJoinColumns = @JoinColumn(name = "ID_PERFIL"))
     private Set<PerfilEntity> perfis;
 
     @JsonIgnore

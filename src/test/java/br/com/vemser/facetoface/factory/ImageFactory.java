@@ -1,8 +1,6 @@
 package br.com.vemser.facetoface.factory;
 
-import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.ImageEntity;
-import br.com.vemser.facetoface.entity.UsuarioEntity;
 
 import java.util.HexFormat;
 
@@ -18,7 +16,8 @@ public class ImageFactory {
         imageEntity.setTipo("png");
         return imageEntity;
     }
-    public static ImageEntity getImageUsuario(){
+
+    public static ImageEntity getImageUsuario() {
         ImageEntity imageEntity = new ImageEntity();
         imageEntity.setUsuario(UsuarioFactory.getUsuarioEntity());
         byte[] bytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");

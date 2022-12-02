@@ -13,11 +13,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "FOTOS")
-public class ImageEntity{
+public class ImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FOTOS")
     @SequenceGenerator(name = "SEQ_FOTOS", sequenceName = "SEQ_FOTOS", allocationSize = 1)
-    @Column(name="ID_FOTOS")
+    @Column(name = "ID_FOTOS")
     private Integer idImagem;
 
     @Column(name = "nome")

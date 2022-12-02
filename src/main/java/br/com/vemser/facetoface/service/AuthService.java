@@ -8,17 +8,11 @@ import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EntrevistaRepository;
 import br.com.vemser.facetoface.security.TokenService;
-import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
-import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,14 +44,10 @@ public class AuthService {
         entrevistaRepository.save(entrevista);
     }
 
-    public void trocarSenha(String email) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public void trocarSenha(String email) throws RegraDeNegocioException {
         UsuarioEntity usuarioEntityOptional = usuarioService.findByEmail(email);
 
         String tokenSenha = tokenService.getTokenSenha(usuarioEntityOptional);
-        String base = "Olá "
-                + usuarioEntityOptional.getNomeCompleto()
-                + " seu token para trocar de senha é: <br>"
-                + tokenSenha;
         emailService.sendEmailRecuperacaoSenha(email, tokenSenha);
     }
 

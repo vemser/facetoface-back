@@ -1,10 +1,7 @@
 package br.com.vemser.facetoface.controller.documentationinterface;
 
-import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
-import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.edicao.EdicaoDTO;
 import br.com.vemser.facetoface.entity.EdicaoEntity;
-import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

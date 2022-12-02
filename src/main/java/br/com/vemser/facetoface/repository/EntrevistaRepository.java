@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EntrevistaRepository extends JpaRepository<EntrevistaEntity,Integer> {
+public interface EntrevistaRepository extends JpaRepository<EntrevistaEntity, Integer> {
 
     Optional<EntrevistaEntity> findByCandidatoEntity(CandidatoEntity candidatoEntity);
 

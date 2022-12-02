@@ -4,12 +4,10 @@ import br.com.vemser.facetoface.dto.login.LoginDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
-import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EntrevistaRepository;
 import br.com.vemser.facetoface.security.TokenService;
-import freemarker.template.TemplateException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,11 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Optional;
 
 import static br.com.vemser.facetoface.factory.CandidatoFactory.getCandidatoEntity;
 import static br.com.vemser.facetoface.factory.EntrevistaFactory.getEntrevistaEntity;
@@ -96,7 +90,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void deveTrocarSenha() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public void deveTrocarSenha() throws RegraDeNegocioException {
         final String token = "token";
         final String email = "heloise.lopes@dbccompany.com.br";
         UsernamePasswordAuthenticationToken dto =
@@ -116,7 +110,7 @@ public class AuthServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEncontrado() throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEncontrado() throws RegraDeNegocioException {
         final String email = "heloise.lopes@dbccompany.com.br";
         UsernamePasswordAuthenticationToken dto =
                 new UsernamePasswordAuthenticationToken(1, email, Collections.emptyList());

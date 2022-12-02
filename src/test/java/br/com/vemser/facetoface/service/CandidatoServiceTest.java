@@ -2,12 +2,9 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.dto.candidato.CandidatoCreateDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
-import br.com.vemser.facetoface.dto.edicao.EdicaoDTO;
-import br.com.vemser.facetoface.dto.linguagem.LinguagemDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoCadastroDTO;
 import br.com.vemser.facetoface.dto.relatorios.RelatorioCandidatoPaginaPrincipalDTO;
-import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
 import br.com.vemser.facetoface.entity.*;
 import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
@@ -27,8 +24,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,6 +95,7 @@ public class CandidatoServiceTest {
 
         candidatoService.create(candidatoCreateDTO, Genero.FEMININO);
     }
+
     @Test(expected = RegraDeNegocioException.class)
     public void deveRetornarUmaExcecaoQuandoCadastrarCandidatoEEmailForInvalido() throws RegraDeNegocioException {
         CandidatoCreateDTO candidatoCreateDTO = getCandidatoCreateDTO();

@@ -27,26 +27,22 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
-    public void sendEmailConfirmacaoEntrevista(String email,
-                                               String token) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
+    public void sendEmailConfirmacaoEntrevista(String email, String token) throws RegraDeNegocioException {
         final String subject = "Confirmação de entrevista.";
         sendEmail(email, token, "envio-senha-template.html", subject);
     }
 
-    public void sendEmailEnvioSenha(String email,
-                                    String senha) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
+    public void sendEmailEnvioSenha(String email, String senha) throws RegraDeNegocioException {
         String subject = "Cadastro concluído com sucesso.";
         sendEmail(email, senha, "envio-senha-template-dois.html", subject);
     }
 
-    public void sendEmailRecuperacaoSenha(String email,
-                                          String token) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
+    public void sendEmailRecuperacaoSenha(String email, String token) throws RegraDeNegocioException {
         final String subject = "Recuperação de senha concluída com sucesso.";
         sendEmail(email, token, "envio-senha-template-dois.html", subject);
     }
 
-    public void sendEmail(String email, String info, String nomeTemplate,
-                          String assunto) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
+    public void sendEmail(String email, String info, String nomeTemplate, String assunto) throws RegraDeNegocioException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
 
@@ -56,7 +52,7 @@ public class EmailService {
             mimeMessageHelper.setSubject(assunto);
             mimeMessageHelper.setText(getContentFromTemplate(info, nomeTemplate), true);
             emailSender.send(mimeMessageHelper.getMimeMessage());
-        } catch (MessagingException | IOException | TemplateException e){
+        } catch (MessagingException | IOException | TemplateException e) {
             throw new RegraDeNegocioException("Email inválido! inserir outro e-mail.");
         }
     }

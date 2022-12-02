@@ -14,7 +14,7 @@ import java.util.Set;
 import static br.com.vemser.facetoface.factory.TrilhaFactory.getTrilhaEntity;
 
 public class UsuarioFactory {
-    public static UsuarioEntity getUsuarioEntity(){
+    public static UsuarioEntity getUsuarioEntity() {
         UsuarioEntity usuarioEntity = new UsuarioEntity();
         usuarioEntity.setSenha("123");
         usuarioEntity.setIdUsuario(1);
