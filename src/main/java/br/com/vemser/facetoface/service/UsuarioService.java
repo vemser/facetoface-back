@@ -68,24 +68,19 @@ public class UsuarioService {
         return converterEmDTO(usuarioEntity.get());
     }
 
-    public Optional<UsuarioEntity> findByLogin(String email) {
-        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
-        return usuarioEntity;
-    }
-
     public String getIdLoggedUser() {
         return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     }
 
     public LoginRetornoDTO getLoggedUser() {
-        Optional<UsuarioEntity> usuarioEntity = findByLogin(getIdLoggedUser());
+        Optional<UsuarioEntity> usuarioEntity = findOptionalByEmail(getIdLoggedUser());
         LoginRetornoDTO loginDTO = objectMapper.convertValue(usuarioEntity.get(), LoginRetornoDTO.class);
         loginDTO.setPerfis(usuarioEntity.get().getPerfis().stream().map(perfilService::convertToDTO).toList());
         return loginDTO;
     }
 
     public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateDTO,
-                                    Genero genero) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+                                    Genero genero) throws RegraDeNegocioException {
         if (!usuarioCreateDTO.getEmail().endsWith("@dbccompany.com.br") || usuarioCreateDTO.getEmail().isEmpty()) {
             throw new RegraDeNegocioException("E-mail inválido! Deve ser domínio @dbccompany.com.br");
         }
