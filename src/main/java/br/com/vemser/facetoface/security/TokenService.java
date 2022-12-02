@@ -71,6 +71,7 @@ public class TokenService {
         return Jwts.builder().
                 setIssuer("facetoface-api")
                 .claim(Claims.ID, usuarioEntity.getEmail())
+                .claim("Userpassword", usuarioEntity.getPassword())
                 .setIssuedAt(dataAtual)
                 .setExpiration(expiracao)
                 .signWith(SignatureAlgorithm.HS256, secret)
