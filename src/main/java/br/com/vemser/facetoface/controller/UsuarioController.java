@@ -99,7 +99,7 @@ public class UsuarioController implements UsuarioControllerInterface {
     }
 
     @PutMapping("/trocar-senha-usuario-logado")
-    public void confirmarEntrevista(@RequestParam @Valid String senhaAtual,
+    public void trocarSenhaLogado(@RequestParam @Valid String senhaAtual,
                                     @RequestParam @Valid String senhaNova) throws RegraDeNegocioException {
         usuarioService.atualizarSenhaUsuarioLogado(senhaAtual, senhaNova);
         new ResponseEntity<>(null, HttpStatus.OK);

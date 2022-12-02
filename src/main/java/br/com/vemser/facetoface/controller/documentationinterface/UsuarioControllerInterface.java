@@ -136,6 +136,6 @@ public interface UsuarioControllerInterface {
             }
     )
     @PutMapping
-    void confirmarEntrevista(@RequestParam @Valid String senhaAtual,
-                             @RequestParam @Valid String senhaNova) throws RegraDeNegocioException;
+    public void trocarSenhaLogado(@RequestParam @Valid String senhaAtual,
+                                  @RequestParam @Valid String senhaNova) throws RegraDeNegocioException;
 }
