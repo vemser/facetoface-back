@@ -68,4 +68,12 @@ public interface EntrevistaControllerInterface {
                                                         @RequestParam(defaultValue = "20") Integer tamanho,
                                                         @RequestParam Integer mes,
                                                         @RequestParam Integer ano);
+
+    @Operation(summary = "Atualizar entrevista por id", description = "Atualiza a observacao da entrevista de acordo com o id presente no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atualização  realizada com sucesso!"),
+            @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
+            @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")})
+    ResponseEntity<Void> atualizarEntrevista(@PathVariable("idEntrevista") Integer id,
+                                             String observacao) throws RegraDeNegocioException;
 }

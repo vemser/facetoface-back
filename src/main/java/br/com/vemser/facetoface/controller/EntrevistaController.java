@@ -60,4 +60,11 @@ public class EntrevistaController implements EntrevistaControllerInterface {
                                                                @RequestParam Integer ano) {
         return new ResponseEntity<>(entrevistaService.listMes(pagina, tamanho, mes, ano), HttpStatus.OK);
     }
+
+    @PutMapping("/atualizar-observacao-entrevista/{idEntrevista}")
+    public ResponseEntity<Void> atualizarEntrevista(@PathVariable ("idEntrevista") Integer id,
+                                                     String observacao) throws RegraDeNegocioException {
+        entrevistaService.atualizarObservacaoEntrevista(id, observacao);
+        return ResponseEntity.noContent().build();
+    }
 }

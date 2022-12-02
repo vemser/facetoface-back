@@ -169,4 +169,9 @@ public class EntrevistaService {
         }
         return null;
     }
+
+    public void atualizarObservacaoEntrevista(Integer id, String observacao) throws RegraDeNegocioException {
+        EntrevistaEntity entrevista = findById(id);
+        entrevista.setObservacoes(observacao);
+    }
 }
