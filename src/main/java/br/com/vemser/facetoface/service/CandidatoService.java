@@ -44,10 +44,7 @@ public class CandidatoService {
         if(candidatoCreateDTO.getEmail().isEmpty() || candidatoCreateDTO.getEmail().isBlank()){
             throw new RegraDeNegocioException("E-mail inválido! Deve ser inserido um endereço de email válido!");
         }
-        for (LinguagemDTO linguagem : candidatoCreateDTO.getLinguagens()) {
-            LinguagemEntity byNome = linguagemService.findByNome(linguagem.getNome());
-            linguagemList.add(byNome);
-        }
+        linguagemList = getLinguagensCandidato(candidatoCreateDTO, linguagemList);
         CandidatoEntity candidatoEntity = converterEntity(candidatoCreateDTO);
         candidatoEntity.setNomeCompleto(candidatoEntity.getNomeCompleto().trim());
         candidatoEntity.setTrilha(trilhaService.findByNome(candidatoCreateDTO.getTrilha().getNome()));
@@ -83,10 +80,7 @@ public class CandidatoService {
             throw new RegraDeNegocioException("E-mail inválido! Deve ser inserido um endereço de email válido!");
         }
         CandidatoEntity candidatoEntity = converterEntity(candidatoCreateDTO);
-        for (LinguagemDTO linguagem : candidatoCreateDTO.getLinguagens()) {
-            LinguagemEntity byNome = linguagemService.findByNome(linguagem.getNome());
-            linguagemList.add(byNome);
-        }
+        linguagemList = getLinguagensCandidato(candidatoCreateDTO, linguagemList);
         candidatoEntity.setIdCandidato(id);
         candidatoEntity.setEmail(candidatoCreateDTO.getEmail());
         candidatoEntity.setNomeCompleto(candidatoEntity.getNomeCompleto().trim());
@@ -95,6 +89,14 @@ public class CandidatoService {
         candidatoEntity.setLinguagens(new HashSet<>(linguagemList));
         candidatoEntity.setGenero(genero);
         return converterEmDTO(candidatoRepository.save(candidatoEntity));
+    }
+
+    private List<LinguagemEntity> getLinguagensCandidato(CandidatoCreateDTO candidatoCreateDTO, List<LinguagemEntity> linguagemList) {
+        for (LinguagemDTO linguagem : candidatoCreateDTO.getLinguagens()) {
+            LinguagemEntity byNome = linguagemService.findByNome(linguagem.getNome());
+            linguagemList.add(byNome);
+        }
+        return linguagemList;
     }
 
     public CandidatoEntity findById(Integer id) throws RegraDeNegocioException {
@@ -128,7 +130,8 @@ public class CandidatoService {
         }
         List<RelatorioCandidatoCadastroDTO> relatorioCandidatoCadastroDTOPage = candidatoEntityPage
                 .stream()
-                .map(x -> objectMapper.convertValue(x, RelatorioCandidatoCadastroDTO.class))
+                .map(relatorioCandidatoPaginaPrincipalDTO ->
+                        objectMapper.convertValue(relatorioCandidatoPaginaPrincipalDTO, RelatorioCandidatoCadastroDTO.class))
                 .toList();
         for (RelatorioCandidatoCadastroDTO candidato : relatorioCandidatoCadastroDTOPage) {
             CandidatoEntity candidatoEntity = findByEmailEntity(candidato.getEmail());

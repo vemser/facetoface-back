@@ -151,7 +151,8 @@ public class EntrevistaService {
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.get().getEmail()))
                     .collect(Collectors.toList());
             for (int i = 0; i < entrevistaEntityList.size(); i++) {
-                if (entrevistaEntityList.get(i).getDataEntrevista() == entrevistaCreateDTO.getDataEntrevista() && entrevistaEntityList.get(i).getUsuarioEntity().getEmail() == entrevistaCreateDTO.getEmail()) {
+                if (entrevistaEntityList.get(i).getDataEntrevista().equals(entrevistaCreateDTO.getDataEntrevista()) &&
+                        entrevistaEntityList.get(i).getUsuarioEntity().getEmail() == entrevistaCreateDTO.getEmail()) {
                     throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
                 }
             }

@@ -30,14 +30,13 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
-//                        authz.antMatchers("/**").permitAll()
                         authz.antMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .antMatchers(HttpMethod.PUT, "/auth/**").permitAll()
                                 .antMatchers(HttpMethod.GET, "/**").hasAnyRole("GESTAO","ADMIN","INSTRUTOR")
                                 .antMatchers(HttpMethod.PUT, "/entrevista/**").hasAnyRole("GESTAO","ADMIN","INSTRUTOR")
                                 .antMatchers(HttpMethod.POST, "/entrevista/**").hasAnyRole("GESTAO","INSTRUTOR")
                                 .antMatchers( "/candidato/**").hasAnyRole("GESTAO")
-                                .antMatchers(HttpMethod.PUT,"//upload-foto").hasAnyRole("GESTAO","ADMIN","INSTRUTOR")
+                                .antMatchers(HttpMethod.PUT,"/upload-foto").hasAnyRole("GESTAO","ADMIN","INSTRUTOR")
                                 .antMatchers("/usuario/**").hasRole("ADMIN")
                                 .antMatchers("/usuario").hasRole("ADMIN")
                                 .anyRequest().authenticated());

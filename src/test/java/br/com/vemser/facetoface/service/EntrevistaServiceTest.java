@@ -1,7 +1,7 @@
 package br.com.vemser.facetoface.service;
 
-import br.com.vemser.facetoface.dto.entrevista.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
+import br.com.vemser.facetoface.dto.entrevista.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaCreateDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
@@ -9,7 +9,6 @@ import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.entity.UsuarioEntity;
-import br.com.vemser.facetoface.entity.enums.Genero;
 import br.com.vemser.facetoface.entity.enums.Legenda;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import br.com.vemser.facetoface.repository.EntrevistaRepository;
@@ -31,7 +30,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -269,17 +267,17 @@ public class EntrevistaServiceTest {
         entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
     }
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveRetornarUmaExcecaoQuandoListaDeEntrevistasVazia() throws RegraDeNegocioException {
-//        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
-//        UsuarioEntity usuarioEntity = getUsuarioEntity();
-//        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-//        entrevistaEntity.setUsuarioEntity(usuarioEntity);
-//
-//        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
-//        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
-//        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
-//
-//        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
-//    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoListaDeEntrevistasVazia() throws RegraDeNegocioException {
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+
+        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
+
+        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
+    }
 }
