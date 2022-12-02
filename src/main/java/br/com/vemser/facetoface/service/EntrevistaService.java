@@ -177,5 +177,6 @@ public class EntrevistaService {
     public void atualizarObservacaoEntrevista(Integer id, String observacao) throws RegraDeNegocioException {
         EntrevistaEntity entrevista = findById(id);
         entrevista.setObservacoes(observacao);
+        entrevistaRepository.save(entrevista);
     }
 }
