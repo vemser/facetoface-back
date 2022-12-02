@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.entity.EntrevistaEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -13,6 +14,9 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,11 +31,6 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
-    public void sendEmailConfirmacaoEntrevista(String email, String token) throws RegraDeNegocioException {
-        final String subject = "Confirmação de entrevista.";
-        sendEmail(email, token, "envio-senha-template.html", subject);
-    }
-
     public void sendEmailEnvioSenha(String email, String senha) throws RegraDeNegocioException {
         String subject = "Cadastro concluído com sucesso.";
         sendEmail(email, senha, "envio-senha-template-dois.html", subject);
@@ -45,31 +44,53 @@ public class EmailService {
     public void sendEmail(String email, String info, String nomeTemplate, String assunto) throws RegraDeNegocioException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
-
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setFrom(from);
             mimeMessageHelper.setTo(email);
             mimeMessageHelper.setSubject(assunto);
-            mimeMessageHelper.setText(getContentFromTemplate(info, nomeTemplate), true);
+            mimeMessageHelper.setText(getContentFromTemplate(info, nomeTemplate, email), true);
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
             throw new RegraDeNegocioException("Email inválido! inserir outro e-mail.");
         }
     }
 
-    public String getContentFromTemplate(String info, String nomeTemplate) throws IOException, TemplateException {
+    public void sendEmailConfirmacaoEntrevista(EntrevistaEntity entrevistaEntity, String email, String token) throws RegraDeNegocioException {
+        final String subject = "Confirmação de entrevista.";
+        sendEmailEntrevista(entrevistaEntity, email, token, "envio-entrevista-template.html", subject);
+    }
+
+    public void sendEmailEntrevista(EntrevistaEntity entrevistaEntity, String email, String token, String nomeTemplate, String assunto) throws RegraDeNegocioException {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setFrom(from);
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setSubject(assunto);
+            mimeMessageHelper.setText(getContentFromTemplateEntrevista(entrevistaEntity.getDataEntrevista(), entrevistaEntity.getCandidatoEntity().getNomeCompleto(), nomeTemplate, token));
+        } catch (MessagingException | IOException | TemplateException e) {
+            throw new RegraDeNegocioException("Email inválido! inserir outro e-mail.");
+        }
+    }
+
+    public String getContentFromTemplateEntrevista(LocalDateTime data, String nome, String nomeTemplate, String token) throws IOException, TemplateException {
+        Map<String, Object> dados = new HashMap<>();
+        dados.put("email", from);
+        dados.put("nome", nome);
+        dados.put("data", data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+        dados.put("token", token);
+        dados.put("colaborador", from);
+        Template template = fmConfiguration.getTemplate(nomeTemplate);
+        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+    }
+    public String getContentFromTemplate(String info, String nomeTemplate, String email) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
         dados.put("email", from);
         dados.put("texto1", info);
+        dados.put("nome", email);
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }
 
-    public String getContentFromTemplateEntrevista(String info, String nomeTemplate) throws IOException, TemplateException {
-        Map<String, Object> dados = new HashMap<>();
-        dados.put("email", from);
-        dados.put("texto1", info);
-        Template template = fmConfiguration.getTemplate(nomeTemplate);
-        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
-    }
+
 }

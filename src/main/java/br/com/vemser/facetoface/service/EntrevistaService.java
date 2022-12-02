@@ -107,19 +107,15 @@ public class EntrevistaService {
         entrevistaEntity.setEstado(estado);
         entrevistaEntity.setObservacoes(observacoes);
         entrevistaEntity.setLegenda(Legenda.PENDENTE);
-
+        tokenConfirmacao(entrevistaEntity);
         EntrevistaEntity entrevistaSalva = entrevistaRepository.save(entrevistaEntity);
-        tokenConfirmacao(entrevistaSalva);
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
 
     public void tokenConfirmacao(EntrevistaEntity entrevistaEntity) throws RegraDeNegocioException {
         String tokenSenha = tokenService.getTokenConfirmacao(entrevistaEntity);
 
-        String base = ("Olá "
-                + entrevistaEntity.getCandidatoEntity().getNomeCompleto()
-                + " seu token para confirmar entrevista é é: <br>" + tokenSenha);
-        emailService.sendEmailRecuperacaoSenha(entrevistaEntity.getCandidatoEntity().getEmail(), base);
+        emailService.sendEmailConfirmacaoEntrevista(entrevistaEntity, entrevistaEntity.getCandidatoEntity().getEmail(), tokenSenha);
     }
 
     public EntrevistaEntity findByCandidatoEntity(CandidatoEntity candidatoEntity) throws RegraDeNegocioException {
