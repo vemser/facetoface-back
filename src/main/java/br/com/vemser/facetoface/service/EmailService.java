@@ -36,13 +36,13 @@ public class EmailService {
     public void sendEmailEnvioSenha(String email,
                                     String senha) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
         String subject = "Cadastro concluído com sucesso.";
-        sendEmail(email, senha, "envio-senha-template.html", subject);
+        sendEmail(email, senha, "envio-senha-template-dois.html", subject);
     }
 
     public void sendEmailRecuperacaoSenha(String email,
                                           String token) throws MessagingException, TemplateException, IOException, RegraDeNegocioException {
         final String subject = "Recuperação de senha concluída com sucesso.";
-        sendEmail(email, token, "envio-senha-template.html", subject);
+        sendEmail(email, token, "envio-senha-template-dois.html", subject);
     }
 
     public void sendEmail(String email, String info, String nomeTemplate,
