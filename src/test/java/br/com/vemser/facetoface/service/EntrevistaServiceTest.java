@@ -245,22 +245,22 @@ public class EntrevistaServiceTest {
         verify(entrevistaRepository).delete(any());
     }
 
-    @Test
-    public void deveAtualizarEntrevistaCorretamente() throws RegraDeNegocioException {
-        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
-        UsuarioEntity usuarioEntity = getUsuarioEntity();
-        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-
-        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
-        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
-        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
-        when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
-
-        EntrevistaDTO entrevistaDTO =
-                entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CONFIRMADA);
-
-        assertEquals(1, entrevistaDTO.getIdEntrevista());
-    }
+//    @Test
+//    public void deveAtualizarEntrevistaCorretamente() throws RegraDeNegocioException {
+//        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+//        UsuarioEntity usuarioEntity = getUsuarioEntity();
+//        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+//
+//        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
+//        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
+//        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
+//        when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
+//
+//        EntrevistaDTO entrevistaDTO =
+//                entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CONFIRMADA);
+//
+//        assertEquals(1, entrevistaDTO.getIdEntrevista());
+//    }
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveRetornarUmaExcecaoQuandoUsuarioNaoForCadastrado() throws RegraDeNegocioException {
