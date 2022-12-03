@@ -49,7 +49,6 @@ public class ImageService {
 
     public void arquivarUsuario(MultipartFile file, String email) throws IOException, RegraDeNegocioException {
         UsuarioEntity usuarioEntity = usuarioService.findByEmail(email);
-
         Optional<ImageEntity> imagemBD = findByUsuario(usuarioEntity);
         String nomeArquivo = StringUtils.cleanPath((file.getOriginalFilename()));
         if (imagemBD.isPresent()) {

@@ -64,7 +64,9 @@ public class CurriculoService {
     }
 
     public void deleteFisico(Integer id) throws RegraDeNegocioException {
-        findById(id);
-        curriculoRepository.deleteById(id);
+        CandidatoEntity candidatoEntity = candidatoService.findById(id);
+        Optional<CurriculoEntity> curriculo = findByCandidato(candidatoEntity);
+        Integer idCurriculo = curriculo.get().getIdCurriculo();;
+        curriculoRepository.deleteById(idCurriculo);
     }
 }
