@@ -153,18 +153,24 @@ public class EntrevistaServiceTest {
         final int idEsperado = 1;
         final String token = "token";
 
-        UsuarioEntity usuarioEntity = getUsuarioEntity();
-
-        CandidatoDTO candidatoDTO = getCandidatoDTO();
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
         CandidatoEntity candidato = getCandidatoEntity();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
         entrevistaEntity.setCandidatoEntity(candidato);
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
 
+        LocalDateTime localDateTime =
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(8, 0));
+        EntrevistaEntity entrevistaCadastrada = getEntrevistaEntity();
+        entrevistaCadastrada.setUsuarioEntity(usuarioEntity);
+        entrevistaCadastrada.setDataEntrevista(localDateTime);
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(usuarioEntity);
         when(candidatoService.findByEmailEntity(anyString())).thenReturn(candidato);
         when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
-        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaCadastrada));
         when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
         when(tokenService.getTokenConfirmacao(any())).thenReturn(token);
 
@@ -176,12 +182,29 @@ public class EntrevistaServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveRetornarUmaExcecaoQuandoCandidaoNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
+    public void deveVerificarListaCreate() throws RegraDeNegocioException {
+        LocalDateTime localDateTime =
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0));
+
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
-        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaCreateDTO.setDataEntrevista(localDateTime);
         UsuarioEntity usuarioEntity = getUsuarioEntity();
 
-        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+
+        CandidatoEntity candidato = getCandidatoEntity();
+        entrevistaEntity.setCandidatoEntity(candidato);
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+
+        EntrevistaEntity entrevistaCadastrada = getEntrevistaEntity();
+        entrevistaCadastrada.setUsuarioEntity(usuarioEntity);
+        entrevistaCadastrada.setDataEntrevista(localDateTime);
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(usuarioEntity);
+        when(candidatoService.findByEmailEntity(anyString())).thenReturn(candidato);
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaCadastrada));
 
         entrevistaService.createEntrevista(entrevistaCreateDTO);
     }
@@ -222,18 +245,44 @@ public class EntrevistaServiceTest {
 
     @Test
     public void deveAtualizarEntrevistaCorretamente() throws RegraDeNegocioException {
+        LocalDateTime localDateTime =
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(8, 0));
+
         EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
         UsuarioEntity usuarioEntity = getUsuarioEntity();
-        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
 
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+        entrevistaEntity.setDataEntrevista(localDateTime);
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(usuarioEntity);
         when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
-        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
         when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
 
         EntrevistaDTO entrevistaDTO =
                 entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CONFIRMADA);
 
         assertEquals(1, entrevistaDTO.getIdEntrevista());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoAtualizarEntrevistaEmUmHorarioOcupado() throws RegraDeNegocioException {
+        LocalDateTime localDateTime =
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0));
+
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+        entrevistaEntity.setDataEntrevista(localDateTime);
+
+        when(usuarioService.findByEmail(anyString())).thenReturn(usuarioEntity);
+        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
+
+        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CONFIRMADA);
     }
 
     @Test
@@ -274,58 +323,16 @@ public class EntrevistaServiceTest {
         entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
     }
 
-    @Test
-    public void deveTestarAVerificacaoDaListaAtualizacaoCorretamente() throws RegraDeNegocioException {
-        LocalDateTime localDateTime =
-                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(8, 0));
-
-        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
-        UsuarioEntity usuarioEntity = getUsuarioEntity();
-
-        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-        entrevistaEntity.setUsuarioEntity(usuarioEntity);
-        entrevistaEntity.setDataEntrevista(localDateTime);
-
-        entrevistaService.verificarListaEntrevistas(entrevistaAtualizacaoDTO, usuarioEntity, List.of(entrevistaEntity));
-    }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveVerificarListaAtualizacao() throws RegraDeNegocioException {
-        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
-        UsuarioEntity usuarioEntity = getUsuarioEntity();
-
-        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-        entrevistaEntity.setUsuarioEntity(usuarioEntity);
-
-        entrevistaService.verificarListaEntrevistas(entrevistaAtualizacaoDTO, usuarioEntity, List.of(entrevistaEntity));
-    }
-
-    @Test
-    public void deveTestarAVerificacaoDaListaCreateCorretamente() throws RegraDeNegocioException {
+    public void deveRetornarUmaExcecaoQuandoCandidatoJaTiverUmaEntrevistaMarcada() throws RegraDeNegocioException {
         EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
-        UsuarioEntity usuarioEntity = getUsuarioEntity();
-
-        LocalDateTime localDateTime =
-                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(8, 0));
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-        entrevistaEntity.setUsuarioEntity(usuarioEntity);
-        entrevistaEntity.setDataEntrevista(localDateTime);
+        CandidatoEntity candidato = getCandidatoEntity();
 
-        entrevistaService.verificarListaEntrevistas(entrevistaCreateDTO, usuarioEntity, List.of(entrevistaEntity));
-    }
+        when(candidatoService.findByEmailEntity(anyString())).thenReturn(candidato);
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
 
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveVerificarListaCreate() throws RegraDeNegocioException {
-        LocalDateTime localDateTime =
-                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0));
-
-        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
-        entrevistaCreateDTO.setDataEntrevista(localDateTime);
-        UsuarioEntity usuarioEntity = getUsuarioEntity();
-
-        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-        entrevistaEntity.setUsuarioEntity(usuarioEntity);
-
-        entrevistaService.verificarListaEntrevistas(entrevistaCreateDTO, usuarioEntity, List.of(entrevistaEntity));
+        entrevistaService.createEntrevista(entrevistaCreateDTO);
     }
 }

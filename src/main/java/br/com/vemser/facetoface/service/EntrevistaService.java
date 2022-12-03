@@ -140,7 +140,7 @@ public class EntrevistaService {
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
 
-    public void verificarListaEntrevistas(EntrevistaAtualizacaoDTO entrevistaCreateDTO, UsuarioEntity usuario, List<EntrevistaEntity> entrevistaEntityList) throws RegraDeNegocioException {
+    private void verificarListaEntrevistas(EntrevistaAtualizacaoDTO entrevistaCreateDTO, UsuarioEntity usuario, List<EntrevistaEntity> entrevistaEntityList) throws RegraDeNegocioException {
         if (!entrevistaEntityList.isEmpty()) {
             entrevistaEntityList = entrevistaEntityList.stream()
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.getEmail()))
@@ -153,7 +153,7 @@ public class EntrevistaService {
         }
     }
 
-    public void verificarListaEntrevistas(EntrevistaCreateDTO entrevistaCreateDTO, UsuarioEntity usuario, List<EntrevistaEntity> entrevistaEntityList) throws RegraDeNegocioException {
+    private void verificarListaEntrevistas(EntrevistaCreateDTO entrevistaCreateDTO, UsuarioEntity usuario, List<EntrevistaEntity> entrevistaEntityList) throws RegraDeNegocioException {
         if (!entrevistaEntityList.isEmpty()) {
             entrevistaEntityList = entrevistaEntityList.stream()
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.getEmail()))
