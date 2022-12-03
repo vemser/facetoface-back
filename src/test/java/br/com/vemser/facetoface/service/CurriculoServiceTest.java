@@ -37,7 +37,6 @@ public class CurriculoServiceTest {
     @Mock
     private CurriculoRepository curriculoRepository;
 
-
     @Test
     public void deveTestarArquivarCurriculoComSucessoCandidatoSemCurriculo() throws RegraDeNegocioException, IOException {
         CandidatoEntity candidatoEntity = getCandidatoEntity();
@@ -80,20 +79,7 @@ public class CurriculoServiceTest {
         when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.of(getCurriculoEntity()));
 
         curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
-
     }
-
-//    @Test(expected = IOException.class)
-//    public void deveTestarArquivarCurriculoComRegrasDeNegocioException() throws RegraDeNegocioException, IOException {
-//        CandidatoEntity candidatoEntity = getCandidatoEntity();
-//        final MultipartFile curriculo = Mockito.mock(MultipartFile.class, Mockito.RETURNS_DEEP_STUBS);
-//
-//        when(candidatoService.findByEmailEntity(any())).thenReturn(candidatoEntity);
-//        when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.of(getCurriculoEntity()));
-//        when(curriculo.getBytes()).thenThrow(new IOException("Teste"));
-//
-//        curriculoService.arquivarCurriculo(curriculo, candidatoEntity.getEmail());
-//    }
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarArquivarCurriculoComIOException() throws RegraDeNegocioException, IOException {
@@ -148,25 +134,15 @@ public class CurriculoServiceTest {
         curriculoService.findById(id);
     }
 
-//    @Test
-//    public void testarDeletarFisicamenteUsuarioComSucesso() throws RegraDeNegocioException {
-//        CurriculoEntity curriculoEntity = CurriculoFactory.getCurriculoEntity();
-//
-//        when(curriculoRepository.findById(any())).thenReturn(Optional.of(curriculoEntity));
-//        curriculoService.deleteFisico(1);
-//
-//        verify(curriculoRepository).deleteById(any());
-//    }
+    @Test
+    public void testarDeletarFisicamenteUsuarioComSucesso() throws RegraDeNegocioException {
+        CurriculoEntity curriculoEntity = CurriculoFactory.getCurriculoEntity();
+        CandidatoEntity candidato = getCandidatoEntity();
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void testarDeletarFisicamenteUsuarioComErro() throws RegraDeNegocioException {
-//        final int id = 2;
-//        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
-//        when(candidatoService.findById(anyInt())).thenReturn(candidatoEntity);
-//        when(curriculoService.findB)
-//        when(curriculoRepository.findById(any())).thenReturn(Optional.empty());
-//        curriculoService.deleteFisico(1);
-//
-//        verify(curriculoRepository).deleteById(any());
-//    }
+        when(candidatoService.findById(anyInt())).thenReturn(candidato);
+        when(curriculoRepository.findByCandidato(any())).thenReturn(Optional.of(curriculoEntity));
+        curriculoService.deleteFisico(1);
+
+        verify(curriculoRepository).deleteById(any());
+    }
 }
