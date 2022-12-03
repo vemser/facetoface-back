@@ -1,6 +1,7 @@
 package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
+import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -31,24 +32,38 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
-    public void sendEmailEnvioSenha(String email, String senha) throws RegraDeNegocioException {
+    public void sendEmailEnvioSenha(UsuarioEntity usuarioEntity, String senha) throws RegraDeNegocioException {
         String subject = "Cadastro concluído com sucesso.";
-        sendEmail(email, senha, "envio-senha-template.html", subject);
+        sendEmail(usuarioEntity, senha, "envio-senha-template.html", subject);
     }
 
-    public void sendEmailRecuperacaoSenha(String email, String token) throws RegraDeNegocioException {
+    public void sendEmailRecuperacaoSenha(UsuarioEntity usuarioEntity, String token) throws RegraDeNegocioException {
         final String subject = "Recuperação de senha concluída com sucesso.";
-        sendEmail(email, token, "envio-senha-recuperacao.html", subject);
+        sendEmailRecuperacaoSenha(usuarioEntity, token, "envio-senha-recuperacao.html", subject);
     }
 
-    public void sendEmail(String email, String info, String nomeTemplate, String assunto) throws RegraDeNegocioException {
+    public void sendEmail(UsuarioEntity usuarioEntity, String info, String nomeTemplate, String assunto) throws RegraDeNegocioException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setFrom(from);
-            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setTo(usuarioEntity.getEmail());
             mimeMessageHelper.setSubject(assunto);
-            mimeMessageHelper.setText(getContentFromTemplate(info, nomeTemplate, email), true);
+            mimeMessageHelper.setText(getContentFromTemplateEnvioSenha(info, nomeTemplate, usuarioEntity), true);
+            emailSender.send(mimeMessageHelper.getMimeMessage());
+        } catch (MessagingException | IOException | TemplateException e) {
+            throw new RegraDeNegocioException("Email inválido! inserir outro e-mail.");
+        }
+    }
+
+    public void sendEmailRecuperacaoSenha(UsuarioEntity usuarioEntity, String info, String nomeTemplate, String assunto) throws RegraDeNegocioException {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setFrom(from);
+            mimeMessageHelper.setTo(usuarioEntity.getEmail());
+            mimeMessageHelper.setSubject(assunto);
+            mimeMessageHelper.setText(getContentFromTemplateRecuperarSenha(info, nomeTemplate, usuarioEntity), true);
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
             throw new RegraDeNegocioException("Email inválido! inserir outro e-mail.");
@@ -85,11 +100,23 @@ public class EmailService {
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }
 
-    public String getContentFromTemplate(String info, String nomeTemplate, String email) throws IOException, TemplateException {
+    public String getContentFromTemplateEnvioSenha(String info, String nomeTemplate, UsuarioEntity usuarioEntity) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
         dados.put("email", from);
-        dados.put("texto1", info);
-        dados.put("nome", email);
+        dados.put("nome", usuarioEntity.getNomeCompleto());
+        dados.put("senha", info);
+        dados.put("login", usuarioEntity.getEmail());
+        dados.put("colaborador", from);
+        Template template = fmConfiguration.getTemplate(nomeTemplate);
+        return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+    }
+
+    public String getContentFromTemplateRecuperarSenha(String info, String nomeTemplate, UsuarioEntity usuarioEntity) throws IOException, TemplateException {
+        Map<String, Object> dados = new HashMap<>();
+        dados.put("email", from);
+        dados.put("nome", usuarioEntity.getNomeCompleto());
+        dados.put("senha", info);
+        dados.put("colaborador", from);
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }

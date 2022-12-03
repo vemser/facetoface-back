@@ -102,7 +102,7 @@ public class UsuarioService {
         usuarioEntity.setGenero(genero);
         usuarioEntity.setNomeCompleto(usuarioEntity.getNomeCompleto().trim());
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuarioEntity);
-        emailService.sendEmailEnvioSenha(usuarioSalvo.getEmail(), senha);
+        emailService.sendEmailEnvioSenha(usuarioSalvo, senha);
 
         return converterEmDTO(usuarioSalvo);
     }
@@ -182,17 +182,18 @@ public class UsuarioService {
 
     public void atualizarSenhaUsuario(String email) throws RegraDeNegocioException {
         Optional<UsuarioEntity> usuarioEntityOptional = usuarioRepository.findByEmail(email);
+        UsuarioEntity usuarioEntity = usuarioEntityOptional.get();
         String senha = gerarSenha();
         usuarioEntityOptional.get().setSenha(passwordEncoder.encode(senha));
         usuarioRepository.save(usuarioEntityOptional.get());
-        emailService.sendEmailEnvioSenha(email, senha);
+        emailService.sendEmailEnvioSenha(usuarioEntity, senha);
     }
 
     public void atualizarSenhaUsuarioLogado(String senhaAtual, String senhaNova) throws RegraDeNegocioException {
         String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<UsuarioEntity> usuarioEntity = findOptionalByEmail(email);
         if(!passwordEncoder.matches(senhaAtual,usuarioEntity.get().getSenha())){
-            throw new RegraDeNegocioException("Senha informada deve ser diferente à senha atual");
+            throw new RegraDeNegocioException("Senha informada deve ser diferente da senha atual");
         } else if(validarFormatacao(senhaNova)){
             usuarioEntity.get().setSenha(senhaNova);
             usuarioRepository.save(usuarioEntity.get());

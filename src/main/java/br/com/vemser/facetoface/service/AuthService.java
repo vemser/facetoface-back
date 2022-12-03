@@ -48,7 +48,7 @@ public class AuthService {
         UsuarioEntity usuarioEntityOptional = usuarioService.findByEmail(email);
 
         String tokenSenha = tokenService.getTokenSenha(usuarioEntityOptional);
-        emailService.sendEmailRecuperacaoSenha(email, tokenSenha);
+        emailService.sendEmailRecuperacaoSenha(usuarioEntityOptional, tokenSenha);
     }
 
     public String procurarUsuario(String token) throws RegraDeNegocioException {
