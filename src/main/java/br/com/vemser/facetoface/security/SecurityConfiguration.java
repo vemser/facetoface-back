@@ -39,7 +39,7 @@ public class SecurityConfiguration {
                                 .antMatchers(HttpMethod.PUT,"/upload-foto").hasAnyRole("GESTAO","ADMIN","INSTRUTOR")
                                 .antMatchers("/usuario/**").hasRole("ADMIN")
                                 .antMatchers("/usuario").hasRole("ADMIN")
-                                .antMatchers("/edicao").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.POST,"/edicao").hasRole("ADMIN")
                                 .anyRequest().authenticated());
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
