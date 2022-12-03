@@ -194,6 +194,7 @@ public class CandidatoServiceTest {
         final int pagina = 0;
         final int tamanho = 10;
         final String nomeTrilha = "BACKEND";
+        final String nomeEdicao = "10ª Edição";
 
         RelatorioCandidatoPaginaPrincipalDTO relatorio = getRelatorioCandidatoPaginaPrincipalDTO();
         PageImpl<RelatorioCandidatoPaginaPrincipalDTO> paginaPrincipalDTOPage =
@@ -204,10 +205,10 @@ public class CandidatoServiceTest {
         candidatoEntity.setCurriculoEntity(curriculoEntity);
 
         when(candidatoRepository.findByEmail(anyString())).thenReturn(Optional.of(candidatoEntity));
-        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), any()))
+        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), anyString() ,any()))
                 .thenReturn(paginaPrincipalDTOPage);
         PageDTO<RelatorioCandidatoCadastroDTO> relatorioPageDTO =
-                candidatoService.listRelatorioCandidatoCadastroDTO(nomeEsperado, pagina, tamanho, nomeTrilha);
+                candidatoService.listRelatorioCandidatoCadastroDTO(nomeEsperado, pagina, tamanho, nomeTrilha, nomeEdicao);
 
         assertEquals(pagina, relatorioPageDTO.getPagina());
         assertEquals(tamanho, relatorioPageDTO.getTamanho());
@@ -220,14 +221,15 @@ public class CandidatoServiceTest {
         final int pagina = 0;
         final int tamanho = 10;
         final String nomeTrilha = "BACKEND";
+        final String nomeEdicao = "10ª edição";
 
         PageImpl<RelatorioCandidatoPaginaPrincipalDTO> paginaPrincipalDTOPage =
                 new PageImpl<>(List.of(), PageRequest.of(pagina, tamanho), 1);
 
-        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), any()))
+        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), anyString() ,any()))
                 .thenReturn(paginaPrincipalDTOPage);
         PageDTO<RelatorioCandidatoCadastroDTO> relatorioPageDTO =
-                candidatoService.listRelatorioCandidatoCadastroDTO(nomeEsperado, pagina, tamanho, nomeTrilha);
+                candidatoService.listRelatorioCandidatoCadastroDTO(nomeEsperado, pagina, tamanho, nomeTrilha, nomeEdicao);
     }
 
     @Test(expected = RegraDeNegocioException.class)
@@ -236,6 +238,8 @@ public class CandidatoServiceTest {
         final int pagina = 0;
         final int tamanho = 10;
         final String nomeTrilha = "BACKEND";
+        final String nomeEdicao = "BACKEND";
+
 
         RelatorioCandidatoPaginaPrincipalDTO relatorio = getRelatorioCandidatoPaginaPrincipalDTO();
         PageImpl<RelatorioCandidatoPaginaPrincipalDTO> paginaPrincipalDTOPage =
@@ -244,10 +248,10 @@ public class CandidatoServiceTest {
         CandidatoEntity candidatoEntity = getCandidatoEntity();
 
         when(candidatoRepository.findByEmail(anyString())).thenReturn(Optional.of(candidatoEntity));
-        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), any()))
+        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), anyString() ,any()))
                 .thenReturn(paginaPrincipalDTOPage);
         PageDTO<RelatorioCandidatoCadastroDTO> relatorioPageDTO =
-                candidatoService.listRelatorioCandidatoCadastroDTO(nomeEsperado, pagina, tamanho, nomeTrilha);
+                candidatoService.listRelatorioCandidatoCadastroDTO(nomeEsperado, pagina, tamanho, nomeTrilha, nomeEdicao);
     }
 
     @Test
@@ -257,15 +261,16 @@ public class CandidatoServiceTest {
         final int pagina = 0;
         final int tamanho = 10;
         final String nomeTrilha = "BACKEND";
+        final String nomeEdicao = "10ª Edição";
 
         RelatorioCandidatoPaginaPrincipalDTO relatorio = getRelatorioCandidatoPaginaPrincipalDTO();
         PageImpl<RelatorioCandidatoPaginaPrincipalDTO> paginaPrincipalDTOPage =
                 new PageImpl<>(List.of(relatorio), PageRequest.of(pagina, tamanho), 1);
 
-        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), any()))
+        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(),anyString(), any()))
                 .thenReturn(paginaPrincipalDTOPage);
         PageDTO<RelatorioCandidatoPaginaPrincipalDTO> relatorioPageDTO =
-                candidatoService.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeEsperado, pagina, tamanho, nomeTrilha);
+                candidatoService.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeEsperado, pagina, tamanho, nomeTrilha, nomeEdicao);
 
         assertEquals(pagina, relatorioPageDTO.getPagina());
         assertEquals(tamanho, relatorioPageDTO.getTamanho());
@@ -278,14 +283,15 @@ public class CandidatoServiceTest {
         final int pagina = 0;
         final int tamanho = 10;
         final String nomeTrilha = "BACKEND";
+        final String nomeEdicao = "10ª Edição";
 
         PageImpl<RelatorioCandidatoPaginaPrincipalDTO> paginaPrincipalDTOPage =
                 new PageImpl<>(List.of(), PageRequest.of(pagina, tamanho), 1);
 
-        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), any()))
+        when(candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(anyString(), anyString(), anyString() ,any()))
                 .thenReturn(paginaPrincipalDTOPage);
         PageDTO<RelatorioCandidatoPaginaPrincipalDTO> relatorioPageDTO =
-                candidatoService.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeEsperado, pagina, tamanho, nomeTrilha);
+                candidatoService.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeEsperado, pagina, tamanho, nomeTrilha, nomeEdicao);
     }
 
     @Test
@@ -314,7 +320,7 @@ public class CandidatoServiceTest {
     private static RelatorioCandidatoPaginaPrincipalDTO getRelatorioCandidatoPaginaPrincipalDTO() {
         return new RelatorioCandidatoPaginaPrincipalDTO(1,
                 "heloise.lopes@dbccompany.com.br",
-                "Heloise Isabela Lopes", 8.25, "BACKEND"
+                "Heloise Isabela Lopes", 8.25, "BACKEND","10º Edição"
         );
     }
 }

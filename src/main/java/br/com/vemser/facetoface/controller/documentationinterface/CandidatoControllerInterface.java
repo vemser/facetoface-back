@@ -125,7 +125,8 @@ public interface CandidatoControllerInterface {
     PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(@RequestParam(value = "nomeCompleto", required = false) String nomeCompleto,
                                                                                                     @RequestParam(defaultValue = "0") Integer pagina,
                                                                                                     @RequestParam(defaultValue = "20") Integer tamanho,
-                                                                                                    @RequestParam(required = false) String nomeTrilha) throws RegraDeNegocioException;
+                                                                                                    @RequestParam(required = false) String nomeTrilha,
+                                                                                                    @RequestParam(required = false) String nomeEdicao) throws RegraDeNegocioException;
 
     @Operation(summary = "Listar relatórios de cadastro de candidatos.", description = "Lista relatórios de cadastro de candidatos.")
     @ApiResponses(value = {
@@ -137,5 +138,6 @@ public interface CandidatoControllerInterface {
     PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(@RequestParam(value = "nomeCompleto", required = false) String nomeCompleto,
                                                                              @RequestParam(defaultValue = "0") Integer pagina,
                                                                              @RequestParam(defaultValue = "20") Integer tamanho,
-                                                                             @RequestParam(required = false) String nomeTrilha) throws RegraDeNegocioException;
+                                                                             @RequestParam(required = false) String nomeTrilha,
+                                                                             @RequestParam(required = false) String nomeEdicao) throws RegraDeNegocioException;
 }

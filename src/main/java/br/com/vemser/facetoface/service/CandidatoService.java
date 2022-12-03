@@ -117,13 +117,14 @@ public class CandidatoService {
         return candidatoEntity.get();
     }
 
-    public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
+    public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha, String nomeEdicao) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage =
                 candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(
                         nomeCompleto,
                         nomeTrilha,
+                        nomeEdicao,
                         pageRequest);
         if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
@@ -157,10 +158,10 @@ public class CandidatoService {
                 relatorioCandidatoCadastroDTOPage);
     }
 
-    public PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha) throws RegraDeNegocioException {
+    public PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(String nomeCompleto, Integer pagina, Integer tamanho, String nomeTrilha, String nomeEdicao) throws RegraDeNegocioException {
         Sort ordenacao = Sort.by("notaProva");
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
-        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto, nomeTrilha, pageRequest);
+        Page<RelatorioCandidatoPaginaPrincipalDTO> candidatoEntityPage = candidatoRepository.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto, nomeTrilha, nomeEdicao, pageRequest);
         if (candidatoEntityPage.isEmpty()) {
             throw new RegraDeNegocioException("Candidato com dados especificados não existe");
         }

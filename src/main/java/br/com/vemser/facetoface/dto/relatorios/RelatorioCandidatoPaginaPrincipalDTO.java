@@ -15,4 +15,5 @@ public class RelatorioCandidatoPaginaPrincipalDTO {
     private String email;
     private Double notaProva;
     private String trilha;
+    private String edicao;
 }

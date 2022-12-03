@@ -65,17 +65,15 @@ public class EdicaoServiceTest {
         assertEquals(nome, edicaoEsperada.getNome());
     }
 
-    @Test
-    public void deveCriarUmaNovaEdicaoCasoNaoExistaONomeNoBanco() {
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveCriarUmaNovaEdicaoCasoNaoExistaONomeNoBanco() throws RegraDeNegocioException {
         final String edicaoNome = "Edição 10";
         EdicaoEntity edicao = getEdicaoEntity();
 
         when(edicaoRepository.findByNome(anyString())).thenReturn(Optional.empty());
-        when(edicaoRepository.save(any())).thenReturn(edicao);
 
         EdicaoEntity edicaoRetornada = edicaoService.findByNome(edicaoNome);
 
-        assertEquals(edicaoNome, edicaoRetornada.getNome());
     }
 
     @Test

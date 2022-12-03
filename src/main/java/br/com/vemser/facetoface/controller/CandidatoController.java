@@ -63,16 +63,18 @@ public class CandidatoController implements CandidatoControllerInterface {
     public PageDTO<RelatorioCandidatoCadastroDTO> listRelatorioCandidatoCadastroDTO(@RequestParam(value = "nomeCompleto", required = false) String nomeCompleto,
                                                                                     @RequestParam(defaultValue = "0") Integer pagina,
                                                                                     @RequestParam(defaultValue = "20") Integer tamanho,
-                                                                                    @RequestParam(required = false) String nomeTrilha) throws RegraDeNegocioException {
-        return candidatoService.listRelatorioCandidatoCadastroDTO(nomeCompleto, pagina, tamanho, nomeTrilha);
+                                                                                    @RequestParam(required = false) String nomeTrilha,
+                                                                                    @RequestParam(required = false) String nomeEdicao) throws RegraDeNegocioException {
+        return candidatoService.listRelatorioCandidatoCadastroDTO(nomeCompleto, pagina, tamanho, nomeTrilha, nomeEdicao);
     }
 
     @GetMapping("/listar-candidato-principal-por-nome-ou-por-trilha")
     public PageDTO<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(@RequestParam(value = "nomeCompleto", required = false) String nomeCompleto,
                                                                                                            @RequestParam(defaultValue = "0") Integer pagina,
                                                                                                            @RequestParam(defaultValue = "20") Integer tamanho,
-                                                                                                           @RequestParam(required = false) String nomeTrilha) throws RegraDeNegocioException {
-        return candidatoService.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto, pagina, tamanho, nomeTrilha);
+                                                                                                           @RequestParam(required = false) String nomeTrilha,
+                                                                                                           @RequestParam(required = false) String nomeEdicao) throws RegraDeNegocioException {
+        return candidatoService.listRelatorioRelatorioCandidatoPaginaPrincipalDTO(nomeCompleto, pagina, tamanho, nomeTrilha, nomeEdicao);
     }
 
     @DeleteMapping("/{idCandidato}")

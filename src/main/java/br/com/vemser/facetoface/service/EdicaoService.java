@@ -21,22 +21,16 @@ public class EdicaoService {
                 .orElseThrow(() -> new RegraDeNegocioException("Edição não encontrada!"));
     }
 
-    private EdicaoEntity create(EdicaoDTO edicaoDTO) {
-        edicaoDTO.setNome(edicaoDTO.getNome().trim().toUpperCase());
-        return edicaoRepository.save(converterEntity(edicaoDTO));
-    }
-
     public EdicaoDTO createAndReturnDTO(EdicaoDTO edicaoDTO) {
-        edicaoDTO.setNome(edicaoDTO.getNome().trim().toUpperCase());
+        edicaoDTO.setNome(edicaoDTO.getNome().trim());
         EdicaoEntity edicaoEntity = edicaoRepository.save(converterEntity(edicaoDTO));
         return objectMapper.convertValue(edicaoEntity, EdicaoDTO.class);
     }
 
-    public EdicaoEntity findByNome(String nome) {
-        nome = nome.trim().toUpperCase();
+    public EdicaoEntity findByNome(String nome) throws RegraDeNegocioException {
         Optional<EdicaoEntity> edicaoEntity = edicaoRepository.findByNome(nome);
         if (edicaoEntity.isEmpty()) {
-            return create(new EdicaoDTO(nome));
+            throw new RegraDeNegocioException("Edição não encontrada!");
         }
         return edicaoEntity.get();
     }
