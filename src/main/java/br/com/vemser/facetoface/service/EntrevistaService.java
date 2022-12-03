@@ -163,8 +163,7 @@ public class EntrevistaService {
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.getEmail()))
                     .collect(Collectors.toList());
             for (EntrevistaEntity entrevistaEntity : entrevistaEntityList) {
-                if (entrevistaEntity.getDataEntrevista().equals(entrevistaCreateDTO.getDataEntrevista()) &&
-                        entrevistaEntity.getUsuarioEntity().getEmail().equals(entrevistaCreateDTO.getUsuarioEmail())) {
+                if (entrevistaEntity.getDataEntrevista().equals(entrevistaCreateDTO.getDataEntrevista())) {
                     throw new RegraDeNegocioException("Horário já ocupado para entrevista! Agendar outro horário!");
                 }
             }
