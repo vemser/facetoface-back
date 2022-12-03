@@ -202,10 +202,13 @@ public class UsuarioService {
     public void atualizarSenhaUsuarioLogado(String senhaAtual, String senhaNova) throws RegraDeNegocioException {
         String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<UsuarioEntity> usuarioEntity = findOptionalByEmail(email);
-        if(!passwordEncoder.matches(senhaAtual,usuarioEntity.get().getSenha())){
+        if(!passwordEncoder.matches(senhaAtual, usuarioEntity.get().getSenha())){
+            throw new RegraDeNegocioException("Senha atual incorreta!");
+        }
+        else if(passwordEncoder.matches(senhaNova,usuarioEntity.get().getSenha())){
             throw new RegraDeNegocioException("Senha informada deve ser diferente da senha atual");
         } else if(validarFormatacao(senhaNova)){
-            usuarioEntity.get().setSenha(senhaNova);
+            usuarioEntity.get().setSenha(passwordEncoder.encode(senhaNova));
             usuarioRepository.save(usuarioEntity.get());
         }
     }
