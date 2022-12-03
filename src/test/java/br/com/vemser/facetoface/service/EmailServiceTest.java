@@ -171,6 +171,21 @@ public class EmailServiceTest {
     }
 
     @Test(expected = RegraDeNegocioException.class)
+    public void deveTestarSendEmailRecuperacaoSenhaComIOException() throws IOException, MessagingException, RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        final String email = "teste@email.com.br";
+        final String token = "$123token";
+        final String nomeTemplate = "template.html";
+        final String assunto = "Recuperação de senha concluída com sucesso.";
+        mimeMessage.setFrom(from);
+
+        when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
+        doThrow(new IOException()).when(fmConfiguration).getTemplate(anyString());
+
+        emailService.sendEmailRecuperacaoSenha(usuarioEntity, token, nomeTemplate, assunto);
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
     public void deveRetornarUmaExcecaoQuandoEnviarUmEmail() throws IOException, RegraDeNegocioException {
         final String email = "teste@email.com.br";
         final String token = "$123token";

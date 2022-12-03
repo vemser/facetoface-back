@@ -136,6 +136,27 @@ public class UsuarioServiceTest {
     }
 
     @Test
+    public void testarAtualizarUsuarioLogadoComSucesso() throws RegraDeNegocioException {
+        SecurityContextHolder.getContext().setAuthentication(getAuthentication());
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+        UsuarioCreateDTO usuarioCreateDTO = UsuarioFactory.getUsuarioDTO();
+        TrilhaEntity trilha = TrilhaFactory.getTrilhaEntity();
+        EdicaoEntity edicao = EdicaoFactory.getEdicaoEntity();
+        PerfilEntity perfil = PerfilFactory.getPerfilEntity();
+
+        UsuarioEntity usuarioSalvo = getUsuarioEntity();
+
+        when(usuarioRepository.findByEmail(any())).thenReturn(Optional.of(usuarioEntity));
+        when(trilhaService.findByNome(anyString())).thenReturn(trilha);
+        when(usuarioRepository.save(any())).thenReturn(usuarioSalvo);
+
+        UsuarioDTO usuarioDTO = usuarioService.updateLogado(usuarioCreateDTO, Genero.FEMININO);
+
+        assertEquals(usuarioSalvo.getEmail(), usuarioDTO.getEmail());
+        assertEquals(usuarioSalvo.getPerfis().size(), usuarioDTO.getPerfis().size());
+    }
+
+    @Test
     public void testarBuscarUsuarioDTOPorEmailComSucesso() throws RegraDeNegocioException {
         final String emailEsperado = "julio.gabriel@dbccompany.com.br";
         UsuarioEntity usuarioEntity = getUsuarioEntity();

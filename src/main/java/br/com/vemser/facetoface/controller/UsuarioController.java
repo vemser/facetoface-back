@@ -74,6 +74,13 @@ public class UsuarioController implements UsuarioControllerInterface {
         return new ResponseEntity<>(usuarioDTO, HttpStatus.OK);
     }
 
+    @PutMapping("/atualizar-usuario-logado")
+    public ResponseEntity<UsuarioDTO> updateLogado(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
+                                             Genero genero) throws RegraDeNegocioException {
+        UsuarioDTO usuarioDTO = usuarioService.updateLogado(usuarioCreateDTO, genero);
+        return new ResponseEntity<>(usuarioDTO, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{idUsuario}")
     public ResponseEntity<UsuarioDTO> delete(@PathVariable("idUsuario") Integer id) throws RegraDeNegocioException {
         usuarioService.deleteLogico(id);

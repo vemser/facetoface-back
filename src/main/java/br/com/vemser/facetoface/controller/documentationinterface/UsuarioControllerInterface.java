@@ -89,6 +89,16 @@ public interface UsuarioControllerInterface {
                                              @Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
                                              Genero genero) throws RegraDeNegocioException;
 
+    @Operation(summary = "Atualizar o usuário logado no sistema.", description = "Atualiza o usuário logado no sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Atualiza o usuário logado no sistema.!"),
+            @ApiResponse(responseCode = "400", description = "Erro na inserção de dados."),
+            @ApiResponse(responseCode = "403", description = "Foi gerada uma exceção.")
+    })
+    @PutMapping
+    ResponseEntity<UsuarioDTO> updateLogado(@Valid @RequestBody UsuarioCreateDTO usuarioCreateDTO,
+                                            Genero genero) throws RegraDeNegocioException;
+
     @Operation(summary = "Deleta o usuário logicamente no sistema", description = "Deleta o usuário logicamente no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Deletado com sucesso!"),

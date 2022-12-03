@@ -135,6 +135,16 @@ public class UsuarioService {
         return converterEmDTO(usuarioRepository.save(usuarioEntity));
     }
 
+    public UsuarioDTO updateLogado(UsuarioCreateDTO usuarioCreateDTO, Genero genero) throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = findByEmail(getLoggedUser().getEmail());
+        usuarioEntity.setTrilha(trilhaService.findByNome(usuarioCreateDTO.getTrilha().getNome()));
+        usuarioEntity.setGenero(genero);
+        usuarioEntity.setCidade(usuarioCreateDTO.getCidade());
+        usuarioEntity.setEstado(usuarioCreateDTO.getEstado());
+        usuarioEntity.setNomeCompleto(usuarioCreateDTO.getNomeCompleto().trim());
+        return converterEmDTO(usuarioRepository.save(usuarioEntity));
+    }
+
     public PageDTO<UsuarioDTO> list(Integer pagina, Integer tamanho) {
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
         Page<UsuarioEntity> usuarioEntityPage = usuarioRepository.findAll(pageRequest);
