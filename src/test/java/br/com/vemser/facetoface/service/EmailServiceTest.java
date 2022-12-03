@@ -2,7 +2,9 @@ package br.com.vemser.facetoface.service;
 
 import br.com.vemser.facetoface.entity.CandidatoEntity;
 import br.com.vemser.facetoface.entity.EntrevistaEntity;
+import br.com.vemser.facetoface.entity.UsuarioEntity;
 import br.com.vemser.facetoface.exceptions.RegraDeNegocioException;
+import br.com.vemser.facetoface.factory.UsuarioFactory;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.junit.Before;
@@ -64,14 +66,14 @@ public class EmailServiceTest {
     @Test
     public void deveEnviarEmailComASenha() throws IOException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
-
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
         final String email = "teste@email.com.br";
         final String senha = "123";
 
         when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
         when(fmConfiguration.getTemplate(any())).thenReturn(template);
 
-        emailService.sendEmailEnvioSenha(email, senha);
+        emailService.sendEmailEnvioSenha(usuarioEntity, senha);
 
         verify(emailSender).send((MimeMessage) any());
     }
@@ -79,14 +81,14 @@ public class EmailServiceTest {
     @Test
     public void deveEnviarEmailDeRecuperacaoDeSenha() throws IOException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
-
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
         final String email = "teste@email.com.br";
         final String token = "$123token";
 
         when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
         when(fmConfiguration.getTemplate(any())).thenReturn(template);
 
-        emailService.sendEmailRecuperacaoSenha(email, token);
+        emailService.sendEmailRecuperacaoSenha(usuarioEntity, token);
 
         verify(emailSender).send((MimeMessage) any());
     }
@@ -94,7 +96,7 @@ public class EmailServiceTest {
     @Test
     public void deveEnviarEmail() throws IOException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
-
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
         final String email = "teste@email.com.br";
         final String token = "$123token";
         final String nomeTemplate = "template.html";
@@ -103,7 +105,7 @@ public class EmailServiceTest {
         when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
         when(fmConfiguration.getTemplate(nomeTemplate)).thenReturn(template);
 
-        emailService.sendEmail(email, token, nomeTemplate, assunto);
+        emailService.sendEmail(usuarioEntity, token, nomeTemplate, assunto);
 
         verify(emailSender).send((MimeMessage) any());
     }
@@ -111,7 +113,7 @@ public class EmailServiceTest {
     @Test
     public void deveRetornarUmaExcecaoQuandoOcorrerUmErroNoEnvioDoEmail() throws IOException, RegraDeNegocioException {
         Template template = new Template("template.html", Reader.nullReader());
-
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
         final String email = "teste@email.com.br";
         final String token = "$123token";
         final String nomeTemplate = "template.html";
@@ -120,26 +122,42 @@ public class EmailServiceTest {
         when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
         when(fmConfiguration.getTemplate(nomeTemplate)).thenReturn(template);
 
-        emailService.sendEmail(email, token, nomeTemplate, assunto);
+        emailService.sendEmail(usuarioEntity, token, nomeTemplate, assunto);
     }
 
     @Test
-    public void deveTestarGetContentFromTemplate() throws IOException, TemplateException {
+    public void deveTestarGetContentFromTemplateEnvioSenhaComSucesso() throws IOException, TemplateException {
         Template template = new Template("template.html", Reader.nullReader());
-
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
         final String token = "$123token";
         final String nomeTemplate = "template.html";
         final String email = "teste@email.com.br";
 
         when(fmConfiguration.getTemplate(nomeTemplate)).thenReturn(template);
 
-        String content = emailService.getContentFromTemplate(token, nomeTemplate, email);
+        String content = emailService.getContentFromTemplateEnvioSenha(token, nomeTemplate, usuarioEntity);
+
+        assertNotNull(content);
+    }
+
+    @Test
+    public void deveTesarGetContentFromTemplateRecuperacaoSenhaComSucesso() throws TemplateException, IOException {
+        Template template = new Template("template.html", Reader.nullReader());
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        final String token = "$123token";
+        final String nomeTemplate = "template.html";
+        final String email = "teste@email.com.br";
+
+        when(fmConfiguration.getTemplate(nomeTemplate)).thenReturn(template);
+
+        String content = emailService.getContentFromTemplateRecuperarSenha(token, nomeTemplate, usuarioEntity);
 
         assertNotNull(content);
     }
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarSendEmailComIOException() throws IOException, MessagingException, RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
         final String email = "teste@email.com.br";
         final String token = "$123token";
         final String nomeTemplate = "template.html";
@@ -149,7 +167,7 @@ public class EmailServiceTest {
         when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
         doThrow(new IOException()).when(fmConfiguration).getTemplate(anyString());
 
-        emailService.sendEmail(email, token, nomeTemplate, assunto);
+        emailService.sendEmail(usuarioEntity, token, nomeTemplate, assunto);
     }
 
     @Test(expected = RegraDeNegocioException.class)
@@ -168,4 +186,23 @@ public class EmailServiceTest {
 
         emailService.sendEmailEntrevista(entrevistaEntity, email, token, nomeTemplate, assunto);
     }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoEnviarUmEmailDeRecuperacaoDeSenha() throws IOException, RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = UsuarioFactory.getUsuarioEntity();
+        final String email = "teste@email.com.br";
+        final String token = "$123token";
+        final String nomeTemplate = "template.html";
+        final String assunto = "Recuperação de senha concluída com sucesso.";
+
+        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setCandidatoEntity(candidatoEntity);
+
+        when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
+        doThrow(new IOException()).when(fmConfiguration).getTemplate(anyString());
+
+        emailService.sendEmail( usuarioEntity, token, nomeTemplate, assunto);
+    }
+
 }
