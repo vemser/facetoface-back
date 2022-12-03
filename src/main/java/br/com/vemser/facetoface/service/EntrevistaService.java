@@ -1,5 +1,6 @@
 package br.com.vemser.facetoface.service;
 
+import br.com.vemser.facetoface.dto.candidato.CandidatoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaAtualizacaoDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaCreateDTO;
 import br.com.vemser.facetoface.dto.entrevista.EntrevistaDTO;
@@ -166,6 +167,20 @@ public class EntrevistaService {
         }
     }
 
+    public EntrevistaDTO buscarPorEmailCandidato(String email) throws RegraDeNegocioException{
+        CandidatoDTO candidatoDTO = candidatoService.findByEmail(email);
+        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoDTO, CandidatoEntity.class);
+        EntrevistaEntity entrevista = findByCandidatoEntity(candidatoEntity);
+        EntrevistaDTO entrevistaDTO = objectMapper.convertValue(entrevista, EntrevistaDTO.class);
+        return entrevistaDTO;
+    }
+
+    public void deletarEntrevistaEmail(String email) throws RegraDeNegocioException{
+        CandidatoDTO candidatoDTO = candidatoService.findByEmail(email);
+        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoDTO, CandidatoEntity.class);
+        EntrevistaEntity entrevista = findByCandidatoEntity(candidatoEntity);
+        entrevistaRepository.deleteById(entrevista.getIdEntrevista());
+    }
     public void atualizarObservacaoEntrevista(Integer id, String observacao) throws RegraDeNegocioException {
         EntrevistaEntity entrevista = findById(id);
         entrevista.setObservacoes(observacao);

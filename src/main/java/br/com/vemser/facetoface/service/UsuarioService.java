@@ -192,7 +192,7 @@ public class UsuarioService {
         String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<UsuarioEntity> usuarioEntity = findOptionalByEmail(email);
         if(!passwordEncoder.matches(senhaAtual,usuarioEntity.get().getSenha())){
-            throw new RegraDeNegocioException("Senha informada deve ser igual à senha atual");
+            throw new RegraDeNegocioException("Senha informada deve ser diferente à senha atual");
         } else if(validarFormatacao(senhaNova)){
             usuarioEntity.get().setSenha(senhaNova);
             usuarioRepository.save(usuarioEntity.get());

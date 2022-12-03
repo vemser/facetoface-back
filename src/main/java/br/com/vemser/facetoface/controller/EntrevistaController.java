@@ -67,4 +67,15 @@ public class EntrevistaController implements EntrevistaControllerInterface {
         entrevistaService.atualizarObservacaoEntrevista(id, observacao);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/buscar-entrevista-email-candidato/{email}")
+    public ResponseEntity<EntrevistaDTO> buscarEntrevistaPorEmailCandidato(@PathVariable ("email") String email) throws RegraDeNegocioException {
+        return new ResponseEntity<>(entrevistaService.buscarPorEmailCandidato(email), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deletar-entrevista-email-candidato/{email}")
+    public ResponseEntity<Void> deletarEntrevistaEmailCandidato(@PathVariable ("email") String email) throws RegraDeNegocioException{
+        entrevistaService.deletarEntrevistaEmail(email);
+        return ResponseEntity.noContent().build();
+    }
 }
