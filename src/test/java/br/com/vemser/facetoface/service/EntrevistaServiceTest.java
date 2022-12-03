@@ -335,4 +335,43 @@ public class EntrevistaServiceTest {
 
         entrevistaService.createEntrevista(entrevistaCreateDTO);
     }
+
+    @Test
+    public void deveBuscarEntrevistaPeloEmailDoCandidatoCorretamente() throws RegraDeNegocioException {
+        final String email = "heloise.lopes@dbccompany.com.br";
+
+        CandidatoDTO candidatoDTO = getCandidatoDTO();
+
+        CandidatoEntity candidato = getCandidatoEntity();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setCandidatoEntity(candidato);
+
+        when(candidatoService.findByEmail(anyString())).thenReturn(candidatoDTO);
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
+
+        EntrevistaDTO entrevistaDTO = entrevistaService.buscarPorEmailCandidato(email);
+
+        assertEquals(1, entrevistaDTO.getIdEntrevista());
+        assertEquals(Legenda.PENDENTE, entrevistaDTO.getLegenda());
+        assertEquals("Santana", entrevistaDTO.getCidade());
+        assertEquals("AP", entrevistaDTO.getEstado());
+    }
+
+    @Test
+    public void deveDeletarEntrevistaPeloEmailDoCandidatoCorretamente() throws RegraDeNegocioException {
+        final String email = "heloise.lopes@dbccompany.com.br";
+
+
+        CandidatoDTO candidatoDTO = getCandidatoDTO();
+        CandidatoEntity candidato = getCandidatoEntity();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setCandidatoEntity(candidato);
+
+        when(candidatoService.findByEmail(anyString())).thenReturn(candidatoDTO);
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
+
+        entrevistaService.deletarEntrevistaEmail(email);
+
+        verify(entrevistaRepository).deleteById(anyInt());
+    }
 }
