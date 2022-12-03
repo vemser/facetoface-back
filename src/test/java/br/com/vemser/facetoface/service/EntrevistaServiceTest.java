@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,8 +27,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -175,40 +175,16 @@ public class EntrevistaServiceTest {
         assertEquals("AP", entrevistaDTO.getEstado());
     }
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveRetornarUmaExcecaoQuandoUsuarioNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
-//        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
-//
-//        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.empty());
-//
-//        entrevistaService.createEntrevista(entrevistaCreateDTO);
-//    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoCandidaoNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
+        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveRetornarUmaExcecaoQuandoUsuarioJaEstiverOcupado() throws RegraDeNegocioException {
-//        UsuarioEntity usuarioEntity = getUsuarioEntity();
-//        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
-//        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-//        entrevistaEntity.setUsuarioEntity(usuarioEntity);
-//
-//        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
-//        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.empty());
-//        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
-//
-//        entrevistaService.createEntrevista(entrevistaCreateDTO);
-//    }
+        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveRetornarUmaExcecaoQuandoCandidaoNaoEstiverCadastradoNoBanco() throws RegraDeNegocioException {
-//        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
-//        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-//        UsuarioEntity usuarioEntity = getUsuarioEntity();
-//
-//        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
-//        when(entrevistaRepository.findByCandidatoEntity(any())).thenReturn(Optional.of(entrevistaEntity));
-//
-//        entrevistaService.createEntrevista(entrevistaCreateDTO);
-//    }
+        entrevistaService.createEntrevista(entrevistaCreateDTO);
+    }
 
     @Test
     public void deveBuscarEntrevistaPeloCandidatoCorretamente() throws RegraDeNegocioException {
@@ -261,6 +237,21 @@ public class EntrevistaServiceTest {
     }
 
     @Test
+    public void deveEnviarOTokenDeConfirmacaoQuandoAtualizarEntrevistaPendenteCorretamente() throws RegraDeNegocioException {
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+
+        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
+        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of());
+        when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
+
+        EntrevistaDTO entrevistaDTO =
+                entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.PENDENTE);
+
+        assertEquals(1, entrevistaDTO.getIdEntrevista());
+    }
+
+    @Test
     public void deveAtualizarObservacaoEntrevistaCorretamente() throws RegraDeNegocioException {
         EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
         EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
@@ -276,37 +267,65 @@ public class EntrevistaServiceTest {
         assertEquals("obs", entrevistaEntity.getObservacoes());
     }
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveAtualizarObservacaoErroQuandoNaoEncontrarEntrevista() throws RegraDeNegocioException {
-//        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-//        String observacao = "obs";
-//        entrevistaEntity.setObservacoes(observacao);
-//
-//        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.empty());
-//        when(entrevistaRepository.save(any())).thenReturn(entrevistaEntity);
-//        entrevistaService.atualizarObservacaoEntrevista(1, "obs");
-//
-//    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveRetornarUmaExcecaoQuandoUsuarioNaoForCadastrado() throws RegraDeNegocioException {
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveRetornarUmaExcecaoQuandoUsuarioNaoForCadastrado() throws RegraDeNegocioException {
-//        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
-//
-//        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.empty());
-//        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
-//    }
+        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
+    }
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveRetornarUmaExcecaoQuandoListaDeEntrevistasVazia() throws RegraDeNegocioException {
-//        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
-//        UsuarioEntity usuarioEntity = getUsuarioEntity();
-//        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
-//        entrevistaEntity.setUsuarioEntity(usuarioEntity);
-//
-//        when(usuarioService.findOptionalByEmail(anyString())).thenReturn(Optional.of(usuarioEntity));
-//        when(entrevistaRepository.findById(anyInt())).thenReturn(Optional.of(entrevistaEntity));
-//        when(entrevistaRepository.findByDataEntrevista(any())).thenReturn(List.of(entrevistaEntity));
-//
-//        entrevistaService.atualizarEntrevista(1, entrevistaAtualizacaoDTO, Legenda.CANCELADA);
-//    }
+    @Test
+    public void deveTestarAVerificacaoDaListaAtualizacaoCorretamente() throws RegraDeNegocioException {
+        LocalDateTime localDateTime =
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(8, 0));
+
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+        entrevistaEntity.setDataEntrevista(localDateTime);
+
+        entrevistaService.verificarListaEntrevistas(entrevistaAtualizacaoDTO, usuarioEntity, List.of(entrevistaEntity));
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveVerificarListaAtualizacao() throws RegraDeNegocioException {
+        EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO = getEntrevistaAtualizacaoDTO();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+
+        entrevistaService.verificarListaEntrevistas(entrevistaAtualizacaoDTO, usuarioEntity, List.of(entrevistaEntity));
+    }
+
+    @Test
+    public void deveTestarAVerificacaoDaListaCreateCorretamente() throws RegraDeNegocioException {
+        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        LocalDateTime localDateTime =
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(8, 0));
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+        entrevistaEntity.setDataEntrevista(localDateTime);
+
+        entrevistaService.verificarListaEntrevistas(entrevistaCreateDTO, usuarioEntity, List.of(entrevistaEntity));
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveVerificarListaCreate() throws RegraDeNegocioException {
+        LocalDateTime localDateTime =
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0));
+
+        EntrevistaCreateDTO entrevistaCreateDTO = getEntrevistaDTO();
+        entrevistaCreateDTO.setDataEntrevista(localDateTime);
+        UsuarioEntity usuarioEntity = getUsuarioEntity();
+
+        EntrevistaEntity entrevistaEntity = getEntrevistaEntity();
+        entrevistaEntity.setUsuarioEntity(usuarioEntity);
+
+        entrevistaService.verificarListaEntrevistas(entrevistaCreateDTO, usuarioEntity, List.of(entrevistaEntity));
+    }
 }

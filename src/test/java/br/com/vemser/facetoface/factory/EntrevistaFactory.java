@@ -19,7 +19,8 @@ public class EntrevistaFactory {
     public static EntrevistaEntity getEntrevistaEntity() {
         EntrevistaEntity entrevistaEntity = new EntrevistaEntity();
         entrevistaEntity.setIdEntrevista(1);
-        entrevistaEntity.setDataEntrevista(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 00)));
+        entrevistaEntity.setDataEntrevista(LocalDateTime.of(LocalDate.now().plusDays(1),
+                LocalTime.of(15, 0)));
         entrevistaEntity.setCidade("Santana");
         entrevistaEntity.setEstado("AP");
         entrevistaEntity.setObservacoes("Sem observações.");
@@ -46,7 +47,7 @@ public class EntrevistaFactory {
     public static EntrevistaAtualizacaoDTO getEntrevistaAtualizacaoDTO() {
         EntrevistaAtualizacaoDTO entrevistaAtualizacaoDTO =
                 new EntrevistaAtualizacaoDTO(
-                        LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 00)),
+                        LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(15, 0)),
                         "Santana",
                         "AP",
                         "Sem observações",

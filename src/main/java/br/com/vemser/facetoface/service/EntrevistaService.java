@@ -124,9 +124,6 @@ public class EntrevistaService {
     public EntrevistaDTO atualizarEntrevista(Integer idEntrevista, EntrevistaAtualizacaoDTO entrevistaCreateDTO,
                                              Legenda legenda) throws RegraDeNegocioException {
         UsuarioEntity usuario = usuarioService.findByEmail(entrevistaCreateDTO.getEmail());
-//        if (usuario.isEmpty()) {
-//            throw new RegraDeNegocioException("Usuário não encontrado");
-//        }
         EntrevistaEntity entrevista = findById(idEntrevista);
         List<EntrevistaEntity> entrevistaEntityList = entrevistaRepository.findByDataEntrevista(entrevista.getDataEntrevista());
         verificarListaEntrevistas(entrevistaCreateDTO, usuario, entrevistaEntityList);
@@ -143,7 +140,7 @@ public class EntrevistaService {
         return converterParaEntrevistaDTO(entrevistaSalva);
     }
 
-    private void verificarListaEntrevistas(EntrevistaAtualizacaoDTO entrevistaCreateDTO, UsuarioEntity usuario, List<EntrevistaEntity> entrevistaEntityList) throws RegraDeNegocioException {
+    public void verificarListaEntrevistas(EntrevistaAtualizacaoDTO entrevistaCreateDTO, UsuarioEntity usuario, List<EntrevistaEntity> entrevistaEntityList) throws RegraDeNegocioException {
         if (!entrevistaEntityList.isEmpty()) {
             entrevistaEntityList = entrevistaEntityList.stream()
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.getEmail()))
@@ -156,7 +153,7 @@ public class EntrevistaService {
         }
     }
 
-    private void verificarListaEntrevistas(EntrevistaCreateDTO entrevistaCreateDTO, UsuarioEntity usuario, List<EntrevistaEntity> entrevistaEntityList) throws RegraDeNegocioException {
+    public void verificarListaEntrevistas(EntrevistaCreateDTO entrevistaCreateDTO, UsuarioEntity usuario, List<EntrevistaEntity> entrevistaEntityList) throws RegraDeNegocioException {
         if (!entrevistaEntityList.isEmpty()) {
             entrevistaEntityList = entrevistaEntityList.stream()
                     .filter(x -> x.getUsuarioEntity().getEmail().equals(usuario.getEmail()))
