@@ -79,7 +79,7 @@ public class EmailService {
         dados.put("email", from);
         dados.put("nome", nome);
         dados.put("data", data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-        dados.put("token", "https://facetoface-front.vercel.app/confirm-interview"+token);
+        dados.put("token", "https://facetoface-front.vercel.app/confirm-interview?token="+token);
         dados.put("colaborador", from);
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
