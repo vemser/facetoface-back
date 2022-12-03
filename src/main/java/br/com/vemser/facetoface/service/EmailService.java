@@ -120,6 +120,4 @@ public class EmailService {
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
     }
-
-
 }
