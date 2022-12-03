@@ -115,7 +115,7 @@ public class EmailService {
         Map<String, Object> dados = new HashMap<>();
         dados.put("email", from);
         dados.put("nome", usuarioEntity.getNomeCompleto());
-        dados.put("senha", info);
+        dados.put("senha", "https://facetoface-front.vercel.app/recover-password-token?token="+info);
         dados.put("colaborador", from);
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);

@@ -6,68 +6,71 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <title>Confirmar entrevista</title>
-    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=VBnWqvIyqmQO3KPR16VcLnlnWTErZZmm5LZqh79aOESDJlkHeA4X-6wuMFvekoOYxohQWC_TYl3mnyscsyJAMXOQUkSfSq3wuT0Je8HT7U1i0gzFmfrzjI0qSrW-qC_YUfMMZmo899B0IeOSnrCSZA" charset="UTF-8"></script><style>
-    * {
-        font-family: 'Inter', sans-serif;
-    ;
-        padding: 0;
-        margin: 0;
-    }
+    <script type="text/javascript"
+            src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=VBnWqvIyqmQO3KPR16VcLnlnWTErZZmm5LZqh79aOESDJlkHeA4X-6wuMFvekoOYxohQWC_TYl3mnyscsyJAMXOQUkSfSq3wuT0Je8HT7U1i0gzFmfrzjI0qSrW-qC_YUfMMZmo899B0IeOSnrCSZA"
+            charset="UTF-8"></script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        ;
+            padding: 0;
+            margin: 0;
+        }
 
-    body {
-        max-width: 100vw;
-        height: 100vh;
-    }
+        body {
+            max-width: 100vw;
+            height: 100vh;
+        }
 
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        gap: 2rem;
-    }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            gap: 2rem;
+        }
 
-    .container-main {
-        width: 60%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        gap: 1rem;
-    }
+        .container-main {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 1rem;
+        }
 
-    .button-confirmar {
-        width: 200px;
-        height: 50px;
-        border: none;
-        font-size: 1rem;
-        border-radius: 100px;
-        color: #fff;
-        background-color: #1e62fe;
-    }
+        .button-confirmar {
+            height: 50px;
+            border: none;
+            font-size: 1rem;
+            border-radius: 100px;
+            color: #fff;
+            background-color: #1e62fe;
+            padding: 0 1rem;
+        }
 
-    .button-confirmar:hover {
-        cursor: pointer;
-        opacity: 0.8;
-    }
+        .button-confirmar:hover {
+            cursor: pointer;
+            opacity: 0.8;
+        }
 
-    .container-footer {
-        width: 40%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-top: 1px solid #999;
-        padding-top: 3rem;
-    }
+        .container-footer {
+            width: 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid #999;
+            padding-top: 3rem;
+        }
 
-    .link {
-        color: #1e62fe;
-        font-weight: 700;
-    }
-</style>
+        .link {
+            color: #1e62fe;
+            font-weight: 700;
+        }
+    </style>
 </head>
 
 <body>
@@ -75,13 +78,13 @@
     <div class="container-main">
         <img src="https://i.imgur.com/LzV0mqi.png" width="300px" height="120px" alt="logo">
         <h1>Olá, ${nome}</h1>
-        <p>Seu acesso foi aprovado e segue a seguir, seu login e senha para o nosso sistema!<br></p>
+        <p>Segue a seguir, seu login e senha para o nosso sistema!<br></p>
         <p>Login: ${login}<p>
         <p>Senha: ${senha}<p>
 
-        <div class="container-footer">
-            <p>Enviado por <span>${colaborador}</span></p>
-        </div>
+    <div class="container-footer">
+        <p>Enviado por <span>${colaborador}</span></p>
+    </div>
 </main>
 </body>
 
