@@ -2,6 +2,7 @@ package br.com.vemser.facetoface.controller.documentationinterface;
 
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
+import br.com.vemser.facetoface.dto.usuario.SenhaDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.enums.Genero;
@@ -146,6 +147,5 @@ public interface UsuarioControllerInterface {
             }
     )
     @PutMapping
-    public void trocarSenhaLogado(@RequestParam @Valid String senhaAtual,
-                                  @RequestParam @Valid String senhaNova) throws RegraDeNegocioException;
+    public void trocarSenhaLogado(@RequestBody @Valid SenhaDTO senha) throws RegraDeNegocioException;
 }

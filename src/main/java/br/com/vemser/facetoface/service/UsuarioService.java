@@ -4,6 +4,7 @@ import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
 import br.com.vemser.facetoface.dto.perfil.PerfilDTO;
 import br.com.vemser.facetoface.dto.trilha.TrilhaDTO;
+import br.com.vemser.facetoface.dto.usuario.SenhaDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.PerfilEntity;
@@ -199,10 +200,12 @@ public class UsuarioService {
         emailService.sendEmailEnvioSenha(usuarioEntity, senha);
     }
 
-    public void atualizarSenhaUsuarioLogado(String senhaAtual, String senhaNova) throws RegraDeNegocioException {
+    public void atualizarSenhaUsuarioLogado(SenhaDTO senhaAtual) throws RegraDeNegocioException {
+        String senhaBanco = senhaAtual.getSenhaAtual();
+        String senhaNova = senhaAtual.getSenhaNova();
         String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Optional<UsuarioEntity> usuarioEntity = findOptionalByEmail(email);
-        if(!passwordEncoder.matches(senhaAtual, usuarioEntity.get().getSenha())){
+        if(!passwordEncoder.matches(senhaBanco, usuarioEntity.get().getSenha())){
             throw new RegraDeNegocioException("Senha atual incorreta!");
         }
         else if(passwordEncoder.matches(senhaNova,usuarioEntity.get().getSenha())){

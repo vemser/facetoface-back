@@ -3,6 +3,7 @@ package br.com.vemser.facetoface.controller;
 import br.com.vemser.facetoface.controller.documentationinterface.UsuarioControllerInterface;
 import br.com.vemser.facetoface.dto.login.LoginRetornoDTO;
 import br.com.vemser.facetoface.dto.paginacaodto.PageDTO;
+import br.com.vemser.facetoface.dto.usuario.SenhaDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioCreateDTO;
 import br.com.vemser.facetoface.dto.usuario.UsuarioDTO;
 import br.com.vemser.facetoface.entity.enums.Genero;
@@ -106,9 +107,8 @@ public class UsuarioController implements UsuarioControllerInterface {
     }
 
     @PutMapping("/trocar-senha-usuario-logado")
-    public void trocarSenhaLogado(@RequestBody @Valid String senhaAtual,
-                                  @RequestBody @Valid String senhaNova) throws RegraDeNegocioException {
-        usuarioService.atualizarSenhaUsuarioLogado(senhaAtual, senhaNova);
+    public void trocarSenhaLogado(@RequestBody @Valid SenhaDTO senha) throws RegraDeNegocioException {
+        usuarioService.atualizarSenhaUsuarioLogado(senha);
         new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
