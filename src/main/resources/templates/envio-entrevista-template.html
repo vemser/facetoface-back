@@ -2,17 +2,13 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <title>Confirmar entrevista</title>
   <script type="text/javascript"
           src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=VBnWqvIyqmQO3KPR16VcLnlnWTErZZmm5LZqh79aOESDJlkHeA4X-6wuMFvekoOYxohQWC_TYl3mnyscsyJAMXOQUkSfSq3wuT0Je8HT7U1i0gzFmfrzjI0qSrW-qC_YUfMMZmo899B0IeOSnrCSZA"
           charset="UTF-8"></script>
   <style>
     * {
-      font-family: 'Inter', sans-serif;
-    ;
+
       padding: 0;
       margin: 0;
     }
@@ -29,11 +25,12 @@
       justify-content: center;
       width: 100%;
       height: 100%;
-      gap: 2rem;
+      gap: 1rem;
     }
 
     .container-main {
-      width: 60%;
+      width: 400px;
+      height: 600px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -58,12 +55,12 @@
     }
 
     .container-footer {
-      width: 40%;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       border-top: 1px solid #999;
-      padding-top: 3rem;
+      padding-top: 1rem
     }
 
     .link {
@@ -83,10 +80,9 @@
       aqui para confirmar</button></a>
     <p>Ou clique no link a seguir para confirmar<br>
       ${token}</p>
-  </div>
-
-  <div class="container-footer">
-    <p>Enviado por <span>${colaborador}</span></p>
+    <div class="container-footer">
+      <p>Enviado por <span>${colaborador}</span></p>
+    </div>
   </div>
 </main>
 </body>
