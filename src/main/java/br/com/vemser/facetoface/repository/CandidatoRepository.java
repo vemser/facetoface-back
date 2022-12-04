@@ -23,7 +23,7 @@ public interface CandidatoRepository extends JpaRepository<CandidatoEntity, Inte
             " c.edicao.nome)" +
             "  from CANDIDATO c " +
             " left join c.trilha t" +
-            " where (:nomeCompleto is null or c.nomeCompleto = :nomeCompleto)" +
+            " where (:nomeCompleto is null or UPPER(c.nomeCompleto) LIKE  upper(concat('%',:nomeCompleto,'%')))" +
             " and (:nomeEdicao is null or c.edicao.nome = :nomeEdicao)" +
             " and (:nomeTrilha is null or c.trilha.nome = :nomeTrilha)")
     Page<RelatorioCandidatoPaginaPrincipalDTO> listRelatorioRelatorioCandidatoPaginaPrincipalDTO(String nomeCompleto, String nomeTrilha, String nomeEdicao, Pageable pageable);
