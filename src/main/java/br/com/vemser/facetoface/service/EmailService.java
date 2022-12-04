@@ -94,7 +94,7 @@ public class EmailService {
         dados.put("email", from);
         dados.put("nome", nome);
         dados.put("data", data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-        dados.put("token", "https://facetoface-front.vercel.app/confirm-interview?token="+token);
+        dados.put("token", "http://vemser-dbc.dbccompany.com.br:39000/yuriatzler/facetoface-front/confirm-interview?token="+token);
         dados.put("colaborador", from);
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
@@ -115,7 +115,7 @@ public class EmailService {
         Map<String, Object> dados = new HashMap<>();
         dados.put("email", from);
         dados.put("nome", usuarioEntity.getNomeCompleto());
-        dados.put("senha", "https://facetoface-front.vercel.app/recover-password-token?token="+info);
+        dados.put("senha", "http://vemser-dbc.dbccompany.com.br:39000/yuriatzler/facetoface-front/recover-password-token?token="+info);
         dados.put("colaborador", from);
         Template template = fmConfiguration.getTemplate(nomeTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
