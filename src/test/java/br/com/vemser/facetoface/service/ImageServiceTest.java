@@ -180,15 +180,6 @@ public class ImageServiceTest {
         imageService.findById(2);
     }
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveArquivarUsuarioComEmailDarErro() throws RegraDeNegocioException {
-//        //Setup
-//        final String email = "abc@dbccompany.com.br";
-//        // act
-//        when(usuarioService.findByEmail(any())).thenReturn(Optional.empty());
-//
-//    }
-
     @Test
     public void devePegarImagemUsuarioComSucesso() throws RegraDeNegocioException {
         //Setup
@@ -237,17 +228,6 @@ public class ImageServiceTest {
 
         imageService.deleteFisico(id);
     }
-
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveRetornarUmaExcecaoQuandoUsuarioNaoForEncontrado() throws RegraDeNegocioException, IOException {
-//        UsuarioEntity usuario = UsuarioFactory.getUsuarioEntity();
-//        byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
-//        MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
-//
-//        when(usuarioService.findOptionalByEmail(any())).thenReturn(Optional.empty());
-//
-//        imageService.arquivarUsuario(imagem, usuario.getEmail());
-//    }
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveRetornarUmaExcecaoQuandoUsuarioNaoTiverFotoCadastrada() throws RegraDeNegocioException {
